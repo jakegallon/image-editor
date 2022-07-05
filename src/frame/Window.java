@@ -2,12 +2,18 @@ package frame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class Window extends JFrame {
 
+    JSplitPane leftMiddle, leftMiddleRight;
     JPanel leftPanel, rightPanel, centerPanel, topPanel, bottomPanel;
 
+    int leftPanelWidth = 300, rightPanelWidth = 300;
+
     public Window() {
+        setVisible(true);
         initializeWindow();
         createLayout();
     }
@@ -16,39 +22,59 @@ public class Window extends JFrame {
         setTitle("Image Editor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1920, 1080);
+        setMinimumSize(new Dimension(960, 540));
     }
 
     private void createLayout(){
         Container pane = getContentPane();
-        pane.setLayout(new BorderLayout());
 
+        // Main panels
         leftPanel=new JPanel();
         leftPanel.setBackground(Color.RED);
-        leftPanel.setPreferredSize(new Dimension(300, pane.getHeight()));
-        pane.add(leftPanel, BorderLayout.LINE_START);
-
+        leftPanel.setMinimumSize(new Dimension(250, 0));
         rightPanel=new JPanel();
         rightPanel.setBackground(Color.BLUE);
-        rightPanel.setPreferredSize(new Dimension(300, pane.getHeight()));
-        pane.add(rightPanel, BorderLayout.LINE_END);
+        rightPanel.setMinimumSize(new Dimension(250, 0));
+        JPanel middlePanel=new JPanel();
+        middlePanel.setMinimumSize(new Dimension(250, 0));
+        middlePanel.setLayout(new BorderLayout());
 
-        JPanel centerContainer=new JPanel();
-        pane.add(centerContainer, BorderLayout.CENTER);
-        centerContainer.setLayout(new BorderLayout());
-
-        centerPanel=new JPanel();
+        // Middle sub panels
+        centerPanel =new JPanel();
         centerPanel.setBackground(Color.YELLOW);
-        centerContainer.add(centerPanel, BorderLayout.CENTER);
-
+        middlePanel.add(centerPanel, BorderLayout.CENTER);
         topPanel=new JPanel();
         topPanel.setBackground(Color.MAGENTA);
-        topPanel.setPreferredSize(new Dimension(pane.getWidth(), 50));
-        centerContainer.add(topPanel, BorderLayout.PAGE_START);
-
+        topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
+        middlePanel.add(topPanel, BorderLayout.PAGE_START);
         bottomPanel=new JPanel();
         bottomPanel.setBackground(Color.PINK);
-        bottomPanel.setPreferredSize(new Dimension(pane.getWidth(), 50));
-        centerContainer.add(bottomPanel, BorderLayout.PAGE_END);
-    }
+        bottomPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
+        middlePanel.add(bottomPanel, BorderLayout.PAGE_END);
 
+        // Triple SplitPane
+        leftMiddle = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, middlePanel);
+        leftMiddle.setDividerLocation(leftPanelWidth);
+        leftMiddleRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftMiddle, rightPanel);
+        leftMiddleRight.setDividerLocation(pane.getWidth() - rightPanelWidth);
+        leftMiddleRight.setResizeWeight(1.0);
+
+        pane.add(leftMiddleRight);
+
+        leftMiddleRight.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                leftMiddleRight.setDividerLocation(leftMiddleRight.getWidth() - rightPanelWidth);
+                leftMiddle.setDividerLocation(leftPanelWidth);
+            }
+        });
+
+        leftMiddle.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, evt -> {
+            leftPanelWidth = (int)evt.getNewValue();
+        });
+
+        leftMiddleRight.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, evt -> {
+            rightPanelWidth = pane.getWidth() - (int)evt.getNewValue();
+        });
+    }
 }

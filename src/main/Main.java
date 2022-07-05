@@ -14,6 +14,5 @@ public class Main {
         }
 
         Window window = new frame.Window();
-        window.setVisible(true);
     }
 }
