@@ -1,13 +1,9 @@
 package frame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Window extends JFrame {
 
@@ -44,22 +40,8 @@ public class Window extends JFrame {
         middlePanel.setLayout(new BorderLayout());
 
         // Middle sub panels
-        centerPanel =new JPanel();
-        centerPanel.setBackground(new Color(43, 43 ,43));
-
-        BufferedImage img;
-        try {
-            img = ImageIO.read(new File("res/spritesheet.png").getAbsoluteFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        JLabel picture = new JLabel(new ImageIcon(img));
-
-        centerPanel.add(picture);
-
-        JScrollPane drawingComponent = new JScrollPane(centerPanel);
-        middlePanel.add(new CanvasPanel(), BorderLayout.CENTER);
+        centerPanel =new CanvasPanel();
+        middlePanel.add(centerPanel, BorderLayout.CENTER);
         topPanel=new JPanel();
         topPanel.setBackground(Color.MAGENTA);
         topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
