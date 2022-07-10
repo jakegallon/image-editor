@@ -9,6 +9,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final float ZOOM_MULTIPLIER = 1.1892071f; //1.189207115002721
     private float zoomFactor = 1.0f;
 
+    private Point middleMousePressPoint;
+    private Point initialCanvasPosition;
+    private boolean scrollLocked = false;
+
     JPanel test;
 
     public CanvasPanel() {
@@ -37,6 +41,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if(scrollLocked) return;
         boolean scrollingUp = (e.getWheelRotation() == -1);
         if(scrollingUp){
             zoomIn();
@@ -71,12 +76,18 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if(SwingUtilities.isMiddleMouseButton(e)){
+            middleMousePressPoint = getLocalizedPoint(e.getPoint());
+            initialCanvasPosition = test.getLocation();
+            scrollLocked = true;
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(SwingUtilities.isMiddleMouseButton(e)){
+            scrollLocked = false;
+        }
     }
 
     @Override
@@ -93,7 +104,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mouseDragged(MouseEvent e) {
         Point mouseLocation = getLocalizedPoint(e.getPoint());
         if(SwingUtilities.isMiddleMouseButton(e)){
-            test.setLocation(mouseLocation);
+            int xOffset = mouseLocation.x - middleMousePressPoint.x;
+            int yOffset = mouseLocation.y - middleMousePressPoint.y;
+            test.setLocation(initialCanvasPosition.x + xOffset, initialCanvasPosition.y + yOffset);
         }
     }
 
