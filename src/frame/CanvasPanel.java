@@ -9,11 +9,13 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final float ZOOM_MULTIPLIER = 1.1892071f; //1.189207115002721
     private float zoomFactor = 1.0f;
 
+    private int x = 0, y = 0;
+    private Point initialGraphicsOffset;
     private Point middleMousePressPoint;
-    private Point initialCanvasPosition;
+
     private boolean scrollLocked = false;
 
-    private final Canvas canvas;
+    private final Canvas canvas = new Canvas();
 
     public CanvasPanel() {
         setBackground(new Color(43, 43 ,43));
@@ -21,8 +23,6 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         addMouseWheelListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
-
-        canvas = new Canvas();
         add(canvas);
     }
 
@@ -30,6 +30,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(x, y);
         g2d.scale(zoomFactor, zoomFactor);
         repaint();
     }
@@ -59,9 +60,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
     }
 
-    private Point getLocalizedPoint(Point point){
-        float localX = point.x / zoomFactor;
-        float localY = point.y / zoomFactor;
+    private Point getAbsolutePoint(Point point){
+        float localX = point.x + x;
+        float localY = point.y + y;
         return new Point((int)localX, (int)localY);
     }
 
@@ -72,8 +73,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
-            middleMousePressPoint = getLocalizedPoint(e.getPoint());
-            initialCanvasPosition = canvas.getLocation();
+            initialGraphicsOffset = new Point(x, y);
+            middleMousePressPoint = getAbsolutePoint(e.getPoint());
             scrollLocked = true;
         }
     }
@@ -97,11 +98,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        Point mouseLocation = getLocalizedPoint(e.getPoint());
         if(SwingUtilities.isMiddleMouseButton(e)){
-            int xOffset = mouseLocation.x - middleMousePressPoint.x;
-            int yOffset = mouseLocation.y - middleMousePressPoint.y;
-            canvas.setLocation(initialCanvasPosition.x + xOffset, initialCanvasPosition.y + yOffset);
+            x = initialGraphicsOffset.x * 2 + e.getPoint().x - middleMousePressPoint.x;
+            y = initialGraphicsOffset.y * 2 + e.getPoint().y - middleMousePressPoint.y;
         }
     }
 
