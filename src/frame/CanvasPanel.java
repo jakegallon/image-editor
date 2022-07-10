@@ -13,7 +13,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private Point initialCanvasPosition;
     private boolean scrollLocked = false;
 
-    JPanel test;
+    private final Canvas canvas;
 
     public CanvasPanel() {
         setBackground(new Color(43, 43 ,43));
@@ -22,13 +22,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        // Temporary object
-        test = new JPanel();
-        test.setBounds(0, 0, 200, 200);
-        Point canvasPos = new Point(0, 0);
-        test.setLocation(canvasPos);
-        test.setBackground(Color.white);
-        add(test);
+        canvas = new Canvas();
+        add(canvas);
     }
 
     @Override
@@ -78,7 +73,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
             middleMousePressPoint = getLocalizedPoint(e.getPoint());
-            initialCanvasPosition = test.getLocation();
+            initialCanvasPosition = canvas.getLocation();
             scrollLocked = true;
         }
     }
@@ -106,7 +101,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         if(SwingUtilities.isMiddleMouseButton(e)){
             int xOffset = mouseLocation.x - middleMousePressPoint.x;
             int yOffset = mouseLocation.y - middleMousePressPoint.y;
-            test.setLocation(initialCanvasPosition.x + xOffset, initialCanvasPosition.y + yOffset);
+            canvas.setLocation(initialCanvasPosition.x + xOffset, initialCanvasPosition.y + yOffset);
         }
     }
 
