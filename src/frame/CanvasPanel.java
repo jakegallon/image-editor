@@ -12,6 +12,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private static final float ZOOM_MULTIPLIER = 1.1f; //1.189207115002721
     private float zoomFactor = 1.0f;
+    private float closeMinZoom;
+    private float closeMaxZoom;
 
     private int x = 0, y = 0;
     private Point initialGraphicsOffset;
@@ -39,8 +41,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
             if(evt.getPropertyName().equals(ZOOM_EVENT)){
                 infoPanel.setZoomFactor(zoomFactor);
             }
-        }
-        );
+        });
     }
 
     @Override
@@ -64,16 +65,36 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     protected void zoomIn() {
+        if(zoomFactor == 0.01f){
+            setZoomFactor(closeMinZoom);
+            return;
+        }
+        if(zoomFactor == 100.0f) {
+            return;
+        }
         float newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
-        if(newZoomFactor <= 4096.0f){
+        if(newZoomFactor <= 100.0f){
             setZoomFactor(newZoomFactor);
+        } else {
+            closeMaxZoom = zoomFactor;
+            setZoomFactor(100.0f);
         }
     }
 
     protected void zoomOut() {
+        if(zoomFactor == 100.0f){
+            setZoomFactor(closeMaxZoom);
+            return;
+        }
+        if(zoomFactor == 0.01f) {
+            return;
+        }
         float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
         if(newZoomFactor >= 0.01f){
             setZoomFactor(newZoomFactor);
+        } else {
+            closeMinZoom = zoomFactor;
+            setZoomFactor(0.01f);
         }
     }
 
@@ -105,12 +126,12 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // start tracking mouse position relative to canvas
+        // mouse cursor change
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // stop tracking mouse position relative to canvas
+
     }
 
     @Override
