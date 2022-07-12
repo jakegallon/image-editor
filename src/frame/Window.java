@@ -8,8 +8,9 @@ import java.awt.event.ComponentEvent;
 public class Window extends JFrame {
 
     JSplitPane leftMiddle, leftMiddleRight;
-    JPanel leftPanel, rightPanel, topPanel, bottomPanel;
+    JPanel leftPanel, rightPanel, topPanel;
     CanvasPanel canvasPanel;
+    InfoPanel infoPanel;
 
     int leftPanelWidth = 300, rightPanelWidth = 300;
 
@@ -41,16 +42,14 @@ public class Window extends JFrame {
         middlePanel.setLayout(new BorderLayout());
 
         // Middle sub panels
-        canvasPanel =new CanvasPanel();
-        middlePanel.add(canvasPanel, BorderLayout.CENTER);
         topPanel=new JPanel();
         topPanel.setBackground(Color.MAGENTA);
         topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
-        bottomPanel=new JPanel();
-        bottomPanel.setBackground(Color.PINK);
-        bottomPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
-        middlePanel.add(bottomPanel, BorderLayout.PAGE_END);
+        infoPanel = new InfoPanel();
+        middlePanel.add(infoPanel, BorderLayout.PAGE_END);
+        canvasPanel =new CanvasPanel(infoPanel);
+        middlePanel.add(canvasPanel, BorderLayout.CENTER);
 
         // Triple SplitPane
         leftMiddle = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, middlePanel);

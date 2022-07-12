@@ -1,12 +1,16 @@
 package frame;
 
 import javax.swing.*;
+import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
 import java.awt.event.*;
 
 public class CanvasPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 
-    private static final float ZOOM_MULTIPLIER = 1.1892071f; //1.189207115002721
+    private static final String MOUSE_POS_EVENT = "mouse moved";
+    private static final String ZOOM_EVENT = "canvas zoomed";
+
+    private static final float ZOOM_MULTIPLIER = 1.1f; //1.189207115002721
     private float zoomFactor = 1.0f;
 
     private int x = 0, y = 0;
@@ -17,13 +21,26 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private final Canvas canvas = new Canvas();
 
-    public CanvasPanel() {
+    private volatile Point mousePos;
+    private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
+
+    public CanvasPanel(InfoPanel infoPanel) {
         setBackground(new Color(43, 43 ,43));
         setLayout(null);
         addMouseWheelListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
         add(canvas);
+
+        propertyChangeSupport.addPropertyChangeListener(evt -> {
+            if(evt.getPropertyName().equals(MOUSE_POS_EVENT)){
+                infoPanel.setMouseLocation((Point) evt.getNewValue());
+            }
+            if(evt.getPropertyName().equals(ZOOM_EVENT)){
+                infoPanel.setZoomFactor(zoomFactor);
+            }
+        }
+        );
     }
 
     @Override
@@ -49,14 +66,14 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     protected void zoomIn() {
         float newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
         if(newZoomFactor <= 4096.0f){
-            zoomFactor = newZoomFactor;
+            setZoomFactor(newZoomFactor);
         }
     }
 
     protected void zoomOut() {
         float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
         if(newZoomFactor >= 0.01f){
-            zoomFactor = newZoomFactor;
+            setZoomFactor(newZoomFactor);
         }
     }
 
@@ -106,5 +123,18 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        setMousePos(e.getPoint());
+    }
+
+    private void setMousePos(Point p) {
+        Point oldValue = mousePos;
+        mousePos = p;
+        propertyChangeSupport.firePropertyChange(MOUSE_POS_EVENT, oldValue, p);
+    }
+
+    private void setZoomFactor(Float zoomFactor) {
+        float oldValue = this.zoomFactor;
+        this.zoomFactor = zoomFactor;
+        propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
     }
 }
