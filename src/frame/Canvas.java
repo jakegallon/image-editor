@@ -6,13 +6,8 @@ import java.awt.*;
 public class Canvas extends JPanel {
 
     public Canvas() {
-        setBounds(0, 0, 200, 200);
+        setBounds(0, 0, 200, 6000);
         setBackground(Color.white);
-
-        SwingUtilities.invokeLater(() -> {
-            CanvasPanel canvasPanel = (CanvasPanel) getParent();
-            setLocation((canvasPanel.getWidth() - getWidth())/2, (canvasPanel.getHeight() - getHeight())/2);
-        });
     }
 }
 
