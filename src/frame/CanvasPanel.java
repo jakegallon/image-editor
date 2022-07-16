@@ -19,6 +19,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private Point initialGraphicsOffset;
     private Point middleMousePressPoint;
 
+    private Point canvasOffset;
+    private Point initialMousePos;
+    private Point initialCanvasOffset;
+
     private boolean scrollLocked = false;
 
     private final Canvas canvas = new Canvas();
@@ -42,13 +46,14 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 infoPanel.setZoomFactor(zoomFactor);
             }
         });
+        canvasOffset = new Point(0, 0);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(x, y);
+        g2d.translate(-canvasOffset.x, -canvasOffset.y);
         g2d.scale(zoomFactor, zoomFactor);
         repaint();
     }
@@ -98,12 +103,6 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
     }
 
-    private Point getAbsolutePoint(Point point){
-        float localX = point.x + x;
-        float localY = point.y + y;
-        return new Point((int)localX, (int)localY);
-    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
     }
@@ -111,9 +110,20 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
-            initialGraphicsOffset = new Point(x, y);
-            middleMousePressPoint = getAbsolutePoint(e.getPoint());
+            initialCanvasOffset = canvasOffset;
+            initialMousePos = mousePos;
             scrollLocked = true;
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if(SwingUtilities.isMiddleMouseButton(e)){
+            Point trueMousePos = mouseEventPosToAbsolutePos(e.getPoint());
+            Point d = getPointTranslation(mousePos, trueMousePos);
+            int newX = initialCanvasOffset.x + d.x;
+            int newY = initialCanvasOffset.y + d.y;
+            canvasOffset = new Point(newX, newY);
         }
     }
 
@@ -122,6 +132,12 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         if(SwingUtilities.isMiddleMouseButton(e)){
             scrollLocked = false;
         }
+    }
+
+    private Point getPointTranslation(Point p1, Point p2){
+        int dx = p1.x - p2.x;
+        int dy = p1.y - p2.y;
+        return new Point(dx, dy);
     }
 
     @Override
@@ -133,18 +149,15 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mouseExited(MouseEvent e) {
 
     }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e)){
-            x = initialGraphicsOffset.x * 2 + e.getPoint().x - middleMousePressPoint.x;
-            y = initialGraphicsOffset.y * 2 + e.getPoint().y - middleMousePressPoint.y;
-        }
-    }
-
     @Override
     public void mouseMoved(MouseEvent e) {
-        setMousePos(e.getPoint());
+        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
+    }
+
+    private Point mouseEventPosToAbsolutePos(Point p) {
+        int mX = (int) (p.x / zoomFactor) + canvasOffset.x;
+        int mY = (int) (p.y / zoomFactor) + canvasOffset.y;
+        return new Point(mX, mY);
     }
 
     private void setMousePos(Point p) {
