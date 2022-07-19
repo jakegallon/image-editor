@@ -15,12 +15,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private float closeMinZoom;
     private float closeMaxZoom;
 
-    private int x = 0, y = 0;
-    private Point initialGraphicsOffset;
-    private Point middleMousePressPoint;
-
     private Point canvasOffset;
-    private Point initialMousePos;
     private Point initialCanvasOffset;
 
     private boolean scrollLocked = false;
@@ -53,7 +48,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(-canvasOffset.x, -canvasOffset.y);
+        g2d.translate(-canvasOffset.x*zoomFactor, -canvasOffset.y*zoomFactor);
         g2d.scale(zoomFactor, zoomFactor);
         repaint();
     }
@@ -70,11 +65,11 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     protected void zoomIn() {
-        if(zoomFactor == 0.01f){
-            setZoomFactor(closeMinZoom);
+        if(zoomFactor == 100.0f) {
             return;
         }
-        if(zoomFactor == 100.0f) {
+        if(zoomFactor == 0.01f){
+            setZoomFactor(closeMinZoom);
             return;
         }
         float newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
@@ -87,11 +82,11 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     protected void zoomOut() {
-        if(zoomFactor == 100.0f){
-            setZoomFactor(closeMaxZoom);
+        if(zoomFactor == 0.01f) {
             return;
         }
-        if(zoomFactor == 0.01f) {
+        if(zoomFactor == 100.0f){
+            setZoomFactor(closeMaxZoom);
             return;
         }
         float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
@@ -111,7 +106,6 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
             initialCanvasOffset = canvasOffset;
-            initialMousePos = mousePos;
             scrollLocked = true;
         }
     }
