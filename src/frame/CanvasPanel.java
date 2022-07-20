@@ -56,12 +56,22 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if(scrollLocked) return;
+        Point scrollPoint = mousePos;
+        float oldZoomFactor = zoomFactor;
+        int relX = scrollPoint.x - canvasOffset.x;
+        int relY = scrollPoint.y - canvasOffset.y;
         boolean scrollingUp = (e.getWheelRotation() == -1);
         if(scrollingUp){
             zoomIn();
+            int newX = (int) (relX / (zoomFactor / oldZoomFactor));
+            int newY = (int) (relY / (zoomFactor / oldZoomFactor));
+            canvasOffset = new Point(scrollPoint.x - newX, scrollPoint.y - newY);
             return;
         }
         zoomOut();
+        int newX = (int) (relX / (zoomFactor / oldZoomFactor));
+        int newY = (int) (relY / (zoomFactor / oldZoomFactor));
+        canvasOffset = new Point(scrollPoint.x - newX, scrollPoint.y - newY);
     }
 
     protected void zoomIn() {
@@ -143,6 +153,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mouseExited(MouseEvent e) {
 
     }
+
     @Override
     public void mouseMoved(MouseEvent e) {
         setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
