@@ -13,7 +13,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private volatile Point mousePos;
 
-    private static final float ZOOM_MULTIPLIER = 1.1f; //1.189207115002721
+    private static final float ZOOM_MULTIPLIER = 1.1f;
     private float zoomFactor = 1.0f;
     private float minZoom = 0.01f;
     private float maxZoom = 100f;
@@ -204,7 +204,12 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if(SwingUtilities.isLeftMouseButton(e)){
+            canvas.setPixel(mousePos, Color.white);
+        }
+        if(SwingUtilities.isRightMouseButton(e)){
+            canvas.setPixel(mousePos, Color.blue);
+        }
     }
 
     @Override
