@@ -4,26 +4,23 @@ import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
 
 public class CanvasPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 
-    private static final String MOUSE_POS_EVENT = "mouse moved";
-    private static final String ZOOM_EVENT = "canvas zoomed";
+    private final Canvas canvas = new Canvas();
+    private Point canvasOffset = new Point(0, 0);
+
+    private volatile Point mousePos;
 
     private static final float ZOOM_MULTIPLIER = 1.1f; //1.189207115002721
     private float zoomFactor = 1.0f;
-    private float closeMinZoom;
-    private float closeMaxZoom;
+    private float minZoom = 0.01f;
+    private float maxZoom = 100f;
 
-    private Point canvasOffset;
-    private Point initialCanvasOffset;
-
-    private boolean scrollLocked = false;
-
-    private final Canvas canvas = new Canvas();
-
-    private volatile Point mousePos;
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
+    private static final String MOUSE_POS_EVENT = "mouse moved";
+    private static final String ZOOM_EVENT = "canvas zoomed";
 
     public CanvasPanel(InfoPanel infoPanel) {
         setBackground(new Color(43, 43 ,43));
@@ -38,10 +35,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 infoPanel.setMouseLocation((Point) evt.getNewValue());
             }
             if(evt.getPropertyName().equals(ZOOM_EVENT)){
+                calculateZoomOffset(evt);
                 infoPanel.setZoomFactor(zoomFactor);
             }
         });
-        canvasOffset = new Point(0, 0);
     }
 
     @Override
@@ -53,64 +50,108 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         repaint();
     }
 
+    private boolean scrollLocked = false;
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if(scrollLocked) return;
-        Point scrollPoint = mousePos;
-        float oldZoomFactor = zoomFactor;
-        int relX = scrollPoint.x - canvasOffset.x;
-        int relY = scrollPoint.y - canvasOffset.y;
-        boolean scrollingUp = (e.getWheelRotation() == -1);
+
+        boolean scrollingUp = e.getWheelRotation() < 0;
         if(scrollingUp){
             zoomIn();
-            int newX = (int) (relX / (zoomFactor / oldZoomFactor));
-            int newY = (int) (relY / (zoomFactor / oldZoomFactor));
-            canvasOffset = new Point(scrollPoint.x - newX, scrollPoint.y - newY);
-            return;
+        } else {
+            zoomOut();
         }
-        zoomOut();
-        int newX = (int) (relX / (zoomFactor / oldZoomFactor));
-        int newY = (int) (relY / (zoomFactor / oldZoomFactor));
-        canvasOffset = new Point(scrollPoint.x - newX, scrollPoint.y - newY);
     }
 
+    private final float[] snapValues = {0.1f, 0.25f, 0.5f, 0.75f, 1.5f, 2f, 2.5f, 5f, 10f, 50f};
+    private float prevUnsnap, nextUnsnap;
+    private boolean snapped = false;
+
     protected void zoomIn() {
-        if(zoomFactor == 100.0f) {
+        if(zoomFactor == maxZoom) return;
+
+        if(snapped) {
+            setZoomFactor(nextUnsnap);
+            snapped = false;
             return;
         }
-        if(zoomFactor == 0.01f){
-            setZoomFactor(closeMinZoom);
-            return;
-        }
+
+        float oldZoomFactor = zoomFactor;
         float newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
-        if(newZoomFactor <= 100.0f){
+
+        for (float snapFactor : snapValues) {
+            if(oldZoomFactor > snapFactor) continue;
+            if(newZoomFactor < snapFactor) break;
+
+            snapped = true;
+            prevUnsnap = zoomFactor;
+            nextUnsnap = newZoomFactor;
+            setZoomFactor(snapFactor);
+            return;
+        }
+
+        if(newZoomFactor <= maxZoom) {
             setZoomFactor(newZoomFactor);
         } else {
-            closeMaxZoom = zoomFactor;
-            setZoomFactor(100.0f);
+            snapped = true;
+            prevUnsnap = zoomFactor;
+            nextUnsnap = 1.0f;
+            setZoomFactor(maxZoom);
         }
     }
 
     protected void zoomOut() {
-        if(zoomFactor == 0.01f) {
-            return;
-        }
-        if(zoomFactor == 100.0f){
-            setZoomFactor(closeMaxZoom);
-            return;
-        }
+        float oldZoomFactor = zoomFactor;
         float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
-        if(newZoomFactor >= 0.01f){
+
+        if(zoomFactor == minZoom) return;
+
+        if(snapped) {
+            setZoomFactor(prevUnsnap);
+            snapped = false;
+            return;
+        }
+
+        for (int i = snapValues.length - 1; i >= 0; i--) {
+            float snapFactor = snapValues[i];
+
+            if(oldZoomFactor < snapFactor) continue;
+            if(newZoomFactor > snapFactor) break;
+
+            snapped = true;
+            prevUnsnap = newZoomFactor;
+            nextUnsnap = zoomFactor;
+            setZoomFactor(snapFactor);
+            return;
+        }
+
+        if(newZoomFactor >= minZoom){
             setZoomFactor(newZoomFactor);
         } else {
-            closeMinZoom = zoomFactor;
-            setZoomFactor(0.01f);
+            snapped = true;
+            prevUnsnap = 1.0f;
+            nextUnsnap = zoomFactor;
+            setZoomFactor(minZoom);
         }
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+    private void calculateZoomOffset(PropertyChangeEvent evt) {
+        float zoomRatio = (float) evt.getNewValue() / (float) evt.getOldValue();
+        int oldOffsetToMouseX = mousePos.x - canvasOffset.x;
+        int oldOffsetToMouseY = mousePos.y - canvasOffset.y;
+        int newOffsetToMouseX = (int) (oldOffsetToMouseX / zoomRatio);
+        int newOffsetToMouseY = (int) (oldOffsetToMouseY / zoomRatio);
+        canvasOffset = new Point(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY);
     }
+
+    private void setZoomFactor(Float zoomFactor) {
+        float oldValue = this.zoomFactor;
+        this.zoomFactor = zoomFactor;
+        propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
+    }
+
+    private Point initialCanvasOffset;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -131,11 +172,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e)){
-            scrollLocked = false;
-        }
+    private Point mouseEventPosToAbsolutePos(Point p) {
+        int mX = (int) (p.x / zoomFactor) + canvasOffset.x;
+        int mY = (int) (p.y / zoomFactor) + canvasOffset.y;
+        return new Point(mX, mY);
     }
 
     private Point getPointTranslation(Point p1, Point p2){
@@ -145,24 +185,15 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        // mouse cursor change
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+    public void mouseReleased(MouseEvent e) {
+        if(SwingUtilities.isMiddleMouseButton(e)){
+            scrollLocked = false;
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
-    }
-
-    private Point mouseEventPosToAbsolutePos(Point p) {
-        int mX = (int) (p.x / zoomFactor) + canvasOffset.x;
-        int mY = (int) (p.y / zoomFactor) + canvasOffset.y;
-        return new Point(mX, mY);
     }
 
     private void setMousePos(Point p) {
@@ -171,9 +202,18 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         propertyChangeSupport.firePropertyChange(MOUSE_POS_EVENT, oldValue, p);
     }
 
-    private void setZoomFactor(Float zoomFactor) {
-        float oldValue = this.zoomFactor;
-        this.zoomFactor = zoomFactor;
-        propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
