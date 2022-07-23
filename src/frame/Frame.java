@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class Frame extends JFrame {
 
@@ -16,6 +19,7 @@ public class Frame extends JFrame {
     int leftPanelWidth = 350, rightPanelWidth = 350;
 
     public Frame() {
+        addMenuBar();
         setVisible(true);
         initializeWindow();
         createLayout();
@@ -114,5 +118,192 @@ public class Frame extends JFrame {
         leftMiddleRight.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, evt -> {
             rightPanelWidth = pane.getWidth() - (int)evt.getNewValue();
         });
+    }
+
+    private void fileMenuNewAction() {
+    }
+
+    private void fileMenuOpenAction() {
+    }
+
+    private void fileMenuSaveAction() {
+    }
+
+    private void fileMenuSaveAsAction() {
+    }
+
+    private void fileMenuImportLayerAction() {
+    }
+
+    private void fileMenuExportAsAction() {
+    }
+
+    private void fileMenuOptionsAction() {
+    }
+
+    private void fileMenuCloseAction() {
+    }
+
+    private void fileMenuExitAction() {
+        dispose();
+    }
+
+    private void editMenuUndoAction() {
+    }
+
+    private void editMenuRedoAction() {
+    }
+
+    private void editMenuCutAction() {
+    }
+
+    private void editMenuCopyAction() {
+    }
+
+    private void editMenuPasteAction() {
+    }
+
+    private void editMenuDeleteAction() {
+    }
+
+    private void editMenuFlipHorizontalAction() {
+    }
+
+    private void editMenuFlipVerticalAction() {
+    }
+
+    private void editMenuCanvasSizeAction() {
+    }
+
+    private void helpMenuHelpAction() {
+    }
+
+    private void helpMenuAboutAction() {
+    }
+
+    private void helpMenuGitHubAction() {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/jakegallon/image-editor"));
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void addMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu();
+        fileMenu.setText("File");
+        JMenuItem fileMenuNew = new JMenuItem();
+        fileMenuNew.setText("New");
+        fileMenuNew.addActionListener(e -> fileMenuNewAction());
+        JMenuItem fileMenuOpen = new JMenuItem();
+        fileMenuOpen.setText("Open");
+        fileMenuOpen.addActionListener(e -> fileMenuOpenAction());
+        JMenuItem fileMenuSave = new JMenuItem();
+        fileMenuSave.setText("Save");
+        fileMenuSave.addActionListener(e -> fileMenuSaveAction());
+        JMenuItem fileMenuSaveAs = new JMenuItem();
+        fileMenuSaveAs.setText("Save As");
+        fileMenuSaveAs.addActionListener(e -> fileMenuSaveAsAction());
+        JMenuItem fileMenuImportLayer = new JMenuItem();
+        fileMenuImportLayer.setText("Import Layer");
+        fileMenuImportLayer.addActionListener(e -> fileMenuImportLayerAction());
+        JMenuItem fileMenuExportAs = new JMenuItem();
+        fileMenuExportAs.setText("Export As");
+        fileMenuExportAs.addActionListener(e -> fileMenuExportAsAction());
+        JMenuItem fileMenuOptions = new JMenuItem();
+        fileMenuOptions.setText("Options");
+        fileMenuOptions.addActionListener(e -> fileMenuOptionsAction());
+        JMenuItem fileMenuClose = new JMenuItem();
+        fileMenuClose.setText("Close");
+        fileMenuClose.addActionListener(e -> fileMenuCloseAction());
+        JMenuItem fileMenuExit = new JMenuItem();
+        fileMenuExit.setText("Exit");
+        fileMenuExit.addActionListener(e -> fileMenuExitAction());
+
+        fileMenu.add(fileMenuNew);
+        fileMenu.add(fileMenuOpen);
+        fileMenu.add(fileMenuSave);
+        fileMenu.add(fileMenuSaveAs);
+        fileMenu.addSeparator();
+        fileMenu.add(fileMenuImportLayer);
+        fileMenu.add(fileMenuExportAs);
+        fileMenu.addSeparator();
+        fileMenu.add(fileMenuOptions);
+        fileMenu.addSeparator();
+        fileMenu.add(fileMenuClose);
+        fileMenu.add(fileMenuExit);
+
+        menuBar.add(fileMenu);
+
+        JMenu editMenu = new JMenu();
+        editMenu.setText("Edit");
+        JMenuItem editMenuUndo = new JMenuItem();
+        editMenuUndo.setText("Undo");
+        editMenuUndo.addActionListener(e -> editMenuUndoAction());
+        JMenuItem editMenuRedo = new JMenuItem();
+        editMenuRedo.setText("Redo");
+        editMenuRedo.addActionListener(e -> editMenuRedoAction());
+        JMenuItem editMenuCut = new JMenuItem();
+        editMenuCut.setText("Cut");
+        editMenuCut.addActionListener(e -> editMenuCutAction());
+        JMenuItem editMenuCopy = new JMenuItem();
+        editMenuCopy.setText("Copy");
+        editMenuCopy.addActionListener(e -> editMenuCopyAction());
+        JMenuItem editMenuPaste = new JMenuItem();
+        editMenuPaste.setText("Paste");
+        editMenuPaste.addActionListener(e -> editMenuPasteAction());
+        JMenuItem editMenuDelete = new JMenuItem();
+        editMenuDelete.setText("Delete");
+        editMenuDelete.addActionListener(e -> editMenuDeleteAction());
+        JMenuItem editMenuFlipHorizontal = new JMenuItem();
+        editMenuFlipHorizontal.setText("Flip Horizontal");
+        editMenuFlipHorizontal.addActionListener(e -> editMenuFlipHorizontalAction());
+        JMenuItem editMenuFlipVertical = new JMenuItem();
+        editMenuFlipVertical.setText("Flip Vertical");
+        editMenuFlipVertical.addActionListener(e -> editMenuFlipVerticalAction());
+        JMenuItem editMenuCanvasSize = new JMenuItem();
+        editMenuCanvasSize.setText("Canvas Size");
+        editMenuCanvasSize.addActionListener(e -> editMenuCanvasSizeAction());
+
+        editMenu.add(editMenuUndo);
+        editMenu.add(editMenuRedo);
+        editMenu.addSeparator();
+        editMenu.add(editMenuCut);
+        editMenu.add(editMenuCopy);
+        editMenu.add(editMenuPaste);
+        editMenu.add(editMenuDelete);
+        editMenu.addSeparator();
+        editMenu.add(editMenuFlipHorizontal);
+        editMenu.add(editMenuFlipVertical);
+        editMenu.addSeparator();
+        editMenu.add(editMenuCanvasSize);
+
+        menuBar.add(editMenu);
+
+        JMenu helpMenu = new JMenu();
+        helpMenu.setText("Help");
+        JMenuItem helpMenuHelp = new JMenuItem();
+        helpMenuHelp.setText("Help");
+        helpMenuHelp.addActionListener(e -> helpMenuHelpAction());
+        JMenuItem helpMenuAbout = new JMenuItem();
+        helpMenuAbout.setText("About");
+        helpMenuAbout.addActionListener(e -> helpMenuAboutAction());
+        JMenuItem helpMenuGithub = new JMenuItem();
+        helpMenuGithub.setText("View on GitHub");
+        helpMenuGithub.addActionListener(e -> helpMenuGitHubAction());
+
+        helpMenu.add(helpMenuHelp);
+        helpMenu.addSeparator();
+        helpMenu.add(helpMenuAbout);
+        helpMenu.addSeparator();
+        helpMenu.add(helpMenuGithub);
+
+        menuBar.add(helpMenu);
+
+        setJMenuBar(menuBar);
     }
 }
