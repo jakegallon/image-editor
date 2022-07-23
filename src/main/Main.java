@@ -1,6 +1,7 @@
 package main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import frame.Frame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,6 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        Window window = new frame.Window();
+        Window window = new Frame();
     }
 }
