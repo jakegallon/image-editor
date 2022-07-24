@@ -45,8 +45,7 @@ public class Frame extends JFrame {
         brushSettings.setBackground(Color.cyan);
         brushSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
-        JPanel colorSettings = new JPanel();
-        colorSettings.setBackground(Color.green);
+        ColorPanel colorSettings = new ColorPanel();
         colorSettings.setMinimumSize(new Dimension(0, 250));
         // rightPanel - canvasOverview
         JPanel canvasOverview = new JPanel();
