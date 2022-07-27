@@ -1,6 +1,7 @@
 package frame;
 
 import javax.swing.*;
+import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -10,18 +11,40 @@ public class ColorSelector extends JPanel {
     private final ColorSquare colorSquare = new ColorSquare();
     private final HueSlider hue = new HueSlider();
 
-    public ColorSelector() {
+    private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
+    private static final String SELECTED_COLOR_CHANGED = "color changed";
+    private int selectedColor;
+
+    public ColorSelector(ColorPanel colorPanel) {
         setLayout(new BorderLayout());
 
         add(hue, BorderLayout.PAGE_START);
         add(colorSquare, BorderLayout.CENTER);
+
+        propertyChangeSupport.addPropertyChangeListener(evt -> {
+            if(evt.getPropertyName().equals(SELECTED_COLOR_CHANGED)){
+                colorPanel.setSelectedColor((Integer) evt.getNewValue());
+            }
+        });
     }
 
-    class ColorSquare extends JPanel {
+    public void setColor(int color) {
+        int blue  =  color & 0xff;
+        int green = (color & 0xff00) >> 8;
+        int red   = (color & 0xff0000) >> 16;
+
+        float[] hsv = new float[3];
+        Color.RGBtoHSB(red, green, blue, hsv);
+
+        colorSquare.redrawColorCanvas(Color.getHSBColor(hsv[0], 1f, 1f));
+    }
+
+    class ColorSquare extends JPanel implements MouseListener {
 
         private BufferedImage bilinearColorSquare;
 
         private ColorSquare(){
+            addMouseListener(this);
             addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
@@ -67,6 +90,37 @@ public class ColorSelector extends JPanel {
             int green = (int) (c1.getGreen() * rf + c2.getGreen() * f);
             int blue = (int) (c1.getBlue() * rf + c2.getBlue() * f);
             return new Color(red, green, blue);
+        }
+
+        private void setSelectedColor(int newColor) {
+            float oldValue = selectedColor;
+            selectedColor = newColor;
+            propertyChangeSupport.firePropertyChange(SELECTED_COLOR_CHANGED, oldValue, selectedColor);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            setSelectedColor(bilinearColorSquare.getRGB(e.getX(), e.getY()));
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
     }
 
