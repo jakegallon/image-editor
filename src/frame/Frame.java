@@ -20,9 +20,9 @@ public class Frame extends JFrame {
 
     public Frame() {
         addMenuBar();
-        setVisible(true);
         initializeWindow();
         createLayout();
+        setVisible(true);
     }
 
     private void initializeWindow() {
