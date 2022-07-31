@@ -42,6 +42,8 @@ public class ColorSelector extends JPanel {
     class ColorSquare extends JPanel implements MouseListener {
 
         private BufferedImage bilinearColorSquare;
+        int selectedX = 0, selectedY = 0;
+        final int selectedCursorSize = 10;
 
         private ColorSquare(){
             addMouseListener(this);
@@ -59,7 +61,19 @@ public class ColorSelector extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(bilinearColorSquare, 0, 0, getWidth(), getHeight(), null);
+            drawColorMarker(g);
             repaint();
+        }
+
+        private void drawColorMarker(Graphics g){
+            g.setColor(Color.gray);
+            g.drawOval(selectedX - selectedCursorSize/2, selectedY - selectedCursorSize/2, selectedCursorSize, selectedCursorSize);
+            g.setColor(Color.white);
+            g.drawOval((selectedX - selectedCursorSize/2) + 1, (selectedY - selectedCursorSize/2) + 1, selectedCursorSize - 2, selectedCursorSize - 2);
+        }
+
+        private void updateSelectedColor(){
+            setSelectedColor(bilinearColorSquare.getRGB(selectedX, selectedY));
         }
 
         private void redrawColorCanvas(Color topRight) {
@@ -100,7 +114,9 @@ public class ColorSelector extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            setSelectedColor(bilinearColorSquare.getRGB(e.getX(), e.getY()));
+            selectedX = e.getX();
+            selectedY = e.getY();
+            updateSelectedColor();
         }
 
         @Override
@@ -137,6 +153,7 @@ public class ColorSelector extends JPanel {
             addChangeListener(e -> {
                 currentHue = Color.getHSBColor(getValue()/360f, 1f, 1f);
                 colorSquare.redrawColorCanvas(currentHue);
+                colorSquare.updateSelectedColor();
             });
         }
     }
