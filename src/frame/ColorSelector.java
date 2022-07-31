@@ -29,6 +29,8 @@ public class ColorSelector extends JPanel {
     }
 
     public void setColor(int color) {
+        if(colorSquare.isHueLocked) return;
+
         int blue  =  color & 0xff;
         int green = (color & 0xff00) >> 8;
         int red   = (color & 0xff0000) >> 16;
@@ -39,14 +41,16 @@ public class ColorSelector extends JPanel {
         colorSquare.redrawColorCanvas(Color.getHSBColor(hsv[0], 1f, 1f));
     }
 
-    class ColorSquare extends JPanel implements MouseListener {
+    class ColorSquare extends JPanel implements MouseListener, MouseMotionListener {
 
-        private BufferedImage bilinearColorSquare;
+        private BufferedImage bilinearColorSquare = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         int selectedX = 0, selectedY = 0;
         final int selectedCursorSize = 10;
+        boolean isHueLocked = false;
 
         private ColorSquare(){
             addMouseListener(this);
+            addMouseMotionListener(this);
             addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
@@ -114,19 +118,27 @@ public class ColorSelector extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            selectedX = e.getX();
-            selectedY = e.getY();
-            updateSelectedColor();
+            if(SwingUtilities.isLeftMouseButton(e)){
+                isHueLocked = true;
+                selectedX = e.getX();
+                selectedY = e.getY();
+                updateSelectedColor();
+                isHueLocked = false;
+            }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            if(SwingUtilities.isLeftMouseButton(e)) {
+                isHueLocked = true;
+            }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
+            if(SwingUtilities.isLeftMouseButton(e)) {
+                isHueLocked = false;
+            }
         }
 
         @Override
@@ -136,6 +148,24 @@ public class ColorSelector extends JPanel {
 
         @Override
         public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if(SwingUtilities.isLeftMouseButton(e)){
+                int x = Math.min(e.getX(), bilinearColorSquare.getWidth() - 1);
+                x = Math.max(x, 0);
+                int y = Math.min(e.getY(), bilinearColorSquare.getHeight() - 1);
+                y = Math.max(y, 0);
+                selectedX = x;
+                selectedY = y;
+                updateSelectedColor();
+            }
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
 
         }
     }
