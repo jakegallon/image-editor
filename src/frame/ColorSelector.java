@@ -39,6 +39,11 @@ public class ColorSelector extends JPanel {
         Color.RGBtoHSB(red, green, blue, hsv);
 
         colorSquare.redrawColorCanvas(Color.getHSBColor(hsv[0], 1f, 1f));
+        colorSquare.updateSelectedPosition(hsv[1], hsv[2]);
+    }
+
+    public void updateHue(int hue) {
+        this.hue.setValue(hue);
     }
 
     class ColorSquare extends JPanel implements MouseListener, MouseMotionListener {
@@ -78,6 +83,11 @@ public class ColorSelector extends JPanel {
 
         private void updateSelectedColor(){
             setSelectedColor(bilinearColorSquare.getRGB(selectedX, selectedY));
+        }
+
+        private void updateSelectedPosition(float sat, float val){
+            selectedX = (int) (sat * bilinearColorSquare.getWidth());
+            selectedY = (int) ((1-val) * bilinearColorSquare.getHeight());
         }
 
         private void redrawColorCanvas(Color topRight) {
