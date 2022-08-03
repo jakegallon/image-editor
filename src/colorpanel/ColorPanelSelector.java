@@ -1,57 +1,57 @@
-package frame;
+package colorpanel;
+
 
 import javax.swing.*;
-import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class ColorSelector extends JPanel {
+public class ColorPanelSelector extends JPanel{
+    private boolean locked = false;
 
     private final ColorSquare colorSquare = new ColorSquare();
-    private final HueSlider hue = new HueSlider();
+    private final HueSlider hueSlider = new HueSlider();
+    boolean isHueLocked = false;
 
-    private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
-    private static final String SELECTED_COLOR_CHANGED = "color changed";
-    private int selectedColor;
+    private final ColorPanel colorPanel;
 
-    public ColorSelector(ColorPanel colorPanel) {
+    public ColorPanelSelector(ColorPanel colorPanel) {
+        this.colorPanel = colorPanel;
         setLayout(new BorderLayout());
 
-        add(hue, BorderLayout.PAGE_START);
+        add(hueSlider, BorderLayout.PAGE_START);
         add(colorSquare, BorderLayout.CENTER);
-
-        propertyChangeSupport.addPropertyChangeListener(evt -> {
-            if(evt.getPropertyName().equals(SELECTED_COLOR_CHANGED)){
-                colorPanel.setSelectedColor((Integer) evt.getNewValue());
-            }
-        });
     }
 
-    public void setColor(int color) {
-        if(colorSquare.isHueLocked) return;
-
-        int blue  =  color & 0xff;
-        int green = (color & 0xff00) >> 8;
-        int red   = (color & 0xff0000) >> 16;
-
-        float[] hsv = new float[3];
-        Color.RGBtoHSB(red, green, blue, hsv);
-
-        colorSquare.redrawColorCanvas(Color.getHSBColor(hsv[0], 1f, 1f));
-        colorSquare.updateSelectedPosition(hsv[1], hsv[2]);
+    public void updateHSV() {
+        updateHue();
+        updateSat();
+        updateVal();
     }
 
-    public void updateHue(int hue) {
-        this.hue.setValue(hue);
+    public void updateHue() {
+        int hue = colorPanel.getHue();
+        locked = true;
+        hueSlider.setValue(hue);
+        locked = false;
+    }
+
+    public void updateSat() {
+        float sat = colorPanel.getSat() / 100f;
+        colorSquare.selectedX = (int) (sat * colorSquare.bilinearColorSquare.getWidth());
+    }
+
+    public void updateVal() {
+        float val = colorPanel.getVal() / 100f;
+        colorSquare.selectedY = (int) ((1- val) * colorSquare.bilinearColorSquare.getHeight());
     }
 
     class ColorSquare extends JPanel implements MouseListener, MouseMotionListener {
 
         private BufferedImage bilinearColorSquare = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        int selectedX = 0, selectedY = 0;
+        int selectedX = 0;
+        int selectedY = 0;
         final int selectedCursorSize = 10;
-        boolean isHueLocked = false;
 
         private ColorSquare(){
             addMouseListener(this);
@@ -61,7 +61,7 @@ public class ColorSelector extends JPanel {
                 public void componentResized(ComponentEvent e) {
                     super.componentResized(e);
                     bilinearColorSquare = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-                    redrawColorCanvas(hue.currentHue);
+                    redrawColorCanvas(hueSlider.getCurrentColor());
                 }
             });
         }
@@ -79,15 +79,6 @@ public class ColorSelector extends JPanel {
             g.drawOval(selectedX - selectedCursorSize/2, selectedY - selectedCursorSize/2, selectedCursorSize, selectedCursorSize);
             g.setColor(Color.white);
             g.drawOval((selectedX - selectedCursorSize/2) + 1, (selectedY - selectedCursorSize/2) + 1, selectedCursorSize - 2, selectedCursorSize - 2);
-        }
-
-        private void updateSelectedColor(){
-            setSelectedColor(bilinearColorSquare.getRGB(selectedX, selectedY));
-        }
-
-        private void updateSelectedPosition(float sat, float val){
-            selectedX = (int) (sat * bilinearColorSquare.getWidth());
-            selectedY = (int) ((1-val) * bilinearColorSquare.getHeight());
         }
 
         private void redrawColorCanvas(Color topRight) {
@@ -120,20 +111,18 @@ public class ColorSelector extends JPanel {
             return new Color(red, green, blue);
         }
 
-        private void setSelectedColor(int newColor) {
-            float oldValue = selectedColor;
-            selectedColor = newColor;
-            propertyChangeSupport.firePropertyChange(SELECTED_COLOR_CHANGED, oldValue, selectedColor);
-        }
-
         @Override
         public void mouseClicked(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
-                isHueLocked = true;
-                selectedX = e.getX();
-                selectedY = e.getY();
-                updateSelectedColor();
-                isHueLocked = false;
+                int x = Math.min(e.getX(), bilinearColorSquare.getWidth() - 1);
+                x = Math.max(x, 0);
+                int y = Math.min(e.getY(), bilinearColorSquare.getHeight() - 1);
+                y = Math.max(y, 0);
+
+                colorPanel.setSat((float) x/bilinearColorSquare.getWidth());
+                colorPanel.setVal(1 - (float) y/bilinearColorSquare.getHeight());
+
+                colorPanel.notifySV();
             }
         }
 
@@ -168,9 +157,11 @@ public class ColorSelector extends JPanel {
                 x = Math.max(x, 0);
                 int y = Math.min(e.getY(), bilinearColorSquare.getHeight() - 1);
                 y = Math.max(y, 0);
-                selectedX = x;
-                selectedY = y;
-                updateSelectedColor();
+
+                colorPanel.setSat((float) x/bilinearColorSquare.getWidth());
+                colorPanel.setVal(1 - (float) y/bilinearColorSquare.getHeight());
+
+                colorPanel.notifySV();
             }
         }
 
@@ -182,19 +173,22 @@ public class ColorSelector extends JPanel {
 
     class HueSlider extends JSlider{
 
-        private Color currentHue;
-
         private HueSlider() {
             setMinimum(0);
             setMaximum(360);
             setValue(0);
-            currentHue = Color.getHSBColor(getValue()/360f, 1f, 1f);
 
             addChangeListener(e -> {
-                currentHue = Color.getHSBColor(getValue()/360f, 1f, 1f);
-                colorSquare.redrawColorCanvas(currentHue);
-                colorSquare.updateSelectedColor();
+                if(!locked) {
+                    colorPanel.setHue(getValue());
+                    colorPanel.notifyH();
+                }
+                colorSquare.redrawColorCanvas(getCurrentColor());
             });
+        }
+
+        private Color getCurrentColor() {
+            return Color.getHSBColor(getValue()/360f, 1f, 1f);
         }
     }
 }

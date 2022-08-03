@@ -1,5 +1,7 @@
 package frame;
 
+import colorpanel.ColorTabbedPane;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -45,7 +47,7 @@ public class Frame extends JFrame {
         brushSettings.setBackground(Color.cyan);
         brushSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
-        ColorPanel colorSettings = new ColorPanel();
+        ColorTabbedPane colorSettings = new ColorTabbedPane();
         colorSettings.setMinimumSize(new Dimension(0, 250));
         // rightPanel - canvasOverview
         JPanel canvasOverview = new JPanel();
