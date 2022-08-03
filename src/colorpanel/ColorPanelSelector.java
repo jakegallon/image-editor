@@ -114,9 +114,9 @@ public class ColorPanelSelector extends JPanel{
         @Override
         public void mouseClicked(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
-                int x = Math.min(e.getX(), bilinearColorSquare.getWidth() - 1);
+                int x = Math.min(e.getX(), bilinearColorSquare.getWidth());
                 x = Math.max(x, 0);
-                int y = Math.min(e.getY(), bilinearColorSquare.getHeight() - 1);
+                int y = Math.min(e.getY(), bilinearColorSquare.getHeight());
                 y = Math.max(y, 0);
 
                 colorPanel.setSat((float) x/bilinearColorSquare.getWidth());
@@ -153,9 +153,9 @@ public class ColorPanelSelector extends JPanel{
         @Override
         public void mouseDragged(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
-                int x = Math.min(e.getX(), bilinearColorSquare.getWidth() - 1);
+                int x = Math.min(e.getX(), bilinearColorSquare.getWidth());
                 x = Math.max(x, 0);
-                int y = Math.min(e.getY(), bilinearColorSquare.getHeight() - 1);
+                int y = Math.min(e.getY(), bilinearColorSquare.getHeight());
                 y = Math.max(y, 0);
 
                 colorPanel.setSat((float) x/bilinearColorSquare.getWidth());
