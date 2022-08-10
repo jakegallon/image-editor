@@ -68,8 +68,16 @@ public class ColorPanelInfo extends JPanel {
         JLabel hueLabel   = new JLabel("H: ");
         hueLabel.setFont(UI_FONT);
         add(hueLabel);
-        hueSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 360, 1));
+        hueSpinner = new JSpinner(new SpinnerNumberModel(0, -1, 360, 1));
         hueSpinner.addChangeListener(e -> {
+            if((Integer) hueSpinner.getValue() == -1) {
+                hueSpinner.setValue(359);
+                return;
+            }
+            if((Integer) hueSpinner.getValue() == 360) {
+                hueSpinner.setValue(0);
+                return;
+            }
             if(!locked) {
                 colorPanel.setHue((Integer) hueSpinner.getValue());
             }
