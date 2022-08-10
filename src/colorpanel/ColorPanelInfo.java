@@ -140,7 +140,7 @@ public class ColorPanelInfo extends JPanel {
                         hex = hex.substring(1);
                     }
                     if(hex.length() == 6){
-                        colorPanel.setHex("#" + hexTextField.getText());
+                        colorPanel.setHex(hexTextField.getText());
                     }
                 };
             }
