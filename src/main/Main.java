@@ -13,6 +13,8 @@ public class Main {
         } catch (UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
+        UIManager.put("TabbedPane.tabHeight", 15);
+        UIManager.put("TabbedPane.tabInsets", new Insets(2, 10, 2, 10));
 
         Window window = new Frame();
     }
