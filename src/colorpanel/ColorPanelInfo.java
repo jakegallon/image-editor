@@ -136,11 +136,10 @@ public class ColorPanelInfo extends JPanel {
             private Runnable update() {
                 return () -> {
                     String hex = hexTextField.getText();
-                    if(hex.startsWith("#")){
-                        hex = hex.substring(1);
-                    }
-                    if(hex.length() == 6){
-                        colorPanel.setHex(hexTextField.getText());
+                    if(hex.matches("((0x)|#)[A-Fa-f\\d]{6}")){
+                        colorPanel.setHex(hex);
+                    } else if (hex.matches("[A-Fa-f\\d]{6}")){
+                        colorPanel.setHex("#"+hex);
                     }
                 };
             }
