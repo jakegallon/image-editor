@@ -95,6 +95,7 @@ public class ColorPanel extends JPanel {
 
     public void setHex(String hex) {
         this.hex = hex;
+        colorPanelHandler.setSelectedColor(new Color(Integer.decode(hex)));
         updateFromHex();
     }
 
@@ -148,6 +149,7 @@ public class ColorPanel extends JPanel {
         String bluString = String.format("%02X", blu);
 
         hex = "#" + redString + grnString + bluString;
+        colorPanelHandler.setSelectedColor(new Color(Integer.decode(hex)));
     }
 
     protected void notifyH() {
