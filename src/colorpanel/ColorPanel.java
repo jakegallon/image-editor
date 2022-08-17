@@ -32,6 +32,25 @@ public class ColorPanel extends JPanel {
         setVal(1);
     }
 
+    protected void setSelectedColor(Color color) {
+        red = color.getRed();
+        grn = color.getGreen();
+        blu = color.getBlue();
+        updateFromRGB();
+    }
+
+    protected Color getSelectedColor() {
+        return colorPanelHandler.getSelectedColor();
+    }
+
+    protected Color getPrimaryColor() {
+        return colorPanelHandler.getPrimaryColor();
+    }
+
+    protected Color getSecondaryColor() {
+        return colorPanelHandler.getSecondaryColor();
+    }
+
     protected int getRed() {
         return red;
     }
