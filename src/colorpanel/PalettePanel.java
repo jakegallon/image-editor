@@ -127,8 +127,8 @@ public class PalettePanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             if(isHoveringOver) {
-                colorTabbedPane.setSelectedColor(currentColor);
                 if(selectedHolder != this) {
+                    colorTabbedPane.setSelectedColor(currentColor);
                     if(selectedHolder != null) {
                         selectedHolder.setBorder(null);
                     }
@@ -194,6 +194,7 @@ public class PalettePanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if(isHoveringOver) {
                 createNewColorHolder(colorTabbedPane.getSelectedColor());
+                setBorder(adderBorder);
             }
         }
 
