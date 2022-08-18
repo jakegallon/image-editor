@@ -23,6 +23,7 @@ public class PalettePanel extends JPanel {
     private JScrollPane scrollPane;
 
     private ColorAdder colorAdder;
+    private final ColorHolderPopupMenu colorHolderPopupMenu;
 
     public PalettePanel(ColorTabbedPane colorTabbedPane) {
         this.colorTabbedPane = colorTabbedPane;
@@ -30,6 +31,7 @@ public class PalettePanel extends JPanel {
 
         InitializeComponents();
         InitializeColorAdder();
+        colorHolderPopupMenu = new ColorHolderPopupMenu();
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -115,6 +117,11 @@ public class PalettePanel extends JPanel {
             setBackground(color);
         }
 
+        public void setColor(Color color) {
+            currentColor = color;
+            setBackground(color);
+        }
+
         @Override
         public void mouseClicked(MouseEvent e) {
 
@@ -127,14 +134,18 @@ public class PalettePanel extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(isHoveringOver) {
-                if(selectedHolder != this) {
-                    colorTabbedPane.setSelectedColor(currentColor);
-                    if(selectedHolder != null) {
-                        selectedHolder.setBorder(defaultBorder);
+            if(SwingUtilities.isLeftMouseButton(e)){
+                if(isHoveringOver) {
+                    if(selectedHolder != this) {
+                        colorTabbedPane.setSelectedColor(currentColor);
+                        if(selectedHolder != null) {
+                            selectedHolder.setBorder(defaultBorder);
+                        }
+                        selectedHolder = this;
                     }
-                    selectedHolder = this;
                 }
+            } else if(SwingUtilities.isRightMouseButton(e)) {
+                colorHolderPopupMenu.show(this, e.getX(), e.getY());
             }
         }
 
@@ -150,6 +161,35 @@ public class PalettePanel extends JPanel {
                 setBorder(defaultBorder);
             }
             isHoveringOver = false;
+        }
+    }
+
+    private class ColorHolderPopupMenu extends JPopupMenu {
+
+        private ColorHolderPopupMenu() {
+            JMenuItem deleteMenuItem = new JMenuItem();
+            deleteMenuItem.setText("Delete");
+            deleteMenuItem.addActionListener(e -> deleteMenuAction());
+            add(deleteMenuItem);
+            JMenuItem overwriteMenuItem = new JMenuItem();
+            overwriteMenuItem.setText("Overwrite");
+            overwriteMenuItem.addActionListener(e -> overwriteMenuAction());
+            add(overwriteMenuItem);
+        }
+
+        private void deleteMenuAction() {
+            colorHolderContainer.remove(getInvoker());
+            deselectSelectedHolder();
+        }
+
+        private void overwriteMenuAction() {
+            ColorHolder colorHolder = (ColorHolder) getInvoker();
+            colorHolder.setColor(colorTabbedPane.getSelectedColor());
+        }
+
+        @Override
+        public void show(Component invoker, int x, int y) {
+            super.show(invoker, x, y);
         }
     }
 
@@ -192,9 +232,11 @@ public class PalettePanel extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(isHoveringOver) {
-                createNewColorHolder(colorTabbedPane.getSelectedColor());
-                setBorder(adderBorder);
+            if(SwingUtilities.isLeftMouseButton(e)){
+                if(isHoveringOver) {
+                    createNewColorHolder(colorTabbedPane.getSelectedColor());
+                    setBorder(adderBorder);
+                }
             }
         }
 
