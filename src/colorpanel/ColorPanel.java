@@ -17,7 +17,10 @@ public class ColorPanel extends JPanel {
     private final ColorPanelInfo colorPanelInfo;
     private final ColorPanelHandler colorPanelHandler;
 
-    public ColorPanel() {
+    private final ColorTabbedPane colorTabbedPane;
+
+    public ColorPanel(ColorTabbedPane colorTabbedPane) {
+        this.colorTabbedPane = colorTabbedPane;
         setLayout(new BorderLayout());
 
         colorPanelSelector = new ColorPanelSelector(this);
@@ -49,6 +52,10 @@ public class ColorPanel extends JPanel {
 
     protected Color getSecondaryColor() {
         return colorPanelHandler.getSecondaryColor();
+    }
+
+    protected void notifyColorChange() {
+        colorTabbedPane.notifyColorChange();
     }
 
     protected int getRed() {

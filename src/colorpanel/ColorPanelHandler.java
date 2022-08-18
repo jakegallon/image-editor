@@ -42,6 +42,7 @@ public class ColorPanelHandler extends JPanel {
 
     public void setSelectedColor(Color color) {
         selectedColorHoldingPanel.setCurrentColor(color);
+        colorPanel.notifyColorChange();
     }
 
     public Color getSelectedColor() {

@@ -11,18 +11,18 @@ import java.awt.event.MouseListener;
 
 public class PalettePanel extends JPanel {
 
-    ColorTabbedPane colorTabbedPane;
+    private final ColorTabbedPane colorTabbedPane;
 
     int count = 0;
 
     private static final int GAP = 2;
     private static final Dimension COLOR_HOLDER_SIZE = new Dimension(24, 24);
 
-    JPanel colorHolderContainer;
-    JPanel scrollView;
-    JScrollPane scrollPane;
+    private JPanel colorHolderContainer;
+    private JPanel scrollView;
+    private JScrollPane scrollPane;
 
-    ColorAdder colorAdder;
+    private ColorAdder colorAdder;
 
     public PalettePanel(ColorTabbedPane colorTabbedPane) {
         this.colorTabbedPane = colorTabbedPane;
@@ -87,10 +87,19 @@ public class PalettePanel extends JPanel {
         revalidate();
     }
 
+    protected void deselectSelectedHolder() {
+        if(selectedHolder == null) return;
+        selectedHolder.setBorder(null);
+        selectedHolder = null;
+    }
+
     private void ResetColorAdder() {
         colorHolderContainer.remove(colorAdder);
         colorHolderContainer.add(colorAdder);
     }
+
+    private ColorHolder selectedHolder;
+    private static final CompoundBorder selectedBorder = new CompoundBorder(new LineBorder(Color.white, 1), new LineBorder(Color.blue, (int) (COLOR_HOLDER_SIZE.getWidth()/5 - 1)));
 
     private class ColorHolder extends JPanel implements MouseListener {
 
@@ -119,16 +128,26 @@ public class PalettePanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if(isHoveringOver) {
                 colorTabbedPane.setSelectedColor(currentColor);
+                if(selectedHolder != this) {
+                    if(selectedHolder != null) {
+                        selectedHolder.setBorder(null);
+                    }
+                    selectedHolder = this;
+                }
             }
         }
 
         @Override
         public void mouseEntered(MouseEvent e) {
+            setBorder(selectedBorder);
             isHoveringOver = true;
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
+            if(selectedHolder != this) {
+                setBorder(null);
+            }
             isHoveringOver = false;
         }
     }
@@ -139,6 +158,7 @@ public class PalettePanel extends JPanel {
         private final int desiredWeight;
         private final Point p1;
         private final Point p2;
+        private final CompoundBorder adderBorder;
 
         private ColorAdder() {
             addMouseListener(this);
@@ -149,7 +169,8 @@ public class PalettePanel extends JPanel {
             p1 = new Point((COLOR_HOLDER_SIZE.width / 2) - (desiredWeight / 2), 0);
             p2 = new Point(0, (COLOR_HOLDER_SIZE.height / 2) - (desiredWeight / 2));
 
-            setBorder(new CompoundBorder(new LineBorder(Color.white, 1), new LineBorder(Color.black, desiredWeight - 1)));
+            adderBorder = new CompoundBorder(new LineBorder(Color.white, 1), new LineBorder(Color.black, desiredWeight - 1));
+            setBorder(adderBorder);
         }
 
         @Override
@@ -179,11 +200,13 @@ public class PalettePanel extends JPanel {
         @Override
         public void mouseEntered(MouseEvent e) {
             isHoveringOver = true;
+            setBorder(selectedBorder);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
             isHoveringOver = false;
+            setBorder(adderBorder);
         }
     }
 }

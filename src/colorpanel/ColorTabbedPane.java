@@ -5,12 +5,12 @@ import java.awt.*;
 
 public class ColorTabbedPane extends JTabbedPane {
 
-    private final ColorPanel colorPanel;
     private final PalettePanel palettePanel;
+    private final ColorPanel colorPanel;
 
     public ColorTabbedPane() {
-        colorPanel = new ColorPanel();
         palettePanel = new PalettePanel(this);
+        colorPanel = new ColorPanel(this);
 
         addTab("Color", colorPanel);
         addTab("Palette", palettePanel);
@@ -30,5 +30,9 @@ public class ColorTabbedPane extends JTabbedPane {
 
     protected void setSelectedColor(Color color) {
         colorPanel.setSelectedColor(color);
+    }
+
+    protected void notifyColorChange() {
+        palettePanel.deselectSelectedHolder();
     }
 }
