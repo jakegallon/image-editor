@@ -89,7 +89,7 @@ public class PalettePanel extends JPanel {
 
     protected void deselectSelectedHolder() {
         if(selectedHolder == null) return;
-        selectedHolder.setBorder(null);
+        selectedHolder.setBorder(defaultBorder);
         selectedHolder = null;
     }
 
@@ -99,7 +99,8 @@ public class PalettePanel extends JPanel {
     }
 
     private ColorHolder selectedHolder;
-    private static final CompoundBorder selectedBorder = new CompoundBorder(new LineBorder(Color.white, 1), new LineBorder(Color.blue, (int) (COLOR_HOLDER_SIZE.getWidth()/5 - 1)));
+    private static final CompoundBorder defaultBorder = new CompoundBorder(new LineBorder(Color.gray, 2), new LineBorder(Color.black, 2));
+    private static final CompoundBorder selectedBorder = new CompoundBorder(new LineBorder(Color.cyan, 2), new LineBorder(Color.black, 2));
 
     private class ColorHolder extends JPanel implements MouseListener {
 
@@ -130,7 +131,7 @@ public class PalettePanel extends JPanel {
                 if(selectedHolder != this) {
                     colorTabbedPane.setSelectedColor(currentColor);
                     if(selectedHolder != null) {
-                        selectedHolder.setBorder(null);
+                        selectedHolder.setBorder(defaultBorder);
                     }
                     selectedHolder = this;
                 }
@@ -146,7 +147,7 @@ public class PalettePanel extends JPanel {
         @Override
         public void mouseExited(MouseEvent e) {
             if(selectedHolder != this) {
-                setBorder(null);
+                setBorder(defaultBorder);
             }
             isHoveringOver = false;
         }
@@ -163,13 +164,12 @@ public class PalettePanel extends JPanel {
         private ColorAdder() {
             addMouseListener(this);
             setPreferredSize(COLOR_HOLDER_SIZE);
-            setBackground(Color.white);
 
             desiredWeight = (int) (COLOR_HOLDER_SIZE.getWidth()/5);
             p1 = new Point((COLOR_HOLDER_SIZE.width / 2) - (desiredWeight / 2), 0);
             p2 = new Point(0, (COLOR_HOLDER_SIZE.height / 2) - (desiredWeight / 2));
 
-            adderBorder = new CompoundBorder(new LineBorder(Color.white, 1), new LineBorder(Color.black, desiredWeight - 1));
+            adderBorder = new CompoundBorder(new LineBorder(new Color(0, 0, 0, 0), 1), new LineBorder(Color.black, desiredWeight - 1));
             setBorder(adderBorder);
         }
 
