@@ -12,7 +12,6 @@ public class ColorPanelHandler extends JPanel {
 
     ColorHoldingPanel primaryColorHoldingPanel = new ColorHoldingPanel();
     ColorHoldingPanel secondaryColorHoldingPanel = new ColorHoldingPanel();
-    ColorHoldingPanel selectedColorHoldingPanel;
 
     public ColorPanelHandler(ColorPanel colorPanel) {
         this.colorPanel = colorPanel;
@@ -26,7 +25,6 @@ public class ColorPanelHandler extends JPanel {
         add(secondaryColorHoldingPanel);
         secondaryColorHoldingPanel.setCurrentColor(Color.black);
 
-        selectedColorHoldingPanel = primaryColorHoldingPanel;
         primaryColorHoldingPanel.isSelected = true;
         primaryColorHoldingPanel.highlightBorder();
 
@@ -41,11 +39,22 @@ public class ColorPanelHandler extends JPanel {
     }
 
     public void setSelectedColor(Color color) {
+        ColorHoldingPanel selectedColorHoldingPanel = getSelectedColorHoldingPanel();
         selectedColorHoldingPanel.setCurrentColor(color);
+
         colorPanel.notifyColorChange();
     }
 
+    private ColorHoldingPanel getSelectedColorHoldingPanel() {
+        if(primaryColorHoldingPanel.isSelected){
+            return primaryColorHoldingPanel;
+        } else {
+            return secondaryColorHoldingPanel;
+        }
+    }
+
     public Color getSelectedColor() {
+        ColorHoldingPanel selectedColorHoldingPanel = getSelectedColorHoldingPanel();
         return selectedColorHoldingPanel.getCurrentColor();
     }
 
@@ -93,14 +102,13 @@ public class ColorPanelHandler extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            selectedColorHoldingPanel = this;
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             if(isSelected) return;
+            ColorHoldingPanel selectedColorHoldingPanel = getSelectedColorHoldingPanel();
             selectedColorHoldingPanel.deselect();
-            selectedColorHoldingPanel = this;
             isSelected = true;
         }
 
