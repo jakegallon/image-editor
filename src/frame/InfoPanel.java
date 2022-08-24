@@ -10,31 +10,30 @@ public class InfoPanel extends JPanel {
 
     public InfoPanel() {
         setPreferredSize(new Dimension(0, 30));
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+        SpringLayout springLayout = new SpringLayout();
+        setLayout(springLayout);
 
         Font uiFont = new Font("Segoe UI", Font.PLAIN, 15);
 
-        Box leftBox = new Box(BoxLayout.X_AXIS);
-        leftBox.setPreferredSize(new Dimension(130, getPreferredSize().height));
         zoomFactor = new JLabel("zoom: 100.00%");
         zoomFactor.setFont(uiFont);
-        zoomFactor.setPreferredSize(new Dimension(65, getPreferredSize().height));
-        leftBox.add(zoomFactor);
+        add(zoomFactor);
 
-        Box rightBox = new Box(BoxLayout.X_AXIS);
-        rightBox.setPreferredSize(new Dimension(130, getPreferredSize().height));
         xPos = new JLabel("x: 0");
         xPos.setFont(uiFont);
-        xPos.setPreferredSize(new Dimension(65, getPreferredSize().height));
+        add(xPos);
+
         yPos = new JLabel("y: 0");
         yPos.setFont(uiFont);
-        yPos.setPreferredSize(new Dimension(65, getPreferredSize().height));
-        rightBox.add(xPos);
-        rightBox.add(yPos);
+        add(yPos);
 
-        add(leftBox);
-        add(Box.createHorizontalGlue());
-        add(rightBox);
+        springLayout.putConstraint(SpringLayout.WEST, zoomFactor, 15, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, zoomFactor, 3, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, yPos, -15, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, yPos, 0, SpringLayout.NORTH, zoomFactor);
+        springLayout.putConstraint(SpringLayout.EAST, xPos, -15, SpringLayout.WEST, yPos);
+        springLayout.putConstraint(SpringLayout.NORTH, xPos, 0, SpringLayout.NORTH, zoomFactor);
     }
 
     public void setMouseLocation(Point p) {
