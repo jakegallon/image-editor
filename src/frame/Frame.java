@@ -12,6 +12,8 @@ import java.net.URISyntaxException;
 
 public class Frame extends JFrame {
 
+    public Controller controller = new Controller();
+
     JSplitPane leftMiddle, leftMiddleRight;
     JPanel leftPanel, rightPanel, topPanel;
 
@@ -47,7 +49,7 @@ public class Frame extends JFrame {
         brushSettings.setBackground(Color.cyan);
         brushSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
-        ColorTabbedPane colorSettings = new ColorTabbedPane();
+        ColorTabbedPane colorSettings = new ColorTabbedPane(controller);
         colorSettings.setMinimumSize(new Dimension(250, 273));
         // rightPanel - canvasOverview
         JPanel canvasOverview = new JPanel();

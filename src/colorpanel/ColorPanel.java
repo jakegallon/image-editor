@@ -54,8 +54,8 @@ public class ColorPanel extends JPanel {
         return colorPanelHandler.getSecondaryColor();
     }
 
-    protected void notifyColorChange() {
-        colorTabbedPane.notifyColorChange();
+    protected void onSelectedColorChange(Color color, boolean isPrimary) {
+        colorTabbedPane.onSelectedColorChange(color, isPrimary);
     }
 
     protected int getRed() {

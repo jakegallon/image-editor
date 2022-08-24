@@ -1,5 +1,7 @@
 package colorpanel;
 
+import frame.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,8 +9,11 @@ public class ColorTabbedPane extends JTabbedPane {
 
     private final PalettePanel palettePanel;
     private final ColorPanel colorPanel;
+    private final Controller controller;
 
-    public ColorTabbedPane() {
+    public ColorTabbedPane(Controller controller) {
+        this.controller = controller;
+
         palettePanel = new PalettePanel(this);
         colorPanel = new ColorPanel(this);
 
@@ -32,7 +37,12 @@ public class ColorTabbedPane extends JTabbedPane {
         colorPanel.setSelectedColor(color);
     }
 
-    protected void notifyColorChange() {
+    protected void onSelectedColorChange(Color color, boolean isPrimarySelected) {
+        controller.setIsPrimarySelected(isPrimarySelected);
+
+        if(isPrimarySelected) controller.setPrimaryColor(color);
+        else controller.setSecondaryColor(color);
+
         palettePanel.deselectSelectedHolder();
     }
 }
