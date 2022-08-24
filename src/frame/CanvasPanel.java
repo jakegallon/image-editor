@@ -12,6 +12,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private Point canvasOffset = new Point(0, 0);
 
     private volatile Point mousePos;
+    private Point initialMousePos;
 
     private static final float ZOOM_MULTIPLIER = 1.1f;
     private float zoomFactor = 1.0f;
@@ -23,6 +24,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
+
+    Tool activeTool = new DebugTool();
 
     public CanvasPanel(Controller controller, InfoPanel infoPanel) {
         this.controller = controller;
@@ -42,6 +45,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 infoPanel.setZoomFactor(zoomFactor);
             }
         });
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 
     @Override
@@ -159,19 +166,25 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
+            initialMousePos = mousePos;
             initialCanvasOffset = canvasOffset;
             scrollLocked = true;
+        } else {
+            activeTool.onMousePressed(e);
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
         if(SwingUtilities.isMiddleMouseButton(e)){
             Point trueMousePos = mouseEventPosToAbsolutePos(e.getPoint());
-            Point d = getPointTranslation(mousePos, trueMousePos);
+            Point d = getPointTranslation(initialMousePos, trueMousePos);
             int newX = initialCanvasOffset.x + d.x;
             int newY = initialCanvasOffset.y + d.y;
             canvasOffset = new Point(newX, newY);
+        } else {
+            activeTool.onMouseDragged(e);
         }
     }
 
@@ -191,6 +204,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public void mouseReleased(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)){
             scrollLocked = false;
+        } else {
+            activeTool.onMouseReleased(e);
         }
     }
 
@@ -205,23 +220,22 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         propertyChangeSupport.firePropertyChange(MOUSE_POS_EVENT, oldValue, p);
     }
 
+    public Point getMousePos() {
+        return mousePos;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(SwingUtilities.isLeftMouseButton(e)){
-            canvas.setPixel(mousePos, Color.white);
-        }
-        if(SwingUtilities.isRightMouseButton(e)){
-            canvas.setPixel(mousePos, Color.blue);
-        }
+        activeTool.onMouseClicked(e);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        activeTool.onMouseEntered(e);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        activeTool.onMouseExited();
     }
 }
