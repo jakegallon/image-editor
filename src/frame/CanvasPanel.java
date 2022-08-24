@@ -18,11 +18,14 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private float minZoom = 0.01f;
     private float maxZoom = 100f;
 
+    protected final Controller controller;
+
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
 
-    public CanvasPanel(InfoPanel infoPanel) {
+    public CanvasPanel(Controller controller, InfoPanel infoPanel) {
+        this.controller = controller;
         setBackground(new Color(43, 43 ,43));
         setLayout(null);
         addMouseWheelListener(this);

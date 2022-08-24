@@ -94,7 +94,7 @@ public class Frame extends JFrame {
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
         infoPanel = new InfoPanel();
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);
-        canvasPanel =new CanvasPanel(infoPanel);
+        canvasPanel =new CanvasPanel(controller, infoPanel);
         middlePanel.add(canvasPanel, BorderLayout.CENTER);
 
         // Triple SplitPane
