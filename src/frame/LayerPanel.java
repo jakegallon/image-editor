@@ -12,7 +12,7 @@ public class LayerPanel extends JPanel {
     JPanel layerContainer;
     Controller controller;
 
-    private LinkedList<LayerWidget> layerWidgets = new LinkedList<>();
+    private final LinkedList<LayerWidget> layerWidgets = new LinkedList<>();
 
     private final JScrollPane scrollPane;
 
@@ -80,6 +80,13 @@ public class LayerPanel extends JPanel {
         layerContainer.remove(index);
         layerContainer.revalidate();
         layerContainer.repaint();
+
+        if(layerWidgets.size() <= 0) return;
+        if(index >= layerWidgets.size()) index = layerWidgets.size() - 1;
+
+        LayerWidget layerWidget = layerWidgets.get(index);
+        layerWidget.setActive();
+        activeLayerWidget = layerWidget;
     }
 
     private void setNewActiveLayerWidget(LayerWidget layerWidget) {
