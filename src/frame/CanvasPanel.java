@@ -8,7 +8,7 @@ import java.beans.PropertyChangeEvent;
 
 public class CanvasPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 
-    private final Canvas canvas = new Canvas();
+    private final Canvas canvas;
     private Point canvasOffset = new Point(0, 0);
 
     private volatile Point mousePos;
@@ -16,8 +16,6 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private static final float ZOOM_MULTIPLIER = 1.1f;
     private float zoomFactor = 1.0f;
-    private float minZoom = 0.01f;
-    private float maxZoom = 100f;
 
     protected final Controller controller;
 
@@ -29,6 +27,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     public CanvasPanel(Controller controller, InfoPanel infoPanel) {
         this.controller = controller;
+        canvas = new Canvas();
         setBackground(new Color(43, 43 ,43));
         setLayout(null);
         addMouseWheelListener(this);
@@ -79,6 +78,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private boolean snapped = false;
 
     protected void zoomIn() {
+        float maxZoom = 100f;
         if(zoomFactor == maxZoom) return;
 
         if(snapped) {
@@ -115,6 +115,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         float oldZoomFactor = zoomFactor;
         float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
 
+        float minZoom = 0.01f;
         if(zoomFactor == minZoom) return;
 
         if(snapped) {
