@@ -37,4 +37,14 @@ public class Controller {
     public Color getSecondaryColor() {
         return secondaryColor;
     }
+
+    private Canvas activeCanvas;
+
+    public void setActiveCanvas(Canvas canvas) {
+        activeCanvas = canvas;
+    }
+
+    public Canvas getActiveCanvas() {
+        return activeCanvas;
+    }
 }

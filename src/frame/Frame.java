@@ -39,50 +39,6 @@ public class Frame extends JFrame {
     private void createLayout(){
         Container pane = getContentPane();
 
-        // Temporary panel creations
-        // leftPanel - toolBar
-        JPanel toolBar = new JPanel();
-        toolBar.setBackground(Color.gray);
-        toolBar.setPreferredSize(new Dimension(40, 0));
-        // leftPanel - brushSettings
-        JPanel brushSettings = new JPanel();
-        brushSettings.setBackground(Color.cyan);
-        brushSettings.setMinimumSize(new Dimension(0, 250));
-        // leftPanel - colorSettings
-        ColorTabbedPane colorSettings = new ColorTabbedPane(controller);
-        colorSettings.setMinimumSize(new Dimension(250, 273));
-        // rightPanel - canvasOverview
-        JPanel canvasOverview = new JPanel();
-        canvasOverview.setBackground(Color.RED);
-        canvasOverview.setMinimumSize(new Dimension(0, 250));
-        // rightPanel - animationPanel
-        JPanel animationPanel = new JPanel();
-        animationPanel.setBackground(Color.ORANGE);
-        animationPanel.setMinimumSize(new Dimension(0, 250));
-        // rightPanel - layerPanel
-        JPanel layerPanel = new JPanel();
-        layerPanel.setBackground(Color.YELLOW);
-        layerPanel.setMinimumSize(new Dimension(0, 250));
-
-        // left panel
-        leftPanel=new JPanel(new BorderLayout());
-        leftPanel.setBackground(Color.RED);
-        leftPanel.setMinimumSize(new Dimension(250, 0));
-
-        leftPanel.add(toolBar, BorderLayout.LINE_START);
-        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, brushSettings, colorSettings);
-        brushColor.setResizeWeight(1.0);
-        leftPanel.add(brushColor);
-
-        // Right panel
-        rightPanel=new JPanel(new BorderLayout());
-        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasOverview, animationPanel);
-        JSplitPane canvasAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasAnimation, layerPanel);
-        canvasAnimationLayer.setResizeWeight(1.0);
-
-        rightPanel.add(canvasAnimationLayer);
-        rightPanel.setMinimumSize(new Dimension(250, 0));
-
         // Main panel
         JPanel middlePanel=new JPanel();
         middlePanel.setMinimumSize(new Dimension(250, 0));
@@ -96,6 +52,49 @@ public class Frame extends JFrame {
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);
         canvasPanel =new CanvasPanel(controller, infoPanel);
         middlePanel.add(canvasPanel, BorderLayout.CENTER);
+
+        // left panel
+        // leftPanel - toolBar
+        JPanel toolBar = new JPanel();
+        toolBar.setBackground(Color.gray);
+        toolBar.setPreferredSize(new Dimension(40, 0));
+        // leftPanel - brushSettings
+        JPanel brushSettings = new JPanel();
+        brushSettings.setBackground(Color.cyan);
+        brushSettings.setMinimumSize(new Dimension(0, 250));
+        // leftPanel - colorSettings
+        ColorTabbedPane colorSettings = new ColorTabbedPane(controller);
+        colorSettings.setMinimumSize(new Dimension(250, 273));
+
+        leftPanel=new JPanel(new BorderLayout());
+        leftPanel.setBackground(Color.RED);
+        leftPanel.setMinimumSize(new Dimension(350, 0));
+
+        leftPanel.add(toolBar, BorderLayout.LINE_START);
+        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, brushSettings, colorSettings);
+        brushColor.setResizeWeight(1.0);
+        leftPanel.add(brushColor);
+
+        // Right panel
+        // rightPanel - canvasOverview
+        JPanel canvasOverview = new JPanel();
+        canvasOverview.setBackground(Color.RED);
+        canvasOverview.setMinimumSize(new Dimension(0, 250));
+        // rightPanel - animationPanel
+        JPanel animationPanel = new JPanel();
+        animationPanel.setBackground(Color.ORANGE);
+        animationPanel.setMinimumSize(new Dimension(0, 250));
+        // rightPanel - layerPanel
+        JPanel layerPanel = new LayerPanel(controller);
+        layerPanel.setMinimumSize(new Dimension(0, 250));
+
+        rightPanel=new JPanel(new BorderLayout());
+        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasOverview, animationPanel);
+        JSplitPane canvasAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasAnimation, layerPanel);
+        canvasAnimationLayer.setResizeWeight(1.0);
+
+        rightPanel.add(canvasAnimationLayer);
+        rightPanel.setMinimumSize(new Dimension(250, 0));
 
         // Triple SplitPane
         leftMiddle = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, middlePanel);

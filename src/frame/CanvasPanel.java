@@ -28,6 +28,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public CanvasPanel(Controller controller, InfoPanel infoPanel) {
         this.controller = controller;
         canvas = new Canvas();
+        controller.setActiveCanvas(canvas);
         setBackground(new Color(43, 43 ,43));
         setLayout(null);
         addMouseWheelListener(this);
