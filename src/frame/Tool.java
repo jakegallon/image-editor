@@ -9,7 +9,6 @@ public abstract class Tool {
     protected Canvas canvas;
 
     public abstract void onMouseClicked(MouseEvent e);
-
     public abstract void onMousePressed(MouseEvent e);
     public abstract void onMouseDragged(MouseEvent e);
     public abstract void onMouseReleased(MouseEvent e);
@@ -22,5 +21,9 @@ public abstract class Tool {
 
     public void onMouseExited() {
         activeCanvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    protected boolean notActiveLayerExist() {
+        return canvas.getActiveLayer() == null;
     }
 }
