@@ -20,7 +20,7 @@ public class Frame extends JFrame {
     CanvasPanel canvasPanel;
     InfoPanel infoPanel;
 
-    int leftPanelWidth = 350, rightPanelWidth = 350;
+    int leftPanelWidth = 310, rightPanelWidth = 310;
 
     public Frame() {
         addMenuBar();
@@ -56,7 +56,7 @@ public class Frame extends JFrame {
         // left panel
         // leftPanel - toolBar
         JPanel toolBar = new JPanel();
-        toolBar.setBackground(Color.gray);
+        toolBar.setBackground(Color.yellow);
         toolBar.setPreferredSize(new Dimension(40, 0));
         // leftPanel - brushSettings
         JPanel brushSettings = new JPanel();
@@ -68,10 +68,15 @@ public class Frame extends JFrame {
 
         leftPanel=new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.RED);
-        leftPanel.setMinimumSize(new Dimension(350, 0));
+        leftPanel.setMinimumSize(new Dimension(310, 0));
 
         leftPanel.add(toolBar, BorderLayout.LINE_START);
-        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, brushSettings, colorSettings);
+
+        JPanel toolSelectSettings = new JPanel(new BorderLayout());
+        toolSelectSettings.add(toolBar, BorderLayout.LINE_START);
+        toolSelectSettings.add(brushSettings, BorderLayout.CENTER);
+
+        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, toolSelectSettings, colorSettings);
         brushColor.setResizeWeight(1.0);
         leftPanel.add(brushColor);
 
