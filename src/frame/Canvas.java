@@ -1,5 +1,7 @@
 package frame;
 
+import action.BaseAction;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ public class Canvas extends JPanel {
 
     public ArrayList<Layer> layers = new ArrayList<>();
     private Layer activeLayer;
+
+    public ArrayList<BaseAction> actions = new ArrayList<>();
 
     public Canvas() {
         setBounds(0, 0, 256, 256);

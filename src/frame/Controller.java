@@ -1,5 +1,7 @@
 package frame;
 
+import action.BaseAction;
+
 import java.awt.*;
 
 public class Controller {
@@ -46,5 +48,17 @@ public class Controller {
 
     public Canvas getActiveCanvas() {
         return activeCanvas;
+    }
+
+    public void undoAction() {
+        int lastIndex = activeCanvas.actions.size() - 1;
+        BaseAction lastAction = activeCanvas.actions.get(lastIndex);
+        lastAction.undo();
+    }
+
+    public void redoAction() {
+        int lastIndex = activeCanvas.actions.size() - 1;
+        BaseAction lastAction = activeCanvas.actions.get(lastIndex);
+        lastAction.redo();
     }
 }

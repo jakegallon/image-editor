@@ -4,8 +4,7 @@ import colorpanel.ColorTabbedPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +26,13 @@ public class Frame extends JFrame {
         initializeWindow();
         createLayout();
         setVisible(true);
+
+        getRootPane().registerKeyboardAction(e -> {
+            controller.undoAction();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> {
+            controller.redoAction();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
     }
 
     private void initializeWindow() {

@@ -31,21 +31,7 @@ public class Layer {
         return image;
     }
 
-    public void paint(Point p, Color color) {
-        paint(p.x, p.y, color);
-    }
-
     public void paint(int x, int y, Color color) {
-        paint(x, y, 1, color);
-    }
-
-    public void paint(Point p, int size, Color color) {
-        paint(p.x, p.y, size, color);
-    }
-
-    public void paint(int x, int y, int size, Color color) {
-        g.setColor(color);
-        int offset = size/2;
-        g.fillRect(x - offset, y - offset, size, size);
+        image.setRGB(x, y, color.getRGB());
     }
 }
