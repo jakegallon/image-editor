@@ -1,13 +1,15 @@
-package frame;
+package tool;
+
+
+import frame.Layer;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class DebugTool extends Tool {
-    @Override
-    public void onMouseClicked(MouseEvent e) {
-        if(notActiveLayerExist()) return;
+public class DebugTool extends LayerTool {
 
+    public void onMouseClicked(MouseEvent e) {
+        super.onMouseClicked(e);
         Point mousePos = activeCanvasPanel.getMousePos();
         Color selectedColor = activeCanvasPanel.controller.getSelectedColor();
 
@@ -17,12 +19,14 @@ public class DebugTool extends Tool {
 
     @Override
     public void onMousePressed(MouseEvent e) {
+        super.onMousePressed(e);
+
         onMouseDragged(e);
     }
 
     @Override
     public void onMouseDragged(MouseEvent e) {
-        if(notActiveLayerExist()) return;
+        super.onMouseDragged(e);
 
         Point mousePos = activeCanvasPanel.getMousePos();
         Color selectedColor = activeCanvasPanel.controller.getSelectedColor();
@@ -33,6 +37,6 @@ public class DebugTool extends Tool {
 
     @Override
     public void onMouseReleased(MouseEvent e) {
-
+        super.onMouseReleased(e);
     }
 }

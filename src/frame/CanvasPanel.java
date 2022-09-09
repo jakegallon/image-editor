@@ -1,5 +1,8 @@
 package frame;
 
+import tool.BaseTool;
+import tool.DebugTool;
+
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
@@ -17,13 +20,13 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final float ZOOM_MULTIPLIER = 1.1f;
     private float zoomFactor = 1.0f;
 
-    protected final Controller controller;
+    public final Controller controller;
 
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
 
-    Tool activeTool = new DebugTool();
+    BaseTool activeTool = new DebugTool();
 
     public CanvasPanel(Controller controller, InfoPanel infoPanel) {
         this.controller = controller;

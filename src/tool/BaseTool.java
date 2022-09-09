@@ -1,9 +1,12 @@
-package frame;
+package tool;
+
+import frame.Canvas;
+import frame.CanvasPanel;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public abstract class Tool {
+public abstract class BaseTool {
 
     protected CanvasPanel activeCanvasPanel;
     protected Canvas canvas;
@@ -21,9 +24,5 @@ public abstract class Tool {
 
     public void onMouseExited() {
         activeCanvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }
-
-    protected boolean notActiveLayerExist() {
-        return canvas.getActiveLayer() == null;
     }
 }
