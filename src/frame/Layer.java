@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public class Layer {
 
     private final BufferedImage image;
-    private String name;
+    private String name = "";
     private boolean isLocked = false;
     private final Graphics2D g;
 
