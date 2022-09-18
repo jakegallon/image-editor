@@ -2,7 +2,11 @@ package action;
 
 import frame.Layer;
 
-public class EditAction extends BaseAction {
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
+public class EditAction extends AbstractUndoableEdit {
 
     Layer layer;
     PixelChange[] pixelChanges;
@@ -13,14 +17,16 @@ public class EditAction extends BaseAction {
     }
 
     @Override
-    public void undo() {
+    public void undo() throws CannotUndoException {
+        super.undo();
         for(PixelChange pixelChange : pixelChanges) {
             layer.paint(pixelChange.x(), pixelChange.y(), pixelChange.oldColor());
         }
     }
 
     @Override
-    public void redo() {
+    public void redo() throws CannotRedoException {
+        super.redo();
         for(PixelChange pixelChange : pixelChanges) {
             layer.paint(pixelChange.x(), pixelChange.y(), pixelChange.newColor());
         }

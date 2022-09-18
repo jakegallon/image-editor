@@ -1,8 +1,7 @@
 package frame;
 
-import action.BaseAction;
-
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public class Canvas extends JPanel {
     public ArrayList<Layer> layers = new ArrayList<>();
     private Layer activeLayer;
 
-    public ArrayList<BaseAction> actions = new ArrayList<>();
+    public UndoManager undoManager = new UndoManager();
 
     public Canvas() {
         setBounds(0, 0, 256, 256);
