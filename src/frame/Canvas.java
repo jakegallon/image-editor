@@ -83,5 +83,12 @@ public class Canvas extends JPanel {
     public Layer getActiveLayer() {
         return activeLayer;
     }
+
+    public void mergeActiveLayerDown() {
+        int activeIndex = getActiveLayerIndex();
+        Layer targetLayer = layers.get(activeIndex + 1);
+        targetLayer.addImage(activeLayer.getImage());
+        deleteLayer(activeIndex);
+    }
 }
 
