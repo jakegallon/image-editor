@@ -5,13 +5,14 @@ import frame.Layer;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import java.util.ArrayList;
 
 public class EditAction extends AbstractUndoableEdit {
 
     Layer layer;
-    PixelChange[] pixelChanges;
+    ArrayList<PixelChange> pixelChanges;
 
-    public EditAction(Layer layer, PixelChange[] pixelChanges) {
+    public EditAction(Layer layer, ArrayList<PixelChange> pixelChanges) {
         this.layer = layer;
         this.pixelChanges = pixelChanges;
     }
