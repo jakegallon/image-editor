@@ -30,6 +30,12 @@ public class Canvas extends JPanel {
         return layers.indexOf(activeLayer);
     }
 
+    public void addLayer(Layer layer) {
+        int targetIndex = getActiveLayerIndex();
+        layers.add(targetIndex, layer);
+        activeLayer = layer;
+    }
+
     public void addLayer(Layer layer, int index) {
         layers.add(index, layer);
         activeLayer = layer;
@@ -50,6 +56,10 @@ public class Canvas extends JPanel {
             }
         }
         return 1;
+    }
+
+    public void deleteLayer() {
+        deleteLayer(getActiveLayerIndex());
     }
 
     public void deleteLayer(int index) {
