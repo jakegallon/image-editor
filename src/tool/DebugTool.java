@@ -11,15 +11,6 @@ public class DebugTool extends LayerTool {
 
     public void onMouseClicked(MouseEvent e) {
         super.onMouseClicked(e);
-
-        Point mousePos = activeCanvasPanel.getMousePos();
-        Layer targetLayer = canvas.getActiveLayer();
-        Color selectedColor = activeCanvasPanel.controller.getSelectedColor();
-
-        EditAction thisAction = new EditAction(targetLayer, new PixelChange[]{new PixelChange(mousePos.x, mousePos.y, new Color(targetLayer.getImage().getRGB(mousePos.x, mousePos.y), true), selectedColor)});
-        canvas.undoManager.addEdit(thisAction);
-
-        targetLayer.paint(mousePos.x, mousePos.y, selectedColor);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class Layer {
         return image;
     }
 
-    public void paint(int x, int y, Color color) {
-        image.setRGB(x, y, color.getRGB());
+    public void paint(int x, int y, int color) {
+        image.setRGB(x, y, color);
     }
 }

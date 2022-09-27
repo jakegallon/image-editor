@@ -1,7 +1,5 @@
 package action;
 
-import java.awt.Color;
-
-public record PixelChange(int x, int y, Color oldColor, Color newColor){
+public record PixelChange(int x, int y, int oldColor, int newColor){
 
 }
