@@ -39,7 +39,7 @@ public class NewDialog extends JDialog {
                 canvas.addLayer(paper);
             }
 
-            owner.controller.setActiveCanvas(canvas);
+            Controller.setActiveCanvas(canvas);
             dispose();
         });
     }

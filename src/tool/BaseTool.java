@@ -2,6 +2,7 @@ package tool;
 
 import frame.Canvas;
 import frame.CanvasPanel;
+import frame.Controller;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -25,6 +26,6 @@ public abstract class BaseTool {
     }
 
     protected Canvas getCanvas() {
-        return activeCanvasPanel.controller.getActiveCanvas();
+        return Controller.getActiveCanvas();
     }
 }

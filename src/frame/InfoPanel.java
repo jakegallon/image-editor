@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 
 public class InfoPanel extends JPanel {
 
-    JLabel xPos, yPos, zoomFactor;
+    static JLabel xPos, yPos, zoomFactor;
 
     public InfoPanel() {
         setPreferredSize(new Dimension(0, 30));
@@ -36,16 +36,15 @@ public class InfoPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.NORTH, xPos, 0, SpringLayout.NORTH, zoomFactor);
     }
 
-    public void setMouseLocation(Point p) {
+    public static void setMouseLocation(Point p) {
         xPos.setText("x: " + p.x);
         yPos.setText("y: " + p.y);
     }
 
-    DecimalFormat df = new DecimalFormat("0.00");
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    public void setZoomFactor(float zoomFactor) {
-        float zoomPercent = zoomFactor * 100f;
-        this.zoomFactor.setText("zoom: " + df.format(zoomPercent) + "%");
+    public static void setZoomFactor(float f) {
+        float zoomPercent = f * 100f;
+        zoomFactor.setText("zoom: " + df.format(zoomPercent) + "%");
     }
-
 }

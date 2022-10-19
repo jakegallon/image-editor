@@ -20,46 +20,26 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final float ZOOM_MULTIPLIER = 1.1f;
     private float zoomFactor = 1.0f;
 
-    public final Controller controller;
-
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
 
     BaseTool activeTool = new DebugTool();
 
-    public CanvasPanel(Controller controller, InfoPanel infoPanel) {
-        this.controller = controller;
-        controller.setActiveCanvasPanel(this);
-
-        setBackground(new Color(43, 43 ,43));
-        setLayout(null);
-        addMouseWheelListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-
-        propertyChangeSupport.addPropertyChangeListener(evt -> {
-            if(evt.getPropertyName().equals(MOUSE_POS_EVENT)){
-                infoPanel.setMouseLocation((Point) evt.getNewValue());
-            }
-            if(evt.getPropertyName().equals(ZOOM_EVENT)){
-                calculateZoomOffset(evt);
-                infoPanel.setZoomFactor(zoomFactor);
-            }
-        });
+    public CanvasPanel() {
+        init();
     }
 
-    //todo change to property change support?
     public void setCanvas(Canvas canvas) {
         removeCurrentCanvas();
-        this.canvas = canvas;
         add(canvas);
+        this.canvas = canvas;
+        //todo recenter
     }
 
     private void removeCurrentCanvas() {
-        if(canvas != null) {
-            remove(canvas);
-        }
+        if(canvas == null) return;
+        remove(canvas);
     }
 
     public Canvas getCanvas() {
@@ -254,5 +234,27 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mouseExited(MouseEvent e) {
         activeTool.onMouseExited();
+    }
+
+    private void init() {
+        setBackground(new Color(43, 43 ,43));
+        setLayout(null);
+        addMouseWheelListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        attachInfoPanel();
+    }
+
+    private void attachInfoPanel() {
+        propertyChangeSupport.addPropertyChangeListener(evt -> {
+            if(evt.getPropertyName().equals(MOUSE_POS_EVENT)){
+                InfoPanel.setMouseLocation((Point) evt.getNewValue());
+            }
+            if(evt.getPropertyName().equals(ZOOM_EVENT)){
+                calculateZoomOffset(evt);
+                InfoPanel.setZoomFactor(zoomFactor);
+            }
+        });
     }
 }

@@ -4,57 +4,36 @@ import java.awt.*;
 
 public class Controller {
 
-    private boolean isPrimarySelected = true;
-    private Color primaryColor;
-    private Color secondaryColor;
+    static private boolean isPrimarySelected = true;
+    static public Color primaryColor;
+    static public Color secondaryColor;
 
-    public void setIsPrimarySelected(boolean isPrimarySelected) {
-        this.isPrimarySelected = isPrimarySelected;
+    public static void setIsPrimarySelected(boolean b) {
+        isPrimarySelected = b;
     }
 
-    public void setPrimaryColor(Color c) {
-        this.primaryColor = c;
-    }
-
-    public void setSecondaryColor(Color c) {
-        this.secondaryColor = c;
-    }
-
-    public Color getSelectedColor() {
+    public static Color selectedColor() {
         if(isPrimarySelected) return primaryColor;
         else return secondaryColor;
     }
 
-    public Color getNotSelectedColor() {
+    public static Color notSelectedColor() {
         if(!isPrimarySelected) return primaryColor;
         else return secondaryColor;
     }
 
-    public Color getPrimaryColor() {
-        return primaryColor;
-    }
+    private static Canvas activeCanvas;
 
-    public Color getSecondaryColor() {
-        return secondaryColor;
-    }
-
-    private CanvasPanel activeCanvasPanel;
-
-    public void setActiveCanvasPanel(CanvasPanel canvasPanel) {
-        activeCanvasPanel = canvasPanel;
-    }
-
-    private Canvas activeCanvas;
-
-    public void setActiveCanvas(Canvas canvas) {
+    public static void setActiveCanvas(Canvas canvas) {
+        Frame.canvasPanel.setCanvas(canvas);
         activeCanvas = canvas;
     }
 
-    public Canvas getActiveCanvas() {
+    public static Canvas getActiveCanvas() {
         return activeCanvas;
     }
 
-    public void undoAction() {
+    public static void undo() {
         try {
             activeCanvas.undoManager.undo();
         } catch (Exception e) {
@@ -62,11 +41,15 @@ public class Controller {
         }
     }
 
-    public void redoAction() {
+    public static void redo() {
         try {
             activeCanvas.undoManager.redo();
         } catch (Exception e) {
 
         }
+    }
+
+    public static boolean isActiveLayer(Layer layer) {
+        return layer == activeCanvas.getActiveLayer();
     }
 }

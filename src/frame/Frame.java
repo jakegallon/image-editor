@@ -11,13 +11,11 @@ import java.net.URISyntaxException;
 
 public class Frame extends JFrame {
 
-    public Controller controller = new Controller();
-
     JSplitPane leftMiddle, leftMiddleRight;
     JPanel leftPanel, rightPanel, topPanel;
 
-    CanvasPanel canvasPanel;
-    InfoPanel infoPanel;
+    static CanvasPanel canvasPanel = new CanvasPanel();
+    static InfoPanel infoPanel = new InfoPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -28,10 +26,10 @@ public class Frame extends JFrame {
         setVisible(true);
 
         getRootPane().registerKeyboardAction(e -> {
-            controller.undoAction();
+            Controller.undo();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
         getRootPane().registerKeyboardAction(e -> {
-            controller.redoAction();
+            Controller.redo();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
     }
 
@@ -54,9 +52,7 @@ public class Frame extends JFrame {
         topPanel.setBackground(Color.MAGENTA);
         topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
-        infoPanel = new InfoPanel();
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);
-        canvasPanel =new CanvasPanel(controller, infoPanel);
         middlePanel.add(canvasPanel, BorderLayout.CENTER);
 
         // left panel
@@ -69,7 +65,7 @@ public class Frame extends JFrame {
         brushSettings.setBackground(Color.cyan);
         brushSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
-        ColorTabbedPane colorSettings = new ColorTabbedPane(controller);
+        ColorTabbedPane colorSettings = new ColorTabbedPane();
         colorSettings.setMinimumSize(new Dimension(250, 273));
 
         leftPanel=new JPanel(new BorderLayout());
@@ -96,7 +92,7 @@ public class Frame extends JFrame {
         animationPanel.setBackground(Color.ORANGE);
         animationPanel.setMinimumSize(new Dimension(0, 250));
         // rightPanel - layerPanel
-        JPanel layerPanel = new LayerPanel(controller);
+        JPanel layerPanel = new LayerPanel();
         layerPanel.setMinimumSize(new Dimension(0, 250));
 
         rightPanel=new JPanel(new BorderLayout());

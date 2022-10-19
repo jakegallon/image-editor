@@ -10,7 +10,6 @@ public class LayerPanel extends JPanel {
 
     LayerPanelHandler layerPanelHandler;
     JPanel layerContainer;
-    Controller controller;
 
     private final LinkedList<LayerWidget> layerWidgets = new LinkedList<>();
 
@@ -18,8 +17,7 @@ public class LayerPanel extends JPanel {
 
     LayerWidget activeLayerWidget;
 
-    public LayerPanel(Controller controller) {
-        this.controller = controller;
+    public LayerPanel() {
         setLayout(new BorderLayout());
 
         layerPanelHandler = new LayerPanelHandler(this);
@@ -119,7 +117,7 @@ public class LayerPanel extends JPanel {
               protected void paintComponent(Graphics g) {
                   super.paintComponent(g);
                   g.drawImage(layer.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
-                  if(layer == controller.getActiveCanvas().getActiveLayer()){
+                  if(Controller.isActiveLayer(layer)){
                       repaint();
                   }
               }
@@ -160,7 +158,7 @@ public class LayerPanel extends JPanel {
             springLayout.putConstraint(SpringLayout.NORTH, renameButton, 0, SpringLayout.NORTH, deleteButton);
             springLayout.putConstraint(SpringLayout.EAST, renameButton, -4, SpringLayout.WEST, deleteButton);
 
-            if(layer == controller.getActiveCanvas().getActiveLayer()){
+            if(Controller.isActiveLayer(layer)){
                 setNewActiveLayerWidget(this);
             }
         }
@@ -185,7 +183,7 @@ public class LayerPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            controller.getActiveCanvas().setActiveLayer(layer);
+            Controller.getActiveCanvas().setActiveLayer(layer);
             setNewActiveLayerWidget(this);
         }
 

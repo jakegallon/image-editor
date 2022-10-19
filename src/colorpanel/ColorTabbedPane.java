@@ -9,11 +9,8 @@ public class ColorTabbedPane extends JTabbedPane {
 
     private final PalettePanel palettePanel;
     private final ColorPanel colorPanel;
-    private final Controller controller;
 
-    public ColorTabbedPane(Controller controller) {
-        this.controller = controller;
-
+    public ColorTabbedPane() {
         palettePanel = new PalettePanel(this);
         colorPanel = new ColorPanel(this);
 
@@ -38,10 +35,10 @@ public class ColorTabbedPane extends JTabbedPane {
     }
 
     protected void onSelectedColorChange(Color color, boolean isPrimarySelected) {
-        controller.setIsPrimarySelected(isPrimarySelected);
+        Controller.setIsPrimarySelected(isPrimarySelected);
 
-        if(isPrimarySelected) controller.setPrimaryColor(color);
-        else controller.setSecondaryColor(color);
+        if(isPrimarySelected) Controller.primaryColor = color;
+        else Controller.secondaryColor = color;
 
         palettePanel.deselectSelectedHolder();
     }

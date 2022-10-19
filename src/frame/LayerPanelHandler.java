@@ -13,7 +13,7 @@ public class LayerPanelHandler extends JPanel {
         JButton addButton = new JButton("add");
         addButton.addActionListener(e -> {
             //todo remove
-            setActiveCanvas(layerPanel.controller.getActiveCanvas());
+            setActiveCanvas(Controller.getActiveCanvas());
 
             //todo lock buttons when no active canvas
             int index = activeCanvas.getActiveLayerIndex();
@@ -27,7 +27,7 @@ public class LayerPanelHandler extends JPanel {
         JButton delButton = new JButton("del");
         delButton.addActionListener(e -> {
             //todo remove
-            setActiveCanvas(layerPanel.controller.getActiveCanvas());
+            setActiveCanvas(Controller.getActiveCanvas());
 
             int index = activeCanvas.getActiveLayerIndex();
             activeCanvas.deleteLayer(index);
