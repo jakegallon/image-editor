@@ -27,6 +27,7 @@ public class Controller {
     public static void setActiveCanvas(Canvas canvas) {
         Frame.canvasPanel.setCanvas(canvas);
         activeCanvas = canvas;
+        Frame.layerPanel.onCanvasSwitch();
     }
 
     public static Canvas getActiveCanvas() {

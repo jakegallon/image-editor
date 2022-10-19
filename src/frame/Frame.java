@@ -16,6 +16,7 @@ public class Frame extends JFrame {
 
     static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
+    static LayerPanel layerPanel = new LayerPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -92,7 +93,6 @@ public class Frame extends JFrame {
         animationPanel.setBackground(Color.ORANGE);
         animationPanel.setMinimumSize(new Dimension(0, 250));
         // rightPanel - layerPanel
-        JPanel layerPanel = new LayerPanel();
         layerPanel.setMinimumSize(new Dimension(0, 250));
 
         rightPanel=new JPanel(new BorderLayout());

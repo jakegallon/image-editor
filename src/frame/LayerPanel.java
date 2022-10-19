@@ -51,6 +51,19 @@ public class LayerPanel extends JPanel {
         });
     }
 
+    public void onCanvasSwitch() {
+        layerContainer.removeAll();
+        layerWidgets.clear();
+        for(Layer layer : Controller.getActiveCanvas().layers) {
+            LayerWidget layerWidget = new LayerWidget(layer);
+            layerWidgets.add(0, layerWidget);
+
+            layerContainer.add(layerWidget, 0);
+        }
+        layerContainer.revalidate();
+        layerContainer.repaint();
+    }
+
     private void callWidgetResize() {
         for(Component c : layerContainer.getComponents()) {
             if(c instanceof LayerWidget) {
