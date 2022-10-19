@@ -134,6 +134,8 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuNewAction() {
+        NewDialog newDialog = new NewDialog(this);
+        newDialog.setVisible(true);
     }
 
     private void fileMenuOpenAction() {
@@ -319,4 +321,5 @@ public class Frame extends JFrame {
 
         setJMenuBar(menuBar);
     }
+
 }

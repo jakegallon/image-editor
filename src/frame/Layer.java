@@ -62,4 +62,11 @@ public class Layer {
         g.setStroke(new BasicStroke(width));
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
+
+    public void fillAll(Color color) {
+        Color cacheColor = g.getColor();
+        g.setColor(color);
+        g.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g.setColor(cacheColor);
+    }
 }

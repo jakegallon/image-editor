@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 public abstract class BaseTool {
 
     protected CanvasPanel activeCanvasPanel;
-    protected Canvas canvas;
 
     public abstract void onMouseClicked(MouseEvent e);
     public abstract void onMousePressed(MouseEvent e);
@@ -18,11 +17,14 @@ public abstract class BaseTool {
 
     public void onMouseEntered(MouseEvent e) {
         activeCanvasPanel = (CanvasPanel) e.getComponent();
-        canvas = activeCanvasPanel.getCanvas();
         activeCanvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     public void onMouseExited() {
         activeCanvasPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    protected Canvas getCanvas() {
+        return activeCanvasPanel.controller.getActiveCanvas();
     }
 }

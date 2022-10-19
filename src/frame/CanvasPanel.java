@@ -11,7 +11,7 @@ import java.beans.PropertyChangeEvent;
 
 public class CanvasPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 
-    private final Canvas canvas;
+    private Canvas canvas;
     private Point canvasOffset = new Point(0, 0);
 
     private volatile Point mousePos;
@@ -30,14 +30,13 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     public CanvasPanel(Controller controller, InfoPanel infoPanel) {
         this.controller = controller;
-        canvas = new Canvas();
-        controller.setActiveCanvas(canvas);
+        controller.setActiveCanvasPanel(this);
+
         setBackground(new Color(43, 43 ,43));
         setLayout(null);
         addMouseWheelListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
-        add(canvas);
 
         propertyChangeSupport.addPropertyChangeListener(evt -> {
             if(evt.getPropertyName().equals(MOUSE_POS_EVENT)){
@@ -48,6 +47,19 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 infoPanel.setZoomFactor(zoomFactor);
             }
         });
+    }
+
+    //todo change to property change support?
+    public void setCanvas(Canvas canvas) {
+        removeCurrentCanvas();
+        this.canvas = canvas;
+        add(canvas);
+    }
+
+    private void removeCurrentCanvas() {
+        if(canvas != null) {
+            remove(canvas);
+        }
     }
 
     public Canvas getCanvas() {

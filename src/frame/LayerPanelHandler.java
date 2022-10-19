@@ -2,6 +2,7 @@ package frame;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class LayerPanelHandler extends JPanel {
 
     public Canvas activeCanvas;
@@ -11,7 +12,10 @@ public class LayerPanelHandler extends JPanel {
 
         JButton addButton = new JButton("add");
         addButton.addActionListener(e -> {
+            //todo remove
+            setActiveCanvas(layerPanel.controller.getActiveCanvas());
 
+            //todo lock buttons when no active canvas
             int index = activeCanvas.getActiveLayerIndex();
 
             Layer newLayer = newLayer();
@@ -22,6 +26,8 @@ public class LayerPanelHandler extends JPanel {
 
         JButton delButton = new JButton("del");
         delButton.addActionListener(e -> {
+            //todo remove
+            setActiveCanvas(layerPanel.controller.getActiveCanvas());
 
             int index = activeCanvas.getActiveLayerIndex();
             activeCanvas.deleteLayer(index);

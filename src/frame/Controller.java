@@ -38,6 +38,12 @@ public class Controller {
         return secondaryColor;
     }
 
+    private CanvasPanel activeCanvasPanel;
+
+    public void setActiveCanvasPanel(CanvasPanel canvasPanel) {
+        activeCanvasPanel = canvasPanel;
+    }
+
     private Canvas activeCanvas;
 
     public void setActiveCanvas(Canvas canvas) {

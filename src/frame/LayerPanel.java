@@ -25,9 +25,6 @@ public class LayerPanel extends JPanel {
         layerPanelHandler = new LayerPanelHandler(this);
         add(layerPanelHandler, BorderLayout.PAGE_START);
 
-        //todo
-        layerPanelHandler.setActiveCanvas(controller.getActiveCanvas());
-
         layerContainer = new JPanel();
         layerContainer.setLayout(new BoxLayout(layerContainer, BoxLayout.PAGE_AXIS));
 

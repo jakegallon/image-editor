@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Canvas extends JPanel {
 
+    private String fileName;
+
     public ArrayList<Layer> layers = new ArrayList<>();
     private Layer activeLayer;
 
@@ -89,6 +91,14 @@ public class Canvas extends JPanel {
         Layer targetLayer = layers.get(activeIndex + 1);
         targetLayer.addImage(activeLayer.getImage());
         deleteLayer(activeIndex);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
 

@@ -2,6 +2,7 @@ package tool;
 
 import action.EditAction;
 import action.PixelChange;
+import frame.Canvas;
 import frame.Layer;
 
 import java.awt.*;
@@ -22,6 +23,7 @@ public abstract class LayerTool extends BaseTool {
 
     @Override
     public void onMousePressed(MouseEvent e) {
+        Canvas canvas = getCanvas();
         originalLayer = canvas.getActiveLayer();
         actionLayer = new Layer(canvas);
         canvas.addLayer(actionLayer);
@@ -43,6 +45,7 @@ public abstract class LayerTool extends BaseTool {
 
         ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
 
+        Canvas canvas = getCanvas();
         canvas.mergeActiveLayerDown();
 
         EditAction thisAction = new EditAction(originalLayer, pixelChanges);
