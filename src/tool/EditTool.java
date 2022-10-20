@@ -17,6 +17,8 @@ public abstract class EditTool extends BaseTool {
     protected Point lastDragPoint;
     protected Point thisDragPoint;
 
+    protected Color color;
+
     @Override
     public void onMouseClicked(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
@@ -35,6 +37,7 @@ public abstract class EditTool extends BaseTool {
             lastDragPoint = initPressPoint;
             thisDragPoint = lastDragPoint;
 
+            color = Controller.selectedColor();
             onLeftMousePressed();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
@@ -62,9 +65,13 @@ public abstract class EditTool extends BaseTool {
     public void onMouseReleased(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
+            onLeftMouseReleased();
+
             initPressPoint = null;
             lastDragPoint = null;
             thisDragPoint = null;
+
+            color = null;
 
             ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
 
@@ -72,8 +79,6 @@ public abstract class EditTool extends BaseTool {
 
             EditAction thisAction = new EditAction(originalLayer, pixelChanges);
             canvas.undoManager.addEdit(thisAction);
-
-            onLeftMouseReleased();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
             Color color = activeCanvasPanel.getColorAtMousePos();

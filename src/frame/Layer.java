@@ -58,17 +58,14 @@ public class Layer {
         image.setRGB(x, y, color);
     }
 
-    public void drawLine(Point p1, Point p2, int width) {
-        //todo set properly
-        g.setColor(Controller.selectedColor());
+    public void drawLine(Point p1, Point p2, int width, Color color) {
+        g.setColor(color);
         g.setStroke(new BasicStroke(width));
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 
     public void fillAll(Color color) {
-        Color cacheColor = g.getColor();
         g.setColor(color);
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g.setColor(cacheColor);
     }
 }
