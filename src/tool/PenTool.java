@@ -1,6 +1,6 @@
 package tool;
 
-public class PenTool extends BaseTool {
+public class PenTool extends EditTool {
 
     @Override
     protected void onLeftMouseClicked() {

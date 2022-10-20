@@ -1,28 +1,19 @@
 package tool;
 
-import action.EditAction;
-import action.PixelChange;
 import frame.Canvas;
 import frame.CanvasPanel;
 import frame.Controller;
-import frame.Layer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public abstract class BaseTool {
 
     protected CanvasPanel activeCanvasPanel;
     public static Canvas canvas;
 
-    private Layer originalLayer;
-    protected Layer actionLayer;
-
-    protected Point initDragPoint;
-    protected Point lastDragPoint;
-    protected Point thisDragPoint;
+    protected Point initPressPoint;
 
     protected Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
@@ -43,60 +34,44 @@ public abstract class BaseTool {
     public void onMousePressed(MouseEvent e) {
         if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
-            originalLayer = canvas.getActiveLayer();
-            actionLayer = new Layer(canvas);
-            canvas.addLayer(actionLayer);
-
-            initDragPoint = activeCanvasPanel.getMousePos();
-            lastDragPoint = initDragPoint;
-            thisDragPoint = lastDragPoint;
+            initPressPoint = activeCanvasPanel.getMousePos();
 
             onLeftMousePressed();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
-            Controller.setSelectedColor(color);
+            setSelectedColorToMousePosColor();
         }
     }
 
     public void onMouseDragged(MouseEvent e) {
         if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
-            lastDragPoint = thisDragPoint;
-            thisDragPoint = activeCanvasPanel.getMousePos();
-
             onLeftMouseDragged();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
-            Controller.setSelectedColor(color);
+            setSelectedColorToMousePosColor();
         }
     }
 
     public void onMouseReleased(MouseEvent e) {
         if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
-            initDragPoint = null;
-            lastDragPoint = null;
-            thisDragPoint = null;
-
-            ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
-
-            canvas.mergeActiveLayerDown();
-
-            EditAction thisAction = new EditAction(originalLayer, pixelChanges);
-            canvas.undoManager.addEdit(thisAction);
+            initPressPoint = null;
 
             onLeftMouseReleased();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
-            Controller.setSelectedColor(color);
+            setSelectedColorToMousePosColor();
         }
     }
 
     public void onMouseEntered(CanvasPanel canvasPanel) {
         activeCanvasPanel = canvasPanel;
         activeCanvasPanel.setCursor(toolCursor);
+    }
+
+    protected void setSelectedColorToMousePosColor() {
+        Color color = activeCanvasPanel.getColorAtMousePos();
+        Controller.setSelectedColor(color);
     }
 }
