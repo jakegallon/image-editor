@@ -1,12 +1,11 @@
 package tool;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class MoveTool extends BaseTool {
 
     public MoveTool() {
-        toolCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+        toolCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
 
     @Override
@@ -26,26 +25,6 @@ public class MoveTool extends BaseTool {
 
     @Override
     protected void onLeftMouseReleased() {
-
-    }
-
-    @Override
-    public void onMouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onMousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onMouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onMouseReleased(MouseEvent e) {
 
     }
 }
