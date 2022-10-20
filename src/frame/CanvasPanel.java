@@ -1,7 +1,6 @@
 package frame;
 
 import tool.BaseTool;
-import tool.DebugTool;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -257,5 +256,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 InfoPanel.setZoomFactor(zoomFactor);
             }
         });
+    }
+
+    public Color getColorAtMousePos() {
+        return canvas.getColorAtPoint(mousePos);
     }
 }

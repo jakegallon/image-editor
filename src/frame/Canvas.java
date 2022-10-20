@@ -3,6 +3,7 @@ package frame;
 import javax.swing.*;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Canvas extends JPanel {
@@ -18,13 +19,24 @@ public class Canvas extends JPanel {
         setBounds(0, 0, 256, 256);
     }
 
+    private BufferedImage image;
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        image = new BufferedImage(getBounds().width, getBounds().height, BufferedImage.TYPE_INT_ARGB);
+
         for (int i = layers.size() - 1; i >= 0; i--) {
-            g.drawImage(layers.get(i).getImage(), 0, 0, getBounds().width, getBounds().height, null);
+            Graphics gImage = image.getGraphics();
+            gImage.drawImage(layers.get(i).getImage(), 0, 0, getBounds().width, getBounds().height, null);
         }
+
+        g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
+    }
+
+    public Color getColorAtPoint(Point p) {
+        int c = image.getRGB(p.x, p.y);
+        return new Color(c);
     }
 
     public int getActiveLayerIndex() {

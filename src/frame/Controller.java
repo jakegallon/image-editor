@@ -19,6 +19,14 @@ public class Controller {
         else return secondaryColor;
     }
 
+    public static void setSelectedColor(Color color) {
+        if(isPrimarySelected) {
+            primaryColor = color;
+        } else {
+            secondaryColor = color;
+        }
+    }
+
     public static Color notSelectedColor() {
         if(!isPrimarySelected) return primaryColor;
         else return secondaryColor;

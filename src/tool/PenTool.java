@@ -1,36 +1,24 @@
 package tool;
 
-import javax.swing.*;
-import java.awt.event.MouseEvent;
-
-public class PenTool extends LayerTool {
+public class PenTool extends BaseTool {
 
     @Override
-    public void onMouseClicked(MouseEvent e) {
+    protected void onLeftMouseClicked() {
 
     }
 
     @Override
-    public void onMousePressed(MouseEvent e) {
-        super.onMousePressed(e);
-        if(SwingUtilities.isLeftMouseButton(e)) {
+    protected void onLeftMousePressed() {
 
-        }
     }
 
     @Override
-    public void onMouseDragged(MouseEvent e) {
-        super.onMouseDragged(e);
-        if(SwingUtilities.isLeftMouseButton(e)) {
-            actionLayer.drawLine(lastDragPoint, thisDragPoint, 1);
-        }
+    protected void onLeftMouseDragged() {
+        actionLayer.drawLine(lastDragPoint, thisDragPoint, 1);
     }
 
     @Override
-    public void onMouseReleased(MouseEvent e) {
-        super.onMouseReleased(e);
-        if(SwingUtilities.isLeftMouseButton(e)) {
+    protected void onLeftMouseReleased() {
 
-        }
     }
 }
