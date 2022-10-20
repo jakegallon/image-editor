@@ -2,9 +2,9 @@ package tool;
 
 import action.EditAction;
 import action.PixelChange;
-import frame.Canvas;
 import frame.Layer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ public abstract class LayerTool extends BaseTool {
     protected Layer actionLayer;
     protected Point lastDragPoint;
     protected Point thisDragPoint;
+    protected Point initDragPoint;
 
     @Override
     public void onMouseClicked(MouseEvent e) {
@@ -23,32 +24,44 @@ public abstract class LayerTool extends BaseTool {
 
     @Override
     public void onMousePressed(MouseEvent e) {
-        Canvas canvas = getCanvas();
-        originalLayer = canvas.getActiveLayer();
-        actionLayer = new Layer(canvas);
-        canvas.addLayer(actionLayer);
+        if(SwingUtilities.isLeftMouseButton(e)) {
+            originalLayer = canvas.getActiveLayer();
+            actionLayer = new Layer(canvas);
+            canvas.addLayer(actionLayer);
 
-        lastDragPoint = activeCanvasPanel.getMousePos();
-        thisDragPoint = lastDragPoint;
+            initDragPoint = activeCanvasPanel.getMousePos();
+            lastDragPoint = initDragPoint;
+            thisDragPoint = lastDragPoint;
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            //todo
+        }
     }
 
     @Override
     public void onMouseDragged(MouseEvent e) {
-        lastDragPoint = thisDragPoint;
-        thisDragPoint = activeCanvasPanel.getMousePos();
+        if(SwingUtilities.isLeftMouseButton(e)) {
+            lastDragPoint = thisDragPoint;
+            thisDragPoint = activeCanvasPanel.getMousePos();
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            //todo
+        }
     }
 
     @Override
     public void onMouseReleased(MouseEvent e) {
-        lastDragPoint = null;
-        thisDragPoint = null;
+        if(SwingUtilities.isLeftMouseButton(e)) {
+            initDragPoint = null;
+            lastDragPoint = null;
+            thisDragPoint = null;
 
-        ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
+            ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
 
-        Canvas canvas = getCanvas();
-        canvas.mergeActiveLayerDown();
+            canvas.mergeActiveLayerDown();
 
-        EditAction thisAction = new EditAction(originalLayer, pixelChanges);
-        canvas.undoManager.addEdit(thisAction);
+            EditAction thisAction = new EditAction(originalLayer, pixelChanges);
+            canvas.undoManager.addEdit(thisAction);
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            //todo
+        }
     }
 }

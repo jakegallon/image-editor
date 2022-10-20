@@ -1,5 +1,7 @@
 package frame;
 
+import tool.BaseTool;
+
 import java.awt.*;
 
 public class Controller {
@@ -25,9 +27,10 @@ public class Controller {
     private static Canvas activeCanvas;
 
     public static void setActiveCanvas(Canvas canvas) {
-        Frame.canvasPanel.setCanvas(canvas);
         activeCanvas = canvas;
+        Frame.canvasPanel.setCanvas(canvas);
         Frame.layerPanel.onCanvasSwitch();
+        BaseTool.canvas = canvas;
     }
 
     public static Canvas getActiveCanvas() {
@@ -52,5 +55,17 @@ public class Controller {
 
     public static boolean isActiveLayer(Layer layer) {
         return layer == activeCanvas.getActiveLayer();
+    }
+
+    private static BaseTool activeTool;
+
+    public static void setActiveTool(BaseTool tool) {
+        activeTool = tool;
+        //todo change to get/set
+        Frame.canvasPanel.activeTool = activeTool;
+    }
+
+    public static BaseTool getActiveTool() {
+        return activeTool;
     }
 }

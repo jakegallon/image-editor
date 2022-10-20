@@ -24,7 +24,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
 
-    BaseTool activeTool = new DebugTool();
+    public BaseTool activeTool;
 
     public CanvasPanel() {
         init();
@@ -228,12 +228,13 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        activeTool.onMouseEntered(e);
+        if(activeTool == null) return; //todo remove
+        activeTool.onMouseEntered(this);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        activeTool.onMouseExited();
+
     }
 
     private void init() {

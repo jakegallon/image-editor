@@ -58,13 +58,10 @@ public class Frame extends JFrame {
 
         // left panel
         // leftPanel - toolBar
-        JPanel toolBar = new JPanel();
-        toolBar.setBackground(Color.yellow);
-        toolBar.setPreferredSize(new Dimension(40, 0));
+        ToolSelectPanel toolBar = new ToolSelectPanel();
         // leftPanel - brushSettings
-        JPanel brushSettings = new JPanel();
-        brushSettings.setBackground(Color.cyan);
-        brushSettings.setMinimumSize(new Dimension(0, 250));
+        ToolSettingsPanel toolSettings = new ToolSettingsPanel();
+        toolSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
         ColorTabbedPane colorSettings = new ColorTabbedPane();
         colorSettings.setMinimumSize(new Dimension(250, 273));
@@ -77,7 +74,7 @@ public class Frame extends JFrame {
 
         JPanel toolSelectSettings = new JPanel(new BorderLayout());
         toolSelectSettings.add(toolBar, BorderLayout.LINE_START);
-        toolSelectSettings.add(brushSettings, BorderLayout.CENTER);
+        toolSelectSettings.add(toolSettings, BorderLayout.CENTER);
 
         JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, toolSelectSettings, colorSettings);
         brushColor.setResizeWeight(1.0);
