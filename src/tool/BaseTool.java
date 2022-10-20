@@ -71,6 +71,8 @@ public abstract class BaseTool {
     }
 
     protected void setSelectedColorToMousePosColor() {
+        if(!activeCanvasPanel.isMouseOverCanvas()) return;
+
         Color color = activeCanvasPanel.getColorAtMousePos();
         Controller.setSelectedColor(color);
     }

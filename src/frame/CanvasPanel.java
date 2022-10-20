@@ -261,4 +261,8 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     public Color getColorAtMousePos() {
         return canvas.getColorAtPoint(mousePos);
     }
+
+    public boolean isMouseOverCanvas() {
+        return canvas.contains(mousePos);
+    }
 }
