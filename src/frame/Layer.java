@@ -63,6 +63,16 @@ public class Layer {
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 
+    public void eraseLine(Point p1, Point p2, int width) {
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+
+        g.setColor(new Color(0, 0, 0, 0.5f));
+        g.setStroke(new BasicStroke(width));
+        g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+    }
+
     public void fillAll(Color color) {
         g.setColor(color);
         g.fillRect(0, 0, image.getWidth(), image.getHeight());

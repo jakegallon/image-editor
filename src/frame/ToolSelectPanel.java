@@ -1,9 +1,6 @@
 package frame;
 
-import tool.EyeTool;
-import tool.FillTool;
-import tool.MoveTool;
-import tool.PenTool;
+import tool.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -59,6 +56,11 @@ public class ToolSelectPanel extends JPanel {
         Button eraseButton = new Button("erase");
         eraseButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
         add(eraseButton);
+
+        eraseButton.addActionListener(e -> {
+            EraseTool eraseTool = new EraseTool();
+            Controller.setActiveTool(eraseTool);
+        });
 
         springLayout.putConstraint(SpringLayout.NORTH, moveButton, 0, SpringLayout.NORTH,this);
         springLayout.putConstraint(SpringLayout.NORTH, penButton, 0, SpringLayout.SOUTH,moveButton);
