@@ -30,7 +30,7 @@ public class ColorTabbedPane extends JTabbedPane {
         return colorPanel.getSelectedColor();
     }
 
-    protected void setSelectedColor(Color color) {
+    public void setSelectedColor(Color color) {
         colorPanel.setSelectedColor(color);
     }
 

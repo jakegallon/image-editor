@@ -20,11 +20,7 @@ public class Controller {
     }
 
     public static void setSelectedColor(Color color) {
-        if(isPrimarySelected) {
-            primaryColor = color;
-        } else {
-            secondaryColor = color;
-        }
+        Frame.colorSettings.setSelectedColor(color);
     }
 
     public static Color notSelectedColor() {

@@ -17,6 +17,7 @@ public class Frame extends JFrame {
     static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
     static LayerPanel layerPanel = new LayerPanel();
+    static ColorTabbedPane colorSettings = new ColorTabbedPane();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -63,7 +64,6 @@ public class Frame extends JFrame {
         ToolSettingsPanel toolSettings = new ToolSettingsPanel();
         toolSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - colorSettings
-        ColorTabbedPane colorSettings = new ColorTabbedPane();
         colorSettings.setMinimumSize(new Dimension(250, 273));
 
         leftPanel=new JPanel(new BorderLayout());

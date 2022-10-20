@@ -59,6 +59,8 @@ public class Layer {
     }
 
     public void drawLine(Point p1, Point p2, int width) {
+        //todo set properly
+        g.setColor(Controller.selectedColor());
         g.setStroke(new BasicStroke(width));
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
