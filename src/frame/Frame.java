@@ -14,7 +14,7 @@ public class Frame extends JFrame {
     JSplitPane leftMiddle, leftMiddleRight;
     JPanel leftPanel, rightPanel, topPanel;
 
-    static CanvasPanel canvasPanel = new CanvasPanel();
+    public static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
     static LayerPanel layerPanel = new LayerPanel();
     static ColorTabbedPane colorSettings = new ColorTabbedPane();

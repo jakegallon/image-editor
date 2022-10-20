@@ -1,6 +1,7 @@
 package frame;
 
 import tool.BaseTool;
+import tool.MoveTool;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -161,7 +162,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e)){
+        if(shouldScroll(e)){
             initialMousePos = mousePos;
             initialCanvasOffset = canvasOffset;
             scrollLocked = true;
@@ -170,10 +171,15 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
     }
 
+    private boolean shouldScroll(MouseEvent e) {
+        if(SwingUtilities.isMiddleMouseButton(e)) return true;
+        return SwingUtilities.isLeftMouseButton(e) && activeTool instanceof MoveTool;
+    }
+
     @Override
     public void mouseDragged(MouseEvent e) {
         setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
-        if(SwingUtilities.isMiddleMouseButton(e)){
+        if(shouldScroll(e)){
             Point trueMousePos = mouseEventPosToAbsolutePos(e.getPoint());
             Point d = getPointTranslation(initialMousePos, trueMousePos);
             int newX = initialCanvasOffset.x + d.x;
@@ -198,7 +204,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e)){
+        if(shouldScroll(e)){
             scrollLocked = false;
         } else {
             activeTool.onMouseReleased(e);

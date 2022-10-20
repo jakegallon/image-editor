@@ -1,5 +1,6 @@
 package frame;
 
+import tool.MoveTool;
 import tool.PenTool;
 
 import javax.swing.*;
@@ -19,6 +20,11 @@ public class ToolSelectPanel extends JPanel {
         Button moveButton = new Button("move");
         moveButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
         add(moveButton);
+
+        moveButton.addActionListener(e -> {
+            MoveTool moveTool = new MoveTool();
+            Controller.setActiveTool(moveTool);
+        });
 
         Button penButton = new Button("pen");
         penButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
