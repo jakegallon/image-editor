@@ -1,5 +1,6 @@
 package frame;
 
+import tool.EyeTool;
 import tool.MoveTool;
 import tool.PenTool;
 
@@ -39,6 +40,11 @@ public class ToolSelectPanel extends JPanel {
         Button eyeDropperButton = new Button("eye");
         eyeDropperButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
         add(eyeDropperButton);
+
+        eyeDropperButton.addActionListener(e -> {
+            EyeTool eyeTool = new EyeTool();
+            Controller.setActiveTool(eyeTool);
+        });
 
         Button fillButton = new Button("fill");
         fillButton.setPreferredSize(new Dimension(buttonSize, buttonSize));

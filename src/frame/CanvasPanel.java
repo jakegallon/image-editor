@@ -269,6 +269,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     public boolean isMouseOverCanvas() {
+        if(canvas == null) return false;
         return canvas.contains(mousePos);
     }
 }
