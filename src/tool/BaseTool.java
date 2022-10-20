@@ -23,7 +23,6 @@ public abstract class BaseTool {
     protected abstract void onLeftMouseReleased();
 
     public void onMouseClicked(MouseEvent e) {
-        if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             onLeftMouseClicked();
         } else if (SwingUtilities.isRightMouseButton(e)) {
@@ -32,7 +31,6 @@ public abstract class BaseTool {
     }
 
     public void onMousePressed(MouseEvent e) {
-        if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             initPressPoint = activeCanvasPanel.getMousePos();
 
@@ -44,7 +42,6 @@ public abstract class BaseTool {
     }
 
     public void onMouseDragged(MouseEvent e) {
-        if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             onLeftMouseDragged();
         }
@@ -54,7 +51,6 @@ public abstract class BaseTool {
     }
 
     public void onMouseReleased(MouseEvent e) {
-        if(canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             initPressPoint = null;
 
