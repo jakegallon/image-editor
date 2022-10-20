@@ -1,6 +1,7 @@
 package frame;
 
 import tool.EyeTool;
+import tool.FillTool;
 import tool.MoveTool;
 import tool.PenTool;
 
@@ -49,6 +50,11 @@ public class ToolSelectPanel extends JPanel {
         Button fillButton = new Button("fill");
         fillButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
         add(fillButton);
+
+        fillButton.addActionListener(e -> {
+            FillTool fillTool = new FillTool();
+            Controller.setActiveTool(fillTool);
+        });
 
         Button eraseButton = new Button("erase");
         eraseButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
