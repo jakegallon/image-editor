@@ -14,7 +14,7 @@ public class PenTool extends EditTool {
 
     @Override
     protected void onLeftMouseDragged() {
-        actionLayer.drawLine(lastDragPoint, thisDragPoint, 1, color);
+        activeLayer.drawLine(lastDragPoint, thisDragPoint, 1, color);
     }
 
     @Override

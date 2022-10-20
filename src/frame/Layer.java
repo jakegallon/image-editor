@@ -34,13 +34,12 @@ public class Layer {
         return image;
     }
 
-    public ArrayList<PixelChange> getImageDifferences(BufferedImage targetImage) {
+    public ArrayList<PixelChange> getImageDifferences(BufferedImage originalImage) {
         ArrayList<PixelChange> pixelChanges = new ArrayList<>();
         for(int x = 0; x < image.getWidth(); x++){
             for(int y = 0; y < image.getHeight(); y++){
-                int newColor = targetImage.getRGB(x, y);
-                if(newColor == 0) continue;
-                int oldColor = image.getRGB(x, y);
+                int newColor = image.getRGB(x, y);
+                int oldColor = originalImage.getRGB(x, y);
                 if(newColor == oldColor) continue;
 
                 PixelChange pixelChange = new PixelChange(x, y, oldColor, newColor);

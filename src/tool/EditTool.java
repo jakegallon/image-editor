@@ -8,12 +8,13 @@ import frame.Layer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class EditTool extends BaseTool {
 
-    private Layer originalLayer;
-    protected Layer actionLayer;
+    private BufferedImage originalImage;
+    protected Layer activeLayer;
     protected Point lastDragPoint;
     protected Point thisDragPoint;
 
@@ -29,9 +30,11 @@ public abstract class EditTool extends BaseTool {
     public void onMousePressed(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
-            originalLayer = canvas.getActiveLayer();
-            actionLayer = new Layer(canvas);
-            canvas.addLayer(actionLayer);
+            activeLayer = canvas.getActiveLayer();
+            BufferedImage i = activeLayer.getImage();
+
+            originalImage = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            originalImage.getGraphics().drawImage(i, 0, 0, null);
 
             initPressPoint = activeCanvasPanel.getMousePos();
             lastDragPoint = initPressPoint;
@@ -73,11 +76,9 @@ public abstract class EditTool extends BaseTool {
 
             color = null;
 
-            ArrayList<PixelChange> pixelChanges = originalLayer.getImageDifferences(actionLayer.getImage());
+            ArrayList<PixelChange> pixelChanges = activeLayer.getImageDifferences(originalImage);
 
-            canvas.mergeActiveLayerDown();
-
-            EditAction thisAction = new EditAction(originalLayer, pixelChanges);
+            EditAction thisAction = new EditAction(activeLayer, pixelChanges);
             canvas.undoManager.addEdit(thisAction);
         }
         else if (SwingUtilities.isRightMouseButton(e)) {

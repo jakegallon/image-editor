@@ -10,7 +10,7 @@ public class FillTool extends EditTool {
 
     @Override
     protected void onLeftMousePressed() {
-        actionLayer.fillAll(Controller.selectedColor());
+        activeLayer.fillAll(Controller.selectedColor());
     }
 
     @Override
