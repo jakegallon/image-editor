@@ -1,7 +1,5 @@
 package tool;
 
-import frame.Controller;
-
 public class FillTool extends EditTool {
     @Override
     protected void onLeftMouseClicked() {
@@ -10,7 +8,7 @@ public class FillTool extends EditTool {
 
     @Override
     protected void onLeftMousePressed() {
-        activeLayer.fillAll(Controller.selectedColor());
+        activeLayer.fillAll(color);
     }
 
     @Override
