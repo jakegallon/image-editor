@@ -14,9 +14,52 @@ public class Canvas extends JPanel {
     private Layer activeLayer;
 
     public UndoManager undoManager = new UndoManager();
+    public GridInformation gridInformation = new GridInformation(32, 32, GridStyle.NONE);
 
     public Canvas() {
         setBounds(0, 0, 256, 256);
+    }
+
+    private void drawGrid(Graphics g) {
+        switch (gridInformation.gridStyle()){
+            case NONE -> {
+            }
+            case SOLID -> {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setStroke(new BasicStroke(0.1f));
+                g2d.setColor(Color.black);
+
+                Rectangle bounds = getBounds();
+                for(int x = 0; x < bounds.width; x += gridInformation.gridX()) {
+                    g2d.drawLine(x, 0, x, bounds.height);
+                }
+                for(int y = 0; y < bounds.height; y += gridInformation.gridY()) {
+                    g2d.drawLine(0, y, bounds.width, y);
+                }
+            }
+        }
+    }
+
+    public void setGridX(int gridX) {
+        int curY = gridInformation.gridY();
+        GridStyle curStyle = gridInformation.gridStyle();
+        gridInformation = new GridInformation(gridX, curY, curStyle);
+    }
+
+    public void setGridY(int gridY) {
+        int curX = gridInformation.gridX();
+        GridStyle curStyle = gridInformation.gridStyle();
+        gridInformation = new GridInformation(curX, gridY, curStyle);
+    }
+
+    public void setGridStyle(GridStyle gridStyle) {
+        int curX = gridInformation.gridX();
+        int curY = gridInformation.gridY();
+        gridInformation = new GridInformation(curX, curY, gridStyle);
+    }
+
+    public void getGridCellAtPoint(Point p) {
+        // todo
     }
 
     private BufferedImage image;
@@ -32,6 +75,7 @@ public class Canvas extends JPanel {
         }
 
         g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
+        drawGrid(g);
     }
 
     public Color getColorAtPoint(Point p) {

@@ -86,14 +86,13 @@ public class Frame extends JFrame {
         canvasOverview.setBackground(Color.RED);
         canvasOverview.setMinimumSize(new Dimension(0, 250));
         // rightPanel - animationPanel
-        JPanel animationPanel = new JPanel();
-        animationPanel.setBackground(Color.ORANGE);
-        animationPanel.setMinimumSize(new Dimension(0, 250));
+        SpriteTabbedPane spriteTabbedPane = new SpriteTabbedPane();
+        spriteTabbedPane.setMinimumSize(new Dimension(0, 250));
         // rightPanel - layerPanel
         layerPanel.setMinimumSize(new Dimension(0, 250));
 
         rightPanel=new JPanel(new BorderLayout());
-        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasOverview, animationPanel);
+        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasOverview, spriteTabbedPane);
         JSplitPane canvasAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasAnimation, layerPanel);
         canvasAnimationLayer.setResizeWeight(1.0);
 
