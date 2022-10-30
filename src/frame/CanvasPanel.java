@@ -34,12 +34,59 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         removeCurrentCanvas();
         add(canvas);
         this.canvas = canvas;
-        //todo recenter
+        zoomToFitCanvas();
     }
 
     private void removeCurrentCanvas() {
         if(canvas == null) return;
         remove(canvas);
+    }
+
+    private void zoomToFitCanvas() {
+        Dimension canvasDimension = canvas.getSize();
+
+        double targetZoomFactor = calculateTargetZoomFactor(canvasDimension);
+        double absoluteZoomFactor = getAbsoluteZoomFactor(targetZoomFactor);
+        setZoomFactor((float) absoluteZoomFactor);
+
+        canvasOffset = getOffsetToCenterCanvas(canvasDimension);
+    }
+
+    private double calculateTargetZoomFactor(Dimension canvasDimension) {
+        int maxWidth = (int) (getWidth() * 0.9f);
+        int maxHeight = (int) (getHeight() * 0.9f);
+
+        float canvasWidthPercent = (float) canvasDimension.width / maxWidth;
+        float canvasHeightPercent = (float) canvasDimension.height / maxHeight;
+        float canvasPercent = Math.max(canvasWidthPercent, canvasHeightPercent);
+
+        return 1 / canvasPercent;
+    }
+
+    private double getAbsoluteZoomFactor(double targetZoomFactor) {
+        double zoomIterations = Math.log(targetZoomFactor) / Math.log(ZOOM_MULTIPLIER);
+
+        if(targetZoomFactor > 1.0)
+            zoomIterations = Math.floor(zoomIterations);
+        else
+            zoomIterations = Math.ceil(zoomIterations);
+
+        return Math.pow(ZOOM_MULTIPLIER, zoomIterations);
+    }
+
+    private Point getOffsetToCenterCanvas() {
+        Dimension canvasDimension = canvas.getSize();
+        return  getOffsetToCenterCanvas(canvasDimension);
+    }
+
+    private Point getOffsetToCenterCanvas(Dimension canvasDimension) {
+        int currentWidth = (int) (getWidth() / zoomFactor);
+        int currentHeight = (int) (getHeight() / zoomFactor);
+
+        int xOffset = (currentWidth - canvasDimension.width) / 2;
+        int yOffset = (currentHeight - canvasDimension.height) / 2;
+
+        return new Point(-xOffset, -yOffset);
     }
 
     public Canvas getCanvas() {
