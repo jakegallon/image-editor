@@ -63,7 +63,6 @@ public class MagnificationPanel extends JLayeredPane {
 
     public static void setIsZoomedIn(boolean b) {
         isZoomedIn = b;
-        System.out.println(isZoomedIn);
     }
 
     public static void setCanvasOffset(Point p) {
@@ -97,10 +96,7 @@ public class MagnificationPanel extends JLayeredPane {
         add(magnifiedPanelRenderer, 1, 0);
         putConstraints();
 
-        automaticModeButton.addChangeListener(e -> {
-            isAutomaticMode = automaticModeButton.isSelected();
-            //magnifiedPanelRenderer.repaint();
-        });
+        automaticModeButton.addChangeListener(e -> isAutomaticMode = automaticModeButton.isSelected());
         targetZoomSlider.addChangeListener(e -> setTargetZoom((targetZoomSlider.getValue()) / 10f + 1));
         crosshairButton.addChangeListener(e -> {
             isCrosshairEnabled = crosshairButton.isSelected();
