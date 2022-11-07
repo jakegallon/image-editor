@@ -18,16 +18,30 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private Point initialMousePos;
 
     private static final float ZOOM_MULTIPLIER = 1.1f;
-    private float zoomFactor = 1.0f;
+    private static float zoomFactor = 1.0f;
+    public static float fullscreenZoomFactor = 1.0f;
 
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
     private static final String ZOOM_EVENT = "canvas zoomed";
+    private static final String OFFSET_EVENT = "canvas offset altered";
 
     public BaseTool activeTool;
 
     public CanvasPanel() {
         init();
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+
+                if(canvas != null) {
+                    updateFullscreenZoomFactor();
+                    MagnificationPanel.setViewportDimension(getSize());
+                }
+            }
+        });
     }
 
     public void setCanvas(Canvas canvas) {
@@ -35,6 +49,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         add(canvas);
         this.canvas = canvas;
         zoomToFitCanvas();
+        MagnificationPanel.setViewportDimension(getSize());
     }
 
     private void removeCurrentCanvas() {
@@ -43,21 +58,21 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     private void zoomToFitCanvas() {
-        Dimension canvasDimension = canvas.getSize();
+        updateFullscreenZoomFactor();
 
-        double targetZoomFactor = calculateTargetZoomFactor(canvasDimension);
-        double absoluteZoomFactor = getAbsoluteZoomFactor(targetZoomFactor);
-        setZoomFactor((float) absoluteZoomFactor);
+        setZoomFactor(fullscreenZoomFactor / ZOOM_MULTIPLIER);
 
-        canvasOffset = getOffsetToCenterCanvas(canvasDimension);
+        setCanvasOffset(getOffsetToCenterCanvas());
     }
 
-    private double calculateTargetZoomFactor(Dimension canvasDimension) {
-        int maxWidth = (int) (getWidth() * 0.9f);
-        int maxHeight = (int) (getHeight() * 0.9f);
+    private void updateFullscreenZoomFactor() {
+        double targetZoomFactor = calculateTargetZoomFactor();
+        fullscreenZoomFactor = ((float) getAbsoluteZoomFactor(targetZoomFactor));
+    }
 
-        float canvasWidthPercent = (float) canvasDimension.width / maxWidth;
-        float canvasHeightPercent = (float) canvasDimension.height / maxHeight;
+    private double calculateTargetZoomFactor() {
+        float canvasWidthPercent = (float) canvas.getWidth() / getWidth();
+        float canvasHeightPercent = (float) canvas.getHeight() / getHeight();
         float canvasPercent = Math.max(canvasWidthPercent, canvasHeightPercent);
 
         return 1 / canvasPercent;
@@ -196,13 +211,19 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         int oldOffsetToMouseY = mousePos.y - canvasOffset.y;
         int newOffsetToMouseX = (int) (oldOffsetToMouseX / zoomRatio);
         int newOffsetToMouseY = (int) (oldOffsetToMouseY / zoomRatio);
-        canvasOffset = new Point(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY);
+        setCanvasOffset(new Point(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY));
     }
 
-    private void setZoomFactor(Float zoomFactor) {
-        float oldValue = this.zoomFactor;
-        this.zoomFactor = zoomFactor;
+    private void setZoomFactor(Float f) {
+        float oldValue = zoomFactor;
+        zoomFactor = f;
         propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
+    }
+
+    private void setCanvasOffset(Point p) {
+        Point oldValue = canvasOffset;
+        canvasOffset = p;
+        propertyChangeSupport.firePropertyChange(OFFSET_EVENT, oldValue, canvasOffset);
     }
 
     private Point initialCanvasOffset;
@@ -231,7 +252,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
             Point d = getPointTranslation(initialMousePos, trueMousePos);
             int newX = initialCanvasOffset.x + d.x;
             int newY = initialCanvasOffset.y + d.y;
-            canvasOffset = new Point(newX, newY);
+            setCanvasOffset(new Point(newX, newY));
         } else {
             activeTool.onMouseDragged(e);
         }
@@ -296,17 +317,19 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        attachInfoPanel();
-    }
-
-    private void attachInfoPanel() {
         propertyChangeSupport.addPropertyChangeListener(evt -> {
             if(evt.getPropertyName().equals(MOUSE_POS_EVENT)){
-                InfoPanel.setMouseLocation((Point) evt.getNewValue());
+                InfoPanel.setMouseLocation(mousePos);
+                MagnificationPanel.setMousePos(mousePos);
             }
             if(evt.getPropertyName().equals(ZOOM_EVENT)){
                 calculateZoomOffset(evt);
                 InfoPanel.setZoomFactor(zoomFactor);
+                MagnificationPanel.setZoomFactor(zoomFactor);
+                MagnificationPanel.setIsZoomedIn(zoomFactor > fullscreenZoomFactor);
+            }
+            if(evt.getPropertyName().equals(OFFSET_EVENT)){
+                MagnificationPanel.setCanvasOffset(canvasOffset);
             }
         });
     }

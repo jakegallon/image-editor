@@ -62,20 +62,27 @@ public class Canvas extends JPanel {
         // todo
     }
 
-    private BufferedImage image;
+    private BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        updateImage();
+        g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
+        drawGrid(g);
+    }
+
+    private void updateImage() {
         image = new BufferedImage(getBounds().width, getBounds().height, BufferedImage.TYPE_INT_ARGB);
 
         for (int i = layers.size() - 1; i >= 0; i--) {
             Graphics gImage = image.getGraphics();
             gImage.drawImage(layers.get(i).getImage(), 0, 0, getBounds().width, getBounds().height, null);
         }
+    }
 
-        g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
-        drawGrid(g);
+    public BufferedImage getImage() {
+        return image;
     }
 
     public Color getColorAtPoint(Point p) {

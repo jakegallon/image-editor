@@ -18,6 +18,7 @@ public class Frame extends JFrame {
     static InfoPanel infoPanel = new InfoPanel();
     static LayerPanel layerPanel = new LayerPanel();
     static ColorTabbedPane colorSettings = new ColorTabbedPane();
+    static MagnificationPanel magnificationPanel = new MagnificationPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -27,12 +28,10 @@ public class Frame extends JFrame {
         createLayout();
         setVisible(true);
 
-        getRootPane().registerKeyboardAction(e -> {
-            Controller.undo();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
-        getRootPane().registerKeyboardAction(e -> {
-            Controller.redo();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> Controller.undo(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> Controller.redo(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
     }
 
     private void initializeWindow() {
@@ -82,9 +81,7 @@ public class Frame extends JFrame {
 
         // Right panel
         // rightPanel - canvasOverview
-        JPanel canvasOverview = new JPanel();
-        canvasOverview.setBackground(Color.RED);
-        canvasOverview.setMinimumSize(new Dimension(0, 250));
+        magnificationPanel.setMinimumSize(new Dimension(0, 250));
         // rightPanel - animationPanel
         SpriteTabbedPane spriteTabbedPane = new SpriteTabbedPane();
         spriteTabbedPane.setMinimumSize(new Dimension(0, 250));
@@ -92,7 +89,7 @@ public class Frame extends JFrame {
         layerPanel.setMinimumSize(new Dimension(0, 250));
 
         rightPanel=new JPanel(new BorderLayout());
-        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasOverview, spriteTabbedPane);
+        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationPanel, spriteTabbedPane);
         JSplitPane canvasAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasAnimation, layerPanel);
         canvasAnimationLayer.setResizeWeight(1.0);
 
@@ -116,13 +113,11 @@ public class Frame extends JFrame {
             }
         });
 
-        leftMiddle.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, evt -> {
-            leftPanelWidth = (int)evt.getNewValue();
-        });
+        leftMiddle.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+                evt -> leftPanelWidth = (int)evt.getNewValue());
 
-        leftMiddleRight.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, evt -> {
-            rightPanelWidth = pane.getWidth() - (int)evt.getNewValue();
-        });
+        leftMiddleRight.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+                evt -> rightPanelWidth = pane.getWidth() - (int)evt.getNewValue());
     }
 
     private void fileMenuNewAction() {

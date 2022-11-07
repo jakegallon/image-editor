@@ -34,6 +34,7 @@ public class Controller {
         activeCanvas = canvas;
         Frame.canvasPanel.setCanvas(canvas);
         Frame.layerPanel.onCanvasSwitch();
+        Frame.magnificationPanel.setCanvas(canvas);
         BaseTool.canvas = canvas;
     }
 
@@ -44,7 +45,7 @@ public class Controller {
     public static void undo() {
         try {
             activeCanvas.undoManager.undo();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -52,7 +53,7 @@ public class Controller {
     public static void redo() {
         try {
             activeCanvas.undoManager.redo();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
