@@ -58,6 +58,10 @@ public class Canvas extends JPanel {
         gridInformation = new GridInformation(curX, curY, gridStyle);
     }
 
+    public GridInformation getGridInformation() {
+        return gridInformation;
+    }
+
     public void getGridCellAtPoint(Point p) {
         // todo
     }

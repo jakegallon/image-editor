@@ -4,6 +4,10 @@ import javax.swing.*;
 
 public class GridPanel extends JPanel {
 
+    private static JComboBox<GridStyle> gridStyleBox;
+    private static JSpinner gridXSpinner;
+    private static JSpinner gridYSpinner;
+
     public GridPanel() {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
@@ -11,28 +15,28 @@ public class GridPanel extends JPanel {
 
         JLabel gridStyleLabel = new JLabel("Grid Style:");
 
-        JComboBox<GridStyle> gridStyleBox = new JComboBox<>(GridStyle.values());
+        gridStyleBox = new JComboBox<>(GridStyle.values());
         gridStyleBox.addActionListener(
                 e -> Controller.getActiveCanvas().setGridStyle((GridStyle) gridStyleBox.getSelectedItem())
         );
         add(gridStyleBox);
         add(gridStyleLabel);
 
-        springLayout.putConstraint(SpringLayout.NORTH, gridStyleLabel,7, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.NORTH, gridStyleLabel, 7, SpringLayout.NORTH, this);
         springLayout.putConstraint(SpringLayout.WEST, gridStyleLabel, 7, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.BASELINE, gridStyleBox, 0, SpringLayout.BASELINE, gridStyleLabel);
         springLayout.putConstraint(SpringLayout.WEST, gridStyleBox, 5, SpringLayout.EAST, gridStyleLabel);
 
         JLabel gridXLabel = new JLabel("Cell X:");
 
-        JSpinner gridXSpinner = new JSpinner(new SpinnerNumberModel(32, 0, 5001, 1));
+        gridXSpinner = new JSpinner(new SpinnerNumberModel(32, 0, 5001, 1));
         gridXSpinner.addChangeListener(
                 e -> {
                     int value = (int) gridXSpinner.getValue();
-                    if(value == 0) {
+                    if (value == 0) {
                         value = 5000;
                         gridXSpinner.setValue(value);
-                    } else if(value == 5001) {
+                    } else if (value == 5001) {
                         value = 1;
                         gridXSpinner.setValue(value);
                     }
@@ -49,14 +53,14 @@ public class GridPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, gridXSpinner, 75, SpringLayout.WEST, gridXSpinner);
         JLabel gridYLabel = new JLabel("Cell Y:");
 
-        JSpinner gridYSpinner = new JSpinner(new SpinnerNumberModel(32, 0, 5001, 1));
+        gridYSpinner = new JSpinner(new SpinnerNumberModel(32, 0, 5001, 1));
         gridYSpinner.addChangeListener(
                 e -> {
                     int value = (int) gridYSpinner.getValue();
-                    if(value == 0) {
+                    if (value == 0) {
                         value = 5000;
                         gridYSpinner.setValue(value);
-                    } else if(value == 5001) {
+                    } else if (value == 5001) {
                         value = 1;
                         gridYSpinner.setValue(value);
                     }
@@ -72,6 +76,22 @@ public class GridPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.WEST, gridYSpinner, 5, SpringLayout.EAST, gridYLabel);
         springLayout.putConstraint(SpringLayout.EAST, gridYSpinner, 75, SpringLayout.WEST, gridYSpinner);
         springLayout.putConstraint(SpringLayout.EAST, gridStyleBox, 0, SpringLayout.EAST, gridYSpinner);
+
+        setAllEnabled(false);
     }
 
+    private static void setAllEnabled(Boolean b) {
+        gridStyleBox.setEnabled(b);
+        gridXSpinner.setEnabled(b);
+        gridYSpinner.setEnabled(b);
+    }
+
+    public static void onCanvasAdded() {
+        setAllEnabled(true);
+
+        GridInformation gridInformation = Controller.getActiveCanvas().getGridInformation();
+        gridStyleBox.getModel().setSelectedItem(gridInformation.gridStyle());
+        gridXSpinner.setValue(gridInformation.gridX());
+        gridYSpinner.setValue(gridInformation.gridY());
+    }
 }

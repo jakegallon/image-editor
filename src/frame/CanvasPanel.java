@@ -51,6 +51,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         this.canvas = canvas;
         zoomToFitCanvas();
         MagnificationPanel.setViewportDimension(getSize());
+        GridPanel.onCanvasAdded();
     }
 
     private void removeCurrentCanvas() {
