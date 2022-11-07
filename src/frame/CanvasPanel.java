@@ -2,6 +2,7 @@ package frame;
 
 import tool.BaseTool;
 import tool.MoveTool;
+import tool.PenTool;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -26,7 +27,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final String ZOOM_EVENT = "canvas zoomed";
     private static final String OFFSET_EVENT = "canvas offset altered";
 
-    public BaseTool activeTool;
+    public BaseTool activeTool = new PenTool();
 
     public CanvasPanel() {
         init();
