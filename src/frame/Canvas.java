@@ -76,8 +76,10 @@ public class Canvas extends JPanel {
         image = new BufferedImage(getBounds().width, getBounds().height, BufferedImage.TYPE_INT_ARGB);
 
         for (int i = layers.size() - 1; i >= 0; i--) {
-            Graphics gImage = image.getGraphics();
-            gImage.drawImage(layers.get(i).getImage(), 0, 0, getBounds().width, getBounds().height, null);
+            if(layers.get(i).isVisible()) {
+                Graphics gImage = image.getGraphics();
+                gImage.drawImage(layers.get(i).getImage(), 0, 0, getBounds().width, getBounds().height, null);
+            }
         }
     }
 

@@ -157,11 +157,21 @@ public class LayerPanel extends JPanel {
             renameButton.setPreferredSize(new Dimension(16, 16));
             add(renameButton);
 
+            JToggleButton visibleButton = new JToggleButton("V");
+            visibleButton.setBackground(Color.GRAY);
+            visibleButton.setPreferredSize(new Dimension(16, 16));
+            add(visibleButton);
+            visibleButton.setSelected(true);
+
+            visibleButton.addChangeListener(e -> layer.setVisible(visibleButton.isSelected()));
+
             springLayout.putConstraint(SpringLayout.NORTH, layerImage, 5, SpringLayout.NORTH, this);
             springLayout.putConstraint(SpringLayout.WEST, layerImage, 5, SpringLayout.WEST, this);
-            springLayout.putConstraint(SpringLayout.NORTH, layerName, 0, SpringLayout.NORTH, layerImage);
-            springLayout.putConstraint(SpringLayout.WEST, layerName, 10, SpringLayout.EAST, layerImage);
-            springLayout.putConstraint(SpringLayout.WEST, layerOpacity, -SLIDER_THUMB_SIZE.width, SpringLayout.WEST, layerName);
+            springLayout.putConstraint(SpringLayout.NORTH, visibleButton, 0, SpringLayout.NORTH, layerImage);
+            springLayout.putConstraint(SpringLayout.WEST, visibleButton, 4, SpringLayout.EAST, layerImage);
+            springLayout.putConstraint(SpringLayout.NORTH, layerName, 0, SpringLayout.NORTH, visibleButton);
+            springLayout.putConstraint(SpringLayout.WEST, layerName, 4, SpringLayout.EAST, visibleButton);
+            springLayout.putConstraint(SpringLayout.WEST, layerOpacity, -SLIDER_THUMB_SIZE.width, SpringLayout.WEST, visibleButton);
             springLayout.putConstraint(SpringLayout.SOUTH, layerOpacity, 0, SpringLayout.SOUTH, layerImage);
             springLayout.putConstraint(SpringLayout.EAST, layerOpacity, 100, SpringLayout.WEST, layerOpacity);
             springLayout.putConstraint(SpringLayout.NORTH, deleteButton, 4, SpringLayout.NORTH, this);

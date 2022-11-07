@@ -12,6 +12,7 @@ public class Layer {
     private String name = "";
     private boolean isLocked = false;
     private final Graphics2D g;
+    private boolean isVisible = true;
 
     public Layer(Canvas canvas) {
         image = new BufferedImage(canvas.getBounds().width, canvas.getBounds().height, BufferedImage.TYPE_INT_ARGB);
@@ -76,5 +77,14 @@ public class Layer {
     public void fillAll(Color color) {
         g.setColor(color);
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+        System.out.println(visible);
     }
 }
