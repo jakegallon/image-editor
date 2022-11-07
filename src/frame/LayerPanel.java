@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class LayerPanel extends JPanel {
@@ -146,6 +147,12 @@ public class LayerPanel extends JPanel {
             deleteButton.setBackground(Color.RED);
             deleteButton.setPreferredSize(new Dimension(16, 16));
             add(deleteButton);
+
+            deleteButton.addActionListener(e -> {
+                ArrayList<Layer> l = Controller.getActiveCanvas().layers;
+                deleteLayer(l.indexOf(layer));
+                l.remove(layer);
+            });
 
             JButton lockButton = new JButton("L");
             lockButton.setBackground(Color.YELLOW);
