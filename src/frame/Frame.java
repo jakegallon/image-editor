@@ -144,6 +144,7 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuCloseAction() {
+        setState(ICONIFIED);
     }
 
     private void fileMenuExitAction() {
