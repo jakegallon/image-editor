@@ -17,6 +17,7 @@ public class LayerPanelHandler extends JPanel {
 
             //todo lock buttons when no active canvas
             int index = activeCanvas.getActiveLayerIndex();
+            index = index == -1 ? 0 : index;
 
             Layer newLayer = newLayer();
 
