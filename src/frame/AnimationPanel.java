@@ -17,6 +17,7 @@ public class AnimationPanel extends JPanel {
     private final JButton normalLayoutButton = new JButton("1");
     private final JButton focusedLayoutButton = new JButton("2");
     private final JButton crossLayoutButton = new JButton("3");
+    private final JButton landscapeLayoutButton = new JButton("4");
     private final JButton helpButton = new JButton("?");
 
     private final SpritePanel spritePanel1 = new SpritePanel();
@@ -41,7 +42,8 @@ public class AnimationPanel extends JPanel {
     private enum LayoutState {
         NORMAL,
         FOCUSED,
-        CROSS
+        CROSS,
+        LANDSCAPE
     }
 
     private LayoutState layoutState = LayoutState.NORMAL;
@@ -55,9 +57,10 @@ public class AnimationPanel extends JPanel {
                 super.componentResized(e);
 
                 switch (layoutState) {
-                    case NORMAL  -> constraintAsNormal();
-                    case FOCUSED -> constraintAsFocused();
-                    case CROSS   -> constraintAsCross();
+                    case NORMAL    -> constraintAsNormal();
+                    case FOCUSED   -> constraintAsFocused();
+                    case CROSS     -> constraintAsCross();
+                    case LANDSCAPE -> constraintAsLandscape();
                 }
             }
         });
@@ -113,6 +116,10 @@ public class AnimationPanel extends JPanel {
         crossLayoutButton.addActionListener(e -> {
             if(layoutState != LayoutState.CROSS) constraintAsCross();
         });
+        add(landscapeLayoutButton);
+        landscapeLayoutButton.addActionListener(e -> {
+            if(layoutState != LayoutState.LANDSCAPE) constraintAsLandscape();
+        });
 
         JLabel fpsLabel = new JLabel("fps");
         add(fpsLabel);
@@ -131,12 +138,16 @@ public class AnimationPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.SOUTH, focusedLayoutButton, 20, SpringLayout.NORTH, focusedLayoutButton);
         springLayout.putConstraint(SpringLayout.NORTH, crossLayoutButton, 0, SpringLayout.NORTH, normalLayoutButton);
         springLayout.putConstraint(SpringLayout.SOUTH, crossLayoutButton, 20, SpringLayout.NORTH, crossLayoutButton);
+        springLayout.putConstraint(SpringLayout.NORTH, landscapeLayoutButton, 0, SpringLayout.NORTH, normalLayoutButton);
+        springLayout.putConstraint(SpringLayout.SOUTH, landscapeLayoutButton, 20, SpringLayout.NORTH, landscapeLayoutButton);
         springLayout.putConstraint(SpringLayout.WEST, normalLayoutButton, 4, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.EAST, normalLayoutButton, 20, SpringLayout.WEST, normalLayoutButton);
         springLayout.putConstraint(SpringLayout.WEST, focusedLayoutButton, 4, SpringLayout.EAST, normalLayoutButton);
         springLayout.putConstraint(SpringLayout.EAST, focusedLayoutButton, 20, SpringLayout.WEST, focusedLayoutButton);
         springLayout.putConstraint(SpringLayout.WEST, crossLayoutButton, 4, SpringLayout.EAST, focusedLayoutButton);
         springLayout.putConstraint(SpringLayout.EAST, crossLayoutButton, 20, SpringLayout.WEST, crossLayoutButton);
+        springLayout.putConstraint(SpringLayout.WEST, landscapeLayoutButton, 4, SpringLayout.EAST, crossLayoutButton);
+        springLayout.putConstraint(SpringLayout.EAST, landscapeLayoutButton, 20, SpringLayout.WEST, landscapeLayoutButton);
 
         springLayout.putConstraint(SpringLayout.WEST, fpsLabel, 16, SpringLayout.HORIZONTAL_CENTER, this);
         springLayout.putConstraint(SpringLayout.NORTH, fpsSpinner, 0, SpringLayout.NORTH, normalLayoutButton);
@@ -153,6 +164,7 @@ public class AnimationPanel extends JPanel {
         add(spritePanel2);
         add(spritePanel3);
         add(spritePanel4);
+
         constraintAsNormal();
     }
 
@@ -235,6 +247,34 @@ public class AnimationPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.NORTH, spritePanel4, 0, SpringLayout.SOUTH, spritePanel2);
         springLayout.putConstraint(SpringLayout.EAST, spritePanel4, 0, SpringLayout.EAST, spritePanel1);
         springLayout.putConstraint(SpringLayout.SOUTH, spritePanel4, 0, SpringLayout.SOUTH, this);
+
+        revalidate();
+    }
+
+    private void constraintAsLandscape() {
+        layoutState = LayoutState.LANDSCAPE;
+
+        int quarterHeight = (getHeight() - 32) / 4;
+
+        springLayout.putConstraint(SpringLayout.NORTH, spritePanel1, 4, SpringLayout.SOUTH, normalLayoutButton);
+        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel1, quarterHeight, SpringLayout.NORTH, spritePanel1);
+        springLayout.putConstraint(SpringLayout.WEST, spritePanel1, 4, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.EAST, spritePanel1, -4, SpringLayout.EAST, this);
+
+        springLayout.putConstraint(SpringLayout.NORTH, spritePanel2, 4, SpringLayout.SOUTH, spritePanel1);
+        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel2, quarterHeight, SpringLayout.NORTH, spritePanel2);
+        springLayout.putConstraint(SpringLayout.WEST, spritePanel2, 0, SpringLayout.WEST, spritePanel1);
+        springLayout.putConstraint(SpringLayout.EAST, spritePanel2, 0, SpringLayout.EAST, spritePanel1);
+
+        springLayout.putConstraint(SpringLayout.NORTH, spritePanel3, 4, SpringLayout.SOUTH, spritePanel2);
+        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel3, quarterHeight, SpringLayout.NORTH, spritePanel3);
+        springLayout.putConstraint(SpringLayout.WEST, spritePanel3, 0, SpringLayout.WEST, spritePanel1);
+        springLayout.putConstraint(SpringLayout.EAST, spritePanel3, 0, SpringLayout.EAST, spritePanel1);
+
+        springLayout.putConstraint(SpringLayout.NORTH, spritePanel4, 4, SpringLayout.SOUTH, spritePanel3);
+        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel4, quarterHeight, SpringLayout.NORTH, spritePanel4);
+        springLayout.putConstraint(SpringLayout.WEST, spritePanel4, 0, SpringLayout.WEST, spritePanel1);
+        springLayout.putConstraint(SpringLayout.EAST, spritePanel4, 0, SpringLayout.EAST, spritePanel1);
 
         revalidate();
     }
