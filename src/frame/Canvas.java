@@ -43,19 +43,24 @@ public class Canvas extends JPanel {
     public void setGridX(int gridX) {
         int curY = gridInformation.gridY();
         GridStyle curStyle = gridInformation.gridStyle();
-        gridInformation = new GridInformation(gridX, curY, curStyle);
+        setGridInformation(new GridInformation(gridX, curY, curStyle));
     }
 
     public void setGridY(int gridY) {
         int curX = gridInformation.gridX();
         GridStyle curStyle = gridInformation.gridStyle();
-        gridInformation = new GridInformation(curX, gridY, curStyle);
+        setGridInformation(new GridInformation(curX, gridY, curStyle));
     }
 
     public void setGridStyle(GridStyle gridStyle) {
         int curX = gridInformation.gridX();
         int curY = gridInformation.gridY();
-        gridInformation = new GridInformation(curX, curY, gridStyle);
+        setGridInformation(new GridInformation(curX, curY, gridStyle));
+    }
+
+    private void setGridInformation(GridInformation g) {
+        gridInformation = g;
+        AnimationPanel.setGridInformation(g);
     }
 
     public GridInformation getGridInformation() {

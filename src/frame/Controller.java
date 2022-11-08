@@ -36,6 +36,7 @@ public class Controller {
         Frame.layerPanel.onCanvasSwitch();
         Frame.magnificationPanel.setCanvas(canvas);
         BaseTool.canvas = canvas;
+        AnimationPanel.setCanvas(canvas);
     }
 
     public static Canvas getActiveCanvas() {
