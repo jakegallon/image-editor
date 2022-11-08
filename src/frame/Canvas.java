@@ -62,8 +62,8 @@ public class Canvas extends JPanel {
         return gridInformation;
     }
 
-    public void getGridCellAtPoint(Point p) {
-        // todo
+    public Point getGridCellAtPoint(Point p) {
+        return new Point(p.x / gridInformation.gridX(), p.y / gridInformation.gridY());
     }
 
     private BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
