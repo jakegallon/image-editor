@@ -85,6 +85,5 @@ public class Layer {
 
     public void setVisible(boolean visible) {
         isVisible = visible;
-        System.out.println(visible);
     }
 }

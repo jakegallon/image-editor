@@ -272,7 +272,7 @@ public class AnimationPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, spritePanel3, 0, SpringLayout.EAST, spritePanel1);
 
         springLayout.putConstraint(SpringLayout.NORTH, spritePanel4, 4, SpringLayout.SOUTH, spritePanel3);
-        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel4, quarterHeight, SpringLayout.NORTH, spritePanel4);
+        springLayout.putConstraint(SpringLayout.SOUTH, spritePanel4, 0, SpringLayout.SOUTH, this);
         springLayout.putConstraint(SpringLayout.WEST, spritePanel4, 0, SpringLayout.WEST, spritePanel1);
         springLayout.putConstraint(SpringLayout.EAST, spritePanel4, 0, SpringLayout.EAST, spritePanel1);
 
