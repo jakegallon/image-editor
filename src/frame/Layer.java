@@ -13,6 +13,7 @@ public class Layer {
     private boolean isLocked = false;
     private final Graphics2D g;
     private boolean isVisible = true;
+    private float opacity = 1.0f;
 
     public Layer(Canvas canvas) {
         image = new BufferedImage(canvas.getBounds().width, canvas.getBounds().height, BufferedImage.TYPE_INT_ARGB);
@@ -31,8 +32,28 @@ public class Layer {
         return name;
     }
 
+    public void setOpacity(int opacityInt) {
+        if(opacityInt == 255) {
+            opacity = 1f;
+            return;
+        } else if (opacityInt == 0) {
+            opacity = 0f;
+            return;
+        }
+
+        this.opacity = normalizeRGBAToFloat(opacityInt);
+    }
+
+    private float normalizeRGBAToFloat(int i) {
+        return Math.abs( - (i / 255f) );
+    }
+
     public BufferedImage getImage() {
         return image;
+    }
+
+    public float getOpacity() {
+        return opacity;
     }
 
     public ArrayList<PixelChange> getImageDifferences(BufferedImage originalImage) {

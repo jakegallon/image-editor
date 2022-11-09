@@ -140,8 +140,10 @@ public class LayerPanel extends JPanel {
             layerImage.setPreferredSize(new Dimension(LAYER_WIDGET_HEIGHT - 10, LAYER_WIDGET_HEIGHT - 10));
             add(layerImage);
 
-            JSlider layerOpacity = new JSlider(0, 100, 100);
+            JSlider layerOpacity = new JSlider(0, 255, 255);
             add(layerOpacity);
+
+            layerOpacity.addChangeListener(e -> layer.setOpacity(layerOpacity.getValue()));
 
             JButton deleteButton = new JButton("X");
             deleteButton.setBackground(Color.RED);
