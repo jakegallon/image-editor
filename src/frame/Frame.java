@@ -206,9 +206,11 @@ public class Frame extends JFrame {
     }
 
     private void editMenuUndoAction() {
+        Controller.undo();
     }
 
     private void editMenuRedoAction() {
+        Controller.redo();
     }
 
     private void editMenuCutAction() {
