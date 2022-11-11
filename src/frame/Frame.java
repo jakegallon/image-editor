@@ -2,9 +2,13 @@ package frame;
 
 import colorpanel.ColorTabbedPane;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -138,6 +142,56 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuExportAsAction() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                String fN = f.getName().toLowerCase();
+                if(f.isDirectory()) return true;
+                for(FileFormat fileFormat : FileFormat.values())
+                    if (fN.endsWith("." + fileFormat.getName())) return true;
+                return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Compatible";
+            }
+        });
+
+        for(FileFormat fileFormat : FileFormat.values()) {
+            fileChooser.addChoosableFileFilter(fileFormat.getFileFormatFilter());
+        }
+
+        int choice = fileChooser.showSaveDialog(this);
+        if(choice == JFileChooser.APPROVE_OPTION) {
+            File targetFile = fileChooser.getSelectedFile();
+            FileFormat fileFormat = ((FileFormat.FileFormatFilter) fileChooser.getFileFilter()).getFileFormat();
+
+            String suffix = fileFormat.getSuffix();
+            String fileName = targetFile.getName();
+
+            if(!fileName.endsWith(suffix)) {
+                fileName = fileName.concat(suffix);
+            }
+
+            File file = new File(targetFile.getParentFile(), fileName);
+
+            try {
+                BufferedImage image = Controller.getActiveCanvas().getImage();
+
+                if(fileFormat == FileFormat.JPG || fileFormat == FileFormat.BMP) {
+                    BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    rgbImage.getGraphics().drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+                    ImageIO.write(rgbImage, fileFormat.name(), file);
+                } else {
+                        ImageIO.write(image, fileFormat.name(), file);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void fileMenuOptionsAction() {
