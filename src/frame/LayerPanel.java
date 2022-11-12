@@ -55,11 +55,15 @@ public class LayerPanel extends JPanel {
     public void onCanvasSwitch() {
         layerContainer.removeAll();
         layerWidgets.clear();
-        for(Layer layer : Controller.getActiveCanvas().layers) {
-            LayerWidget layerWidget = new LayerWidget(layer);
-            layerWidgets.add(0, layerWidget);
 
-            layerContainer.add(layerWidget, 0);
+        ArrayList<Layer> layers = Controller.getActiveCanvas().layers;
+        if(!layers.isEmpty()) {
+            for(int i = layers.size() - 1; i >= 0; i--) {
+                LayerWidget layerWidget = new LayerWidget(layers.get(i));
+                layerWidgets.add(0, layerWidget);
+
+                layerContainer.add(layerWidget, 0);
+            }
         }
         layerContainer.revalidate();
         layerContainer.repaint();
