@@ -8,8 +8,7 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -130,12 +129,74 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuOpenAction() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(genericCustomFilter());
+
+        int choice = fileChooser.showOpenDialog(this);
+        if(choice == JFileChooser.APPROVE_OPTION) {
+            File targetFile = fileChooser.getSelectedFile();
+
+            try {
+                FileInputStream fileInputStream = new FileInputStream(targetFile);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+                Canvas canvas = (Canvas) objectInputStream.readObject();
+                Controller.setActiveCanvas(canvas);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void fileMenuSaveAction() {
     }
 
     private void fileMenuSaveAsAction() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(genericCustomFilter());
+
+        int choice = fileChooser.showSaveDialog(this);
+        if(choice == JFileChooser.APPROVE_OPTION) {
+            File targetFile = fileChooser.getSelectedFile();
+            String fileName = targetFile.getName();
+
+            if(!fileName.endsWith(".jmg")) {
+                fileName = fileName.concat(".jmg");
+            }
+
+            File file = new File(targetFile.getParentFile(), fileName);
+
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+                objectOutputStream.writeObject(Controller.getActiveCanvas());
+
+                objectOutputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private FileFilter genericCustomFilter() {
+        return new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    String fileName = f.getName().toLowerCase();
+                    return fileName.endsWith(".jmg");
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return "Custom (*.jmg)";
+            }
+        };
     }
 
     private void fileMenuImportLayerAction() {

@@ -2,22 +2,24 @@ package frame;
 
 import action.PixelChange;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Layer {
+public class Layer implements Serializable {
 
-    private final BufferedImage image;
+    private transient Graphics2D g;
+    private transient BufferedImage image;
     private String name = "";
     private boolean isLocked = false;
-    private final Graphics2D g;
     private boolean isVisible = true;
     private float opacity = 1.0f;
 
     public Layer(Canvas canvas) {
         image = new BufferedImage(canvas.getBounds().width, canvas.getBounds().height, BufferedImage.TYPE_INT_ARGB);
-        g = image.createGraphics();
+        g = (Graphics2D) image.getGraphics();
     }
 
     public void toggleLayerLock() {
@@ -106,5 +108,18 @@ public class Layer {
 
     public void setVisible(boolean visible) {
         isVisible = visible;
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        ImageIO.write(image, "png", out);
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        image = ImageIO.read(in);
+        g = (Graphics2D) image.getGraphics();
     }
 }

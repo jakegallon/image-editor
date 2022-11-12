@@ -4,9 +4,10 @@ import javax.swing.*;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements Serializable {
 
     private String fileName;
 
@@ -71,7 +72,8 @@ public class Canvas extends JPanel {
         return new Point(p.x / gridInformation.gridX(), p.y / gridInformation.gridY());
     }
 
-    private BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+    private transient BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -177,5 +179,15 @@ public class Canvas extends JPanel {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-}
 
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+    }
+}
