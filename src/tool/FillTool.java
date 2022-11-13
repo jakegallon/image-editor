@@ -1,6 +1,11 @@
 package tool;
 
 public class FillTool extends EditTool {
+
+    public FillTool() {
+        name = "fill";
+    }
+
     @Override
     protected void onLeftMouseClicked() {
 

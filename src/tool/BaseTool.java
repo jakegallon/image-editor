@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent;
 
 public abstract class BaseTool {
 
+    //todo swap with icon
+    public String name;
+
     protected CanvasPanel activeCanvasPanel;
     public static Canvas canvas;
 

@@ -5,6 +5,7 @@ import java.awt.*;
 public class MoveTool extends BaseTool {
 
     public MoveTool() {
+        name = "move";
         toolCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
 

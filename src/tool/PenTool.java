@@ -2,6 +2,10 @@ package tool;
 
 public class PenTool extends EditTool {
 
+    public PenTool() {
+        name = "pen";
+    }
+
     @Override
     protected void onLeftMouseClicked() {
 

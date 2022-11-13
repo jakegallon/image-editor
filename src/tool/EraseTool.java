@@ -4,7 +4,9 @@ import java.awt.*;
 
 public class EraseTool extends EditTool {
 
-    private final Color eraserColor = new Color(0f, 0f, 0f, 0.5f);
+    public EraseTool() {
+        name = "erase";
+    }
 
     @Override
     protected void onLeftMouseClicked() {

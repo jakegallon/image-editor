@@ -60,11 +60,11 @@ public class Frame extends JFrame {
         middlePanel.add(canvasPanel, BorderLayout.CENTER);
 
         // left panel
-        // leftPanel - toolBar
-        ToolSelectPanel toolBar = new ToolSelectPanel();
         // leftPanel - brushSettings
-        ToolSettingsPanel toolSettings = new ToolSettingsPanel();
+        JPanel toolSettings = new JPanel();
         toolSettings.setMinimumSize(new Dimension(0, 250));
+        // leftPanel - toolBar
+        ToolSelectPanel toolBar = new ToolSelectPanel(toolSettings);
         // leftPanel - colorSettings
         colorSettings.setMinimumSize(new Dimension(250, 273));
 

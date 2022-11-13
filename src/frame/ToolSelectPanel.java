@@ -4,68 +4,41 @@ import tool.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.tools.Tool;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ToolSelectPanel extends JPanel {
 
-    public ToolSelectPanel() {
+    private JPanel toolSettings;
+
+    public ToolSelectPanel(JPanel toolSettings) {
+        this.toolSettings = toolSettings;
+        init();
+    }
+
+    private static final MoveTool moveTool = new MoveTool();
+    private static final PenTool penTool = new PenTool();
+    private static final EraseTool eraseTool = new EraseTool();
+    private static final FillTool fillTool = new FillTool();
+    private static final EyeTool eyeTool = new EyeTool();
+
+    private void init() {
         setBorder(new LineBorder(new Color(49, 49, 49), 1));
         setPreferredSize(new Dimension(40, 0));
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
 
+        BaseTool[] tools = {moveTool, penTool, eraseTool, fillTool, eyeTool};
         int buttonSize = getPreferredSize().width - 2;
-
-        Button moveButton = new Button("move");
-        moveButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-        add(moveButton);
-
-        moveButton.addActionListener(e -> {
-            MoveTool moveTool = new MoveTool();
-            Controller.setActiveTool(moveTool);
-        });
-
-        Button penButton = new Button("pen");
-        penButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-
-        penButton.addActionListener(e -> {
-            PenTool penTool = new PenTool();
-            Controller.setActiveTool(penTool);
-        });
-
-        add(penButton);
-
-        Button eyeDropperButton = new Button("eye");
-        eyeDropperButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-        add(eyeDropperButton);
-
-        eyeDropperButton.addActionListener(e -> {
-            EyeTool eyeTool = new EyeTool();
-            Controller.setActiveTool(eyeTool);
-        });
-
-        Button fillButton = new Button("fill");
-        fillButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-        add(fillButton);
-
-        fillButton.addActionListener(e -> {
-            FillTool fillTool = new FillTool();
-            Controller.setActiveTool(fillTool);
-        });
-
-        Button eraseButton = new Button("erase");
-        eraseButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-        add(eraseButton);
-
-        eraseButton.addActionListener(e -> {
-            EraseTool eraseTool = new EraseTool();
-            Controller.setActiveTool(eraseTool);
-        });
-
-        springLayout.putConstraint(SpringLayout.NORTH, moveButton, 0, SpringLayout.NORTH,this);
-        springLayout.putConstraint(SpringLayout.NORTH, penButton, 0, SpringLayout.SOUTH,moveButton);
-        springLayout.putConstraint(SpringLayout.NORTH, eyeDropperButton, 0, SpringLayout.SOUTH,penButton);
-        springLayout.putConstraint(SpringLayout.NORTH, fillButton, 0, SpringLayout.SOUTH,eyeDropperButton);
-        springLayout.putConstraint(SpringLayout.NORTH, eraseButton, 0, SpringLayout.SOUTH,fillButton);
+        int offset = 0;
+        for(BaseTool tool : tools) {
+            Button toolButton = new Button(tool.name);
+            toolButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
+            add(toolButton);
+            toolButton.addActionListener(e -> Controller.setActiveTool(tool));
+            springLayout.putConstraint(SpringLayout.NORTH, toolButton, offset, SpringLayout.NORTH,this);
+            offset += getPreferredSize().width;
+        }
     }
 }
