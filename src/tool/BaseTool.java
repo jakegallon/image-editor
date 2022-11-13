@@ -20,6 +20,8 @@ public abstract class BaseTool {
 
     protected Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
+    public abstract void populateSettingsPanel(JPanel panel);
+
     protected abstract void onLeftMouseClicked();
     protected abstract void onLeftMousePressed();
     protected abstract void onLeftMouseDragged();

@@ -1,5 +1,6 @@
 package tool;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class EyeTool extends BaseTool {
@@ -7,6 +8,11 @@ public class EyeTool extends BaseTool {
     public EyeTool() {
         name = "eye";
         toolCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+    }
+
+    @Override
+    public void populateSettingsPanel(JPanel panel) {
+        panel.setBackground(Color.green);
     }
 
     @Override

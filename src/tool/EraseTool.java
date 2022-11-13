@@ -1,11 +1,17 @@
 package tool;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class EraseTool extends EditTool {
 
     public EraseTool() {
         name = "erase";
+    }
+
+    @Override
+    public void populateSettingsPanel(JPanel panel) {
+        panel.setBackground(Color.gray);
     }
 
     @Override

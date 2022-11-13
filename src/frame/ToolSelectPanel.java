@@ -4,16 +4,11 @@ import tool.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.tools.Tool;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class ToolSelectPanel extends JPanel {
 
-    private JPanel toolSettings;
-
-    public ToolSelectPanel(JPanel toolSettings) {
-        this.toolSettings = toolSettings;
+    public ToolSelectPanel() {
         init();
     }
 
@@ -36,9 +31,9 @@ public class ToolSelectPanel extends JPanel {
             Button toolButton = new Button(tool.name);
             toolButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
             add(toolButton);
-            toolButton.addActionListener(e -> Controller.setActiveTool(tool));
             springLayout.putConstraint(SpringLayout.NORTH, toolButton, offset, SpringLayout.NORTH,this);
             offset += getPreferredSize().width;
+            toolButton.addActionListener(e -> Controller.setActiveTool(tool));
         }
     }
 }

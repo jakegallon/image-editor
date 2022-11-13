@@ -2,12 +2,20 @@ package tool;
 
 import frame.AnimationPanel;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class AnimationTool extends BaseTool {
 
     AnimationPanel.SpritePanel spritePanel;
 
     public AnimationTool(AnimationPanel.SpritePanel spritePanel) {
         this.spritePanel = spritePanel;
+    }
+
+    @Override
+    public void populateSettingsPanel(JPanel panel) {
+        panel.setBackground(Color.red);
     }
 
     @Override

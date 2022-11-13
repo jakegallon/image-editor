@@ -1,9 +1,17 @@
 package tool;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class PenTool extends EditTool {
 
     public PenTool() {
         name = "pen";
+    }
+
+    @Override
+    public void populateSettingsPanel(JPanel panel) {
+        panel.setBackground(Color.cyan);
     }
 
     @Override

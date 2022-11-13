@@ -44,6 +44,8 @@ public class Frame extends JFrame {
         setMinimumSize(new Dimension(960, 540));
     }
 
+    static JPanel toolSettings = new JPanel();
+
     private void createLayout(){
         Container pane = getContentPane();
 
@@ -61,10 +63,9 @@ public class Frame extends JFrame {
 
         // left panel
         // leftPanel - brushSettings
-        JPanel toolSettings = new JPanel();
         toolSettings.setMinimumSize(new Dimension(0, 250));
         // leftPanel - toolBar
-        ToolSelectPanel toolBar = new ToolSelectPanel(toolSettings);
+        ToolSelectPanel toolBar = new ToolSelectPanel();
         // leftPanel - colorSettings
         colorSettings.setMinimumSize(new Dimension(250, 273));
 
