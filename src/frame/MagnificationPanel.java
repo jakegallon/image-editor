@@ -21,8 +21,8 @@ public class MagnificationPanel extends JLayeredPane {
 
     private static Point mousePos;
     private static Point canvasOffset;
-    private static float zoomFactor = 1f;
-    private static float targetZoom = 1f;
+    private static double zoomFactor = 1.0;
+    private static double targetZoom = 1.0;
 
     private static boolean isCrosshairEnabled = true;
     private static boolean isAutomaticMode = true;
@@ -55,7 +55,7 @@ public class MagnificationPanel extends JLayeredPane {
         }
     }
 
-    public static void setZoomFactor(float f) {
+    public static void setZoomFactor(double f) {
         zoomFactor = f;
         magnifiedPanelRenderer.updateZoomVariables();
         magnifiedPanelRenderer.repaint();

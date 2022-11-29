@@ -43,8 +43,8 @@ public class InfoPanel extends JPanel {
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    public static void setZoomFactor(float f) {
-        float zoomPercent = f * 100f;
+    public static void setZoomFactor(double f) {
+        double zoomPercent = f * 100;
         zoomFactor.setText("zoom: " + df.format(zoomPercent) + "%");
     }
 }

@@ -18,9 +18,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private volatile Point mousePos;
     private Point initialMousePos;
 
-    private static final float ZOOM_MULTIPLIER = 1.1f;
-    private static float zoomFactor = 1.0f;
-    public static float fullscreenZoomFactor = 1.0f;
+    private static final double ZOOM_MULTIPLIER = 1.1;
+    private static double zoomFactor = 1.0;
+    public static double fullscreenZoomFactor = 1.0;
 
     private final SwingPropertyChangeSupport propertyChangeSupport = new SwingPropertyChangeSupport(this);
     private static final String MOUSE_POS_EVENT = "mouse moved";
@@ -133,12 +133,12 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
     }
 
-    private final float[] snapValues = {0.1f, 0.25f, 0.5f, 0.75f, 1.5f, 2f, 2.5f, 5f, 10f, 50f};
-    private float prevUnsnap, nextUnsnap;
+    private final double[] snapValues = {0.1f, 0.25f, 0.5f, 0.75f, 1.5f, 2f, 2.5f, 5f, 10f, 50f};
+    private double prevUnsnap, nextUnsnap;
     private boolean snapped = false;
 
     protected void zoomIn() {
-        float maxZoom = 100f;
+        double maxZoom = 100f;
         if(zoomFactor == maxZoom) return;
 
         if(snapped) {
@@ -147,10 +147,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
             return;
         }
 
-        float oldZoomFactor = zoomFactor;
-        float newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
+        double oldZoomFactor = zoomFactor;
+        double newZoomFactor = zoomFactor * ZOOM_MULTIPLIER;
 
-        for (float snapFactor : snapValues) {
+        for (double snapFactor : snapValues) {
             if(oldZoomFactor > snapFactor) continue;
             if(newZoomFactor < snapFactor) break;
 
@@ -172,10 +172,10 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     protected void zoomOut() {
-        float oldZoomFactor = zoomFactor;
-        float newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
+        double oldZoomFactor = zoomFactor;
+        double newZoomFactor = zoomFactor / ZOOM_MULTIPLIER;
 
-        float minZoom = 0.01f;
+        double minZoom = 0.01f;
         if(zoomFactor == minZoom) return;
 
         if(snapped) {
@@ -185,7 +185,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         }
 
         for (int i = snapValues.length - 1; i >= 0; i--) {
-            float snapFactor = snapValues[i];
+            double snapFactor = snapValues[i];
 
             if(oldZoomFactor < snapFactor) continue;
             if(newZoomFactor > snapFactor) break;
@@ -208,7 +208,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     private void calculateZoomOffset(PropertyChangeEvent evt) {
-        float zoomRatio = (float) evt.getNewValue() / (float) evt.getOldValue();
+        double zoomRatio = (double) evt.getNewValue() / (double) evt.getOldValue();
         int oldOffsetToMouseX = mousePos.x - canvasOffset.x;
         int oldOffsetToMouseY = mousePos.y - canvasOffset.y;
         int newOffsetToMouseX = (int) (oldOffsetToMouseX / zoomRatio);
@@ -216,9 +216,9 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         setCanvasOffset(new Point(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY));
     }
 
-    private void setZoomFactor(Float f) {
-        float oldValue = zoomFactor;
-        zoomFactor = f;
+    private void setZoomFactor(Double d) {
+        double oldValue = zoomFactor;
+        zoomFactor = d;
         propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
     }
 
