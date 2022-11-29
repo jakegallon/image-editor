@@ -41,10 +41,10 @@ public class Frame extends JFrame {
         setTitle("Image Editor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1920, 1080);
-        setMinimumSize(new Dimension(960, 540));
+        setMinimumSize(new Dimension(1366, 768));
     }
 
-    static JPanel toolSettings = new JPanel();
+    static ToolSettings toolSettings = new ToolSettings();
 
     private void createLayout(){
         Container pane = getContentPane();

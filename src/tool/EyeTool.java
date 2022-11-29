@@ -11,8 +11,8 @@ public class EyeTool extends BaseTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.green);
+    public void attachProperties(JPanel panel) {
+
     }
 
     @Override

@@ -10,8 +10,9 @@ public class PenTool extends EditTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.cyan);
+    public void attachProperties(JPanel panel) {
+        ToolProperty.WIDTH.attachToPanelAndTool(panel, this);
+        ToolProperty.OPACITY.attachToPanelAndTool(panel, this);
     }
 
     @Override
@@ -26,7 +27,12 @@ public class PenTool extends EditTool {
 
     @Override
     protected void onLeftMouseDragged() {
-        activeLayer.drawLine(lastDragPoint, thisDragPoint, 1, color);
+        if(opacity == 255) {
+            activeLayer.drawLine(lastDragPoint, thisDragPoint, width, color);
+        } else {
+            Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
+            activeLayer.drawLine(lastDragPoint, thisDragPoint, width, alphaColor);
+        }
     }
 
     @Override

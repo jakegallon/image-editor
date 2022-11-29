@@ -1,7 +1,6 @@
 package tool;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class EraseTool extends EditTool {
 
@@ -10,8 +9,8 @@ public class EraseTool extends EditTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.gray);
+    public void attachProperties(JPanel panel) {
+
     }
 
     @Override

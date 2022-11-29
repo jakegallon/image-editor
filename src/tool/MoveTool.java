@@ -11,8 +11,8 @@ public class MoveTool extends BaseTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.yellow);
+    public void attachProperties(JPanel panel) {
+
     }
 
     @Override

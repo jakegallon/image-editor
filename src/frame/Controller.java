@@ -69,7 +69,7 @@ public class Controller {
         activeTool = tool;
         //todo change to get/set
         Frame.canvasPanel.activeTool = activeTool;
-        tool.populateSettingsPanel(Frame.toolSettings);
+        ToolSettings.onNewTool(tool);
     }
 
     public static BaseTool getActiveTool() {

@@ -1,7 +1,6 @@
 package tool;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class FillTool extends EditTool {
 
@@ -10,8 +9,8 @@ public class FillTool extends EditTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.blue);
+    public void attachProperties(JPanel panel) {
+
     }
 
     @Override

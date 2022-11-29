@@ -3,7 +3,6 @@ package tool;
 import frame.AnimationPanel;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class AnimationTool extends BaseTool {
 
@@ -14,8 +13,8 @@ public class AnimationTool extends BaseTool {
     }
 
     @Override
-    public void populateSettingsPanel(JPanel panel) {
-        panel.setBackground(Color.red);
+    public void attachProperties(JPanel panel) {
+
     }
 
     @Override
