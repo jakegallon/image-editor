@@ -11,6 +11,7 @@ public class ColorTabbedPane extends JTabbedPane {
     private final ColorPanel colorPanel;
 
     public ColorTabbedPane() {
+        setMinimumSize(new Dimension(250, 273));
         palettePanel = new PalettePanel(this);
         colorPanel = new ColorPanel(this);
 

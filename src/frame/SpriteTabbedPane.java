@@ -1,15 +1,14 @@
 package frame;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SpriteTabbedPane extends JTabbedPane {
 
-    private final AnimationPanel animationPanel;
-    private final GridPanel gridPanel;
-
     public SpriteTabbedPane() {
-        animationPanel = new AnimationPanel();
-        gridPanel = new GridPanel();
+        setMinimumSize(new Dimension(0, 250));
+        AnimationPanel animationPanel = new AnimationPanel();
+        GridPanel gridPanel = new GridPanel();
 
         addTab("Animation", animationPanel);
         addTab("Grid", gridPanel);

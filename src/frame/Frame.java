@@ -44,69 +44,49 @@ public class Frame extends JFrame {
         setMinimumSize(new Dimension(1366, 768));
     }
 
-    static ToolSettings toolSettings = new ToolSettings();
-
     private void createLayout(){
         Container pane = getContentPane();
 
-        // Main panel
-        JPanel middlePanel=new JPanel();
+        JPanel middlePanel = new JPanel(new BorderLayout());
         middlePanel.setMinimumSize(new Dimension(250, 0));
-        middlePanel.setLayout(new BorderLayout());
 
-        topPanel=new JPanel();
+        topPanel = new JPanel();
         topPanel.setBackground(Color.MAGENTA);
         topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
+
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);
         middlePanel.add(canvasPanel, BorderLayout.CENTER);
 
-        // left panel
-        // leftPanel - brushSettings
-        toolSettings.setMinimumSize(new Dimension(0, 250));
-        // leftPanel - toolBar
-        ToolSelectPanel toolBar = new ToolSelectPanel();
-        // leftPanel - colorSettings
-        colorSettings.setMinimumSize(new Dimension(250, 273));
-
-        leftPanel=new JPanel(new BorderLayout());
-        leftPanel.setBackground(Color.RED);
+        leftPanel = new JPanel(new BorderLayout());
         leftPanel.setMinimumSize(new Dimension(310, 0));
 
+        ToolSelectPanel toolBar = new ToolSelectPanel();
         leftPanel.add(toolBar, BorderLayout.LINE_START);
 
-        JPanel toolSelectSettings = new JPanel(new BorderLayout());
-        toolSelectSettings.add(toolBar, BorderLayout.LINE_START);
-        toolSelectSettings.add(toolSettings, BorderLayout.CENTER);
-
-        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, toolSelectSettings, colorSettings);
+        JPanel toolPanel = new JPanel(new BorderLayout());
+        toolPanel.add(toolBar, BorderLayout.LINE_START);
+        ToolSettings toolSettings = new ToolSettings();
+        toolPanel.add(toolSettings, BorderLayout.CENTER);
+        JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, toolPanel, colorSettings);
         brushColor.setResizeWeight(1.0);
         leftPanel.add(brushColor);
 
-        // Right panel
-        // rightPanel - canvasOverview
-        magnificationPanel.setMinimumSize(new Dimension(0, 250));
-        // rightPanel - animationPanel
-        SpriteTabbedPane spriteTabbedPane = new SpriteTabbedPane();
-        spriteTabbedPane.setMinimumSize(new Dimension(0, 250));
-        // rightPanel - layerPanel
-        layerPanel.setMinimumSize(new Dimension(0, 250));
-
         rightPanel=new JPanel(new BorderLayout());
-        JSplitPane canvasAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationPanel, spriteTabbedPane);
-        JSplitPane canvasAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, canvasAnimation, layerPanel);
-        canvasAnimationLayer.setResizeWeight(1.0);
-
-        rightPanel.add(canvasAnimationLayer);
         rightPanel.setMinimumSize(new Dimension(250, 0));
 
-        // Triple SplitPane
+        SpriteTabbedPane spriteTabbedPane = new SpriteTabbedPane();
+
+        JSplitPane magnificationAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationPanel, spriteTabbedPane);
+        JSplitPane magnificationAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationAnimation, layerPanel);
+        magnificationAnimationLayer.setResizeWeight(1.0);
+        rightPanel.add(magnificationAnimationLayer);
+
         leftMiddle = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, middlePanel);
         leftMiddle.setDividerLocation(leftPanelWidth);
         leftMiddleRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftMiddle, rightPanel);
         leftMiddleRight.setDividerLocation(pane.getWidth() - rightPanelWidth);
         leftMiddleRight.setResizeWeight(1.0);
-
         pane.add(leftMiddleRight);
 
         leftMiddleRight.addComponentListener(new ComponentAdapter() {

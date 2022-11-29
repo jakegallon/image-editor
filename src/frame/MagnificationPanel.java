@@ -86,6 +86,7 @@ public class MagnificationPanel extends JLayeredPane {
     }
 
     private void init() {
+        setMinimumSize(new Dimension(0, 250));
         setLayout(springLayout);
 
         add(automaticModeButton, 2, 0);

@@ -48,6 +48,7 @@ public class ToolSettings extends JPanel {
 
     private void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setMinimumSize(new Dimension(0, 250));
 
         toolPresets.setLayout(new BoxLayout(toolPresets, BoxLayout.PAGE_AXIS));
         toolSettings.setLayout(new BoxLayout(toolSettings, BoxLayout.PAGE_AXIS));

@@ -19,6 +19,8 @@ public class LayerPanel extends JPanel {
     LayerWidget activeLayerWidget;
 
     public LayerPanel() {
+        setMinimumSize(new Dimension(0, 250));
+        setPreferredSize(new Dimension(0, 400));
         setLayout(new BorderLayout());
 
         layerPanelHandler = new LayerPanelHandler(this);
