@@ -14,6 +14,8 @@ public class NewDialog extends JDialog {
 
     JButton confirm = new JButton("Confirm");
 
+    private static int untitledCount = 0;
+
     public NewDialog(Frame owner) {
         super(owner);
         init();
@@ -27,6 +29,16 @@ public class NewDialog extends JDialog {
             Canvas canvas = new Canvas();
 
             String fileName = fileNameField.getText();
+
+            if(fileName.equals("")) {
+                if(untitledCount == 0) {
+                    fileName = "untitled";
+                } else {
+                    fileName = "untitled (" + untitledCount + ")";
+                }
+                untitledCount ++;
+            }
+
             int canvasWidth = (int) width.getValue();
             int canvasHeight = (int) height.getValue();
 
