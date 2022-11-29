@@ -58,7 +58,14 @@ public class LayerPanel extends JPanel {
         layerContainer.removeAll();
         layerWidgets.clear();
 
-        ArrayList<Layer> layers = Controller.getActiveCanvas().layers;
+        Canvas activeCanvas = Controller.getActiveCanvas();
+        if(activeCanvas == null) {
+            layerContainer.revalidate();
+            layerContainer.repaint();
+            return;
+        }
+
+        ArrayList<Layer> layers = activeCanvas.layers;
         if(!layers.isEmpty()) {
             for(int i = layers.size() - 1; i >= 0; i--) {
                 LayerWidget layerWidget = new LayerWidget(layers.get(i));

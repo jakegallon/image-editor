@@ -71,6 +71,12 @@ public class MagnificationPanel extends JLayeredPane {
 
     public void setCanvas(Canvas c) {
         canvas = c;
+
+        if(canvas == null) {
+            magnifiedPanelRenderer.onCanvasNull();
+            return;
+        }
+
         canvasWidthHeightRatio = (double) c.getWidth() / c.getHeight();
 
         canvasScaleRatioX = (double) getWidth() / canvas.getWidth();
@@ -273,6 +279,10 @@ public class MagnificationPanel extends JLayeredPane {
             updateZoomedImageBoundsSize();
             updateZoomedImageBoundsPosition();
 
+            repaint();
+        }
+
+        private void onCanvasNull() {
             repaint();
         }
     }

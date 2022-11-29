@@ -15,13 +15,14 @@ import java.net.URISyntaxException;
 public class Frame extends JFrame {
 
     JSplitPane leftMiddle, leftMiddleRight;
-    JPanel leftPanel, rightPanel, topPanel;
+    JPanel leftPanel, rightPanel;
 
     public static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
     static LayerPanel layerPanel = new LayerPanel();
     static ColorTabbedPane colorSettings = new ColorTabbedPane();
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
+    static TabPanel topPanel = new TabPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -49,10 +50,6 @@ public class Frame extends JFrame {
 
         JPanel middlePanel = new JPanel(new BorderLayout());
         middlePanel.setMinimumSize(new Dimension(250, 0));
-
-        topPanel = new JPanel();
-        topPanel.setBackground(Color.MAGENTA);
-        topPanel.setPreferredSize(new Dimension(pane.getWidth(), 30));
 
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);

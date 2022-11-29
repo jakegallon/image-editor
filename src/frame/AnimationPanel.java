@@ -92,6 +92,8 @@ public class AnimationPanel extends JPanel {
 
     public static void setCanvas(Canvas c) {
         canvas = c;
+        if(c == null) return;
+
         setGridInformation(c.getGridInformation());
     }
 

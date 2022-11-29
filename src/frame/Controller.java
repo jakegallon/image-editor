@@ -30,11 +30,17 @@ public class Controller {
 
     private static Canvas activeCanvas;
 
+    public static void addNewCanvas(Canvas canvas) {
+        Frame.topPanel.createTabForCanvas(canvas);
+        setActiveCanvas(canvas);
+    }
+
     public static void setActiveCanvas(Canvas canvas) {
         activeCanvas = canvas;
         Frame.canvasPanel.setCanvas(canvas);
         Frame.layerPanel.onCanvasSwitch();
         Frame.magnificationPanel.setCanvas(canvas);
+        Frame.topPanel.setActiveWidgetByCanvas(canvas);
         BaseTool.canvas = canvas;
         AnimationPanel.setCanvas(canvas);
     }
