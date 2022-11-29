@@ -1,12 +1,19 @@
 package tool;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class MoveTool extends BaseTool {
 
     public MoveTool() {
-        name = "move";
+        try {
+            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/move.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         toolCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
 

@@ -1,12 +1,19 @@
 package tool;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class EyeTool extends BaseTool {
 
     public EyeTool() {
-        name = "eye";
+        try {
+            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/eye.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         toolCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     }
 
