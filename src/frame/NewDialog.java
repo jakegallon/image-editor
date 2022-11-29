@@ -47,9 +47,14 @@ public class NewDialog extends JDialog {
 
             if(hasPaper.isSelected()) {
                 Layer paper = new Layer(canvas);
+                paper.setName("paper");
                 paper.fillAll(Color.white);
                 canvas.addLayer(paper);
             }
+
+            Layer newLayer = new Layer(canvas);
+            newLayer.setName("Layer " + canvas.nextNameNumber());
+            canvas.addLayer(newLayer);
 
             Controller.addNewCanvas(canvas);
             dispose();
