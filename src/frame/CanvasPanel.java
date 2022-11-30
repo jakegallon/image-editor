@@ -13,7 +13,8 @@ import java.beans.PropertyChangeEvent;
 public class CanvasPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 
     private Canvas canvas;
-    private Point canvasOffset = new Point(0, 0);
+
+    private final DoublePoint canvasOffset = new DoublePoint(0, 0);
 
     private volatile Point mousePos;
     private Point initialMousePos;
@@ -93,19 +94,19 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         return Math.pow(ZOOM_MULTIPLIER, zoomIterations);
     }
 
-    private Point getOffsetToCenterCanvas() {
+    private DoublePoint getOffsetToCenterCanvas() {
         Dimension canvasDimension = canvas.getSize();
         return  getOffsetToCenterCanvas(canvasDimension);
     }
 
-    private Point getOffsetToCenterCanvas(Dimension canvasDimension) {
-        int currentWidth = (int) (getWidth() / zoomFactor);
-        int currentHeight = (int) (getHeight() / zoomFactor);
+    private DoublePoint getOffsetToCenterCanvas(Dimension canvasDimension) {
+        double currentWidth = getWidth() / zoomFactor;
+        double currentHeight = getHeight() / zoomFactor;
 
-        int xOffset = (currentWidth - canvasDimension.width) / 2;
-        int yOffset = (currentHeight - canvasDimension.height) / 2;
+        double xOffset = (currentWidth - canvasDimension.width) / 2.0;
+        double yOffset = (currentHeight - canvasDimension.height) / 2.0;
 
-        return new Point(-xOffset, -yOffset);
+        return new DoublePoint(-xOffset, -yOffset);
     }
 
     public Canvas getCanvas() {
@@ -211,11 +212,11 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private void calculateZoomOffset(PropertyChangeEvent evt) {
         double zoomRatio = (double) evt.getNewValue() / (double) evt.getOldValue();
-        int oldOffsetToMouseX = mousePos.x - canvasOffset.x;
-        int oldOffsetToMouseY = mousePos.y - canvasOffset.y;
-        int newOffsetToMouseX = (int) (oldOffsetToMouseX / zoomRatio);
-        int newOffsetToMouseY = (int) (oldOffsetToMouseY / zoomRatio);
-        setCanvasOffset(new Point(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY));
+        double oldOffsetToMouseX = mousePos.x - canvasOffset.x;
+        double oldOffsetToMouseY = mousePos.y - canvasOffset.y;
+        double newOffsetToMouseX = oldOffsetToMouseX / zoomRatio;
+        double newOffsetToMouseY = oldOffsetToMouseY / zoomRatio;
+        setCanvasOffset(mousePos.x - newOffsetToMouseX, mousePos.y - newOffsetToMouseY);
     }
 
     private void setZoomFactor(Double d) {
@@ -224,13 +225,18 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         propertyChangeSupport.firePropertyChange(ZOOM_EVENT, oldValue, zoomFactor);
     }
 
-    private void setCanvasOffset(Point p) {
-        Point oldValue = canvasOffset;
-        canvasOffset = p;
-        propertyChangeSupport.firePropertyChange(OFFSET_EVENT, oldValue, canvasOffset);
+    private void setCanvasOffset(DoublePoint p) {
+        setCanvasOffset(p.x, p.y);
     }
 
-    private Point initialCanvasOffset;
+    private void setCanvasOffset(double x, double y) {
+        DoublePoint oldVal = new DoublePoint(canvasOffset.x, canvasOffset.y);
+        canvasOffset.x = x;
+        canvasOffset.y = y;
+        propertyChangeSupport.firePropertyChange(OFFSET_EVENT, oldVal, canvasOffset);
+    }
+
+    private DoublePoint initialCanvasOffset;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -250,28 +256,28 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
+        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()).toIntPoint());
         if(shouldScroll(e)){
-            Point trueMousePos = mouseEventPosToAbsolutePos(e.getPoint());
-            Point d = getPointTranslation(initialMousePos, trueMousePos);
-            int newX = initialCanvasOffset.x + d.x;
-            int newY = initialCanvasOffset.y + d.y;
-            setCanvasOffset(new Point(newX, newY));
+            DoublePoint trueMousePos = mouseEventPosToAbsolutePos(e.getPoint());
+            DoublePoint d = getPointTranslation(DoublePoint.toDoublePoint(initialMousePos), trueMousePos);
+            double newX = initialCanvasOffset.x + d.x;
+            double newY = initialCanvasOffset.y + d.y;
+            setCanvasOffset(newX, newY);
         } else {
             activeTool.onMouseDragged(e);
         }
     }
 
-    private Point mouseEventPosToAbsolutePos(Point p) {
-        int mX = (int) (p.x / zoomFactor) + canvasOffset.x;
-        int mY = (int) (p.y / zoomFactor) + canvasOffset.y;
-        return new Point(mX, mY);
+    private DoublePoint mouseEventPosToAbsolutePos(Point p) {
+        double mX = (p.x / zoomFactor) + canvasOffset.x;
+        double mY = (p.y / zoomFactor) + canvasOffset.y;
+        return new DoublePoint(mX, mY);
     }
 
-    private Point getPointTranslation(Point p1, Point p2){
-        int dx = p1.x - p2.x;
-        int dy = p1.y - p2.y;
-        return new Point(dx, dy);
+    private DoublePoint getPointTranslation(DoublePoint p1, DoublePoint p2){
+        double dx = p1.x - p2.x;
+        double dy = p1.y - p2.y;
+        return new DoublePoint(dx, dy);
     }
 
     @Override
@@ -285,7 +291,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()));
+        setMousePos(mouseEventPosToAbsolutePos(e.getPoint()).toIntPoint());
     }
 
     private void setMousePos(Point p) {
@@ -333,7 +339,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
                 MagnificationPanel.setIsZoomedIn(zoomFactor > fullscreenZoomFactor);
             }
             if(evt.getPropertyName().equals(OFFSET_EVENT)){
-                MagnificationPanel.setCanvasOffset(canvasOffset);
+                MagnificationPanel.setCanvasOffset(((DoublePoint) evt.getNewValue()).toIntPoint());
             }
         });
     }
