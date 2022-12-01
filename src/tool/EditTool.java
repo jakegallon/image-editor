@@ -56,7 +56,9 @@ public abstract class EditTool extends BaseTool {
             lastDragPoint = thisDragPoint;
             thisDragPoint = activeCanvasPanel.getMousePos();
 
-            onLeftMouseDragged();
+            if(!lastDragPoint.equals(thisDragPoint)) {
+                onLeftMouseDragged();
+            }
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
             Color color = activeCanvasPanel.getColorAtMousePos();

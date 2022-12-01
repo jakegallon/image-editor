@@ -84,7 +84,12 @@ public class Layer implements Serializable {
     public void drawLine(Point p1, Point p2, int width, Color color) {
         g.setColor(color);
         g.setStroke(new BasicStroke(width));
-        g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+        Point[] points = getPointsOnLine(p1, p2);
+        for(Point p : points){
+            //noinspection SuspiciousNameCombination
+            g.fillOval(p.x - width/2, p.y  - width/2, width, width);
+        }
     }
 
     public void eraseLine(Point p1, Point p2, int width) {
@@ -95,6 +100,22 @@ public class Layer implements Serializable {
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+    }
+
+    private Point[] getPointsOnLine(Point p1, Point p2) {
+        int num = (int) p1.distance(p2);
+        Point[] points = new Point[num];
+
+        int dx = p2.x - p1.x;
+        int dy = p2.y - p1.y;
+
+        for(int i = 0; i  < num; i++) {
+            double d = (double) i / num;
+            Point p = new Point(p1.x + (int)(dx * d), p1.y + (int)(dy * d));
+            points[i] = p;
+        }
+
+        return points;
     }
 
     public void fillAll(Color color) {
