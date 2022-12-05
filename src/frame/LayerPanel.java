@@ -197,6 +197,7 @@ public class LayerPanel extends JPanel {
         private JButton deleteButton;
         private JButton lockButton;
         private JButton renameButton;
+        private JButton mergeDownButton;
         private JToggleButton visibleButton;
 
         private LayerWidget(Layer layer) {
@@ -275,6 +276,13 @@ public class LayerPanel extends JPanel {
             visibleButton.setSelected(true);
 
             visibleButton.addChangeListener(visibleListener());
+
+            mergeDownButton = new JButton("D");
+            mergeDownButton.setBackground(Color.GRAY);
+            mergeDownButton.setPreferredSize(new Dimension(16, 16));
+            add(mergeDownButton);
+
+            mergeDownButton.addActionListener(mergeDownListener());
         }
 
         private ActionListener deleteListener() {
@@ -298,6 +306,20 @@ public class LayerPanel extends JPanel {
             return null;
         }
 
+        private ActionListener mergeDownListener() {
+            return e -> {
+                ArrayList<Layer> l = Controller.getActiveCanvas().layers;
+                int targetIndex = l.indexOf(layer) + 1;
+                if(targetIndex >= l.size()) return;
+
+                Layer targetLayer = Controller.getActiveCanvas().layers.get(targetIndex);
+                targetLayer.mergeLayerIntoThis(layer);
+
+                deleteLayer(l.indexOf(layer));
+                l.remove(layer);
+            };
+        }
+
         private ChangeListener visibleListener() {
             return e -> layer.setVisible(visibleButton.isSelected());
         }
@@ -316,8 +338,10 @@ public class LayerPanel extends JPanel {
             springLayout.putConstraint(SpringLayout.EAST, deleteButton, -4, SpringLayout.EAST, this);
             springLayout.putConstraint(SpringLayout.SOUTH, lockButton, -4, SpringLayout.SOUTH, this);
             springLayout.putConstraint(SpringLayout.EAST, lockButton, 0, SpringLayout.EAST, deleteButton);
-            springLayout.putConstraint(SpringLayout.NORTH, renameButton, 0, SpringLayout.NORTH, deleteButton);
-            springLayout.putConstraint(SpringLayout.EAST, renameButton, -4, SpringLayout.WEST, deleteButton);
+            springLayout.putConstraint(SpringLayout.NORTH, mergeDownButton, 0, SpringLayout.NORTH, deleteButton);
+            springLayout.putConstraint(SpringLayout.EAST, mergeDownButton, -4, SpringLayout.WEST, deleteButton);
+            springLayout.putConstraint(SpringLayout.NORTH, renameButton, 0, SpringLayout.NORTH, mergeDownButton);
+            springLayout.putConstraint(SpringLayout.EAST, renameButton, -4, SpringLayout.WEST, mergeDownButton);
         }
 
         JPanel floatGradient;

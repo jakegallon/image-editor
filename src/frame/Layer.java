@@ -131,6 +131,11 @@ public class Layer implements Serializable {
         isVisible = visible;
     }
 
+    public void mergeLayerIntoThis(Layer layer) {
+        BufferedImage mergingLayerImage = layer.image;
+        image.getGraphics().drawImage(mergingLayerImage, 0, 0, null);
+    }
+
     @Serial
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
