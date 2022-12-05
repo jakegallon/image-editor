@@ -145,6 +145,7 @@ public class LayerPanel extends JPanel {
         int oldIndex = getIndexOfLayerWidget(layerWidget);
         Collections.swap(layerWidgets, oldIndex, index);
         redrawLayerContainerFromLayerWidgets();
+        reorderCanvasByLayerWidgets();
     }
 
     private void redrawLayerContainerFromLayerWidgets() {
@@ -159,12 +160,23 @@ public class LayerPanel extends JPanel {
         layerContainer.repaint();
     }
 
+    private void reorderCanvasByLayerWidgets() {
+        ArrayList<Layer> layers = new ArrayList<>();
+
+        for(LayerWidget layerWidget : layerWidgets) {
+            layers.add(layerWidget.layer);
+        }
+
+        Canvas activeCanvas = Controller.getActiveCanvas();
+        activeCanvas.layers = layers;
+    }
+
     private static final Dimension SLIDER_THUMB_SIZE = (Dimension) UIManager.get("Slider.thumbSize");
     private static final int LAYER_WIDGET_HEIGHT = 42;
 
     private class LayerWidget extends JPanel implements MouseListener, MouseMotionListener {
 
-        Layer layer;
+        private final Layer layer;
         private SpringLayout springLayout;
 
         private JLabel layerName;
