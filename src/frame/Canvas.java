@@ -90,7 +90,7 @@ public class Canvas extends JPanel implements Serializable {
         for (int i = layers.size() - 1; i >= 0; i--) {
             Layer layer = layers.get(i);
 
-            if (layer.isVisible() || layer.getOpacity() > 0f) {
+            if (layer.isVisible() && layer.getOpacity() > 0f) {
                 ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, layer.getOpacity()));
                 g.drawImage(layer.getImage(), 0, 0, getBounds().width, getBounds().height, null);
             }
