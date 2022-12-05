@@ -54,6 +54,10 @@ public class Layer implements Serializable {
         return image;
     }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     public float getOpacity() {
         return opacity;
     }

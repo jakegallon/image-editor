@@ -47,6 +47,19 @@ public class Controller {
         Frame.layerPanel.addLayer(layer, index);
     }
 
+    public static void mergeLayerIntoLayer(Layer topLayer, Layer bottomLayer, int bottomIndex) {
+        bottomLayer.mergeLayerIntoThis(topLayer);
+
+        deleteLayerFromActiveCanvas(bottomIndex - 1);
+    }
+
+    public static void undoMergeLayer(Layer topLayer, Layer bottomLayer, int bottomIndex) {
+        int topIndex = bottomIndex - 1;
+        restoreLayerToActiveCanvas(bottomLayer, bottomIndex);
+        restoreLayerToActiveCanvas(topLayer, topIndex);
+        deleteLayerFromActiveCanvas(bottomIndex);
+    }
+
     public static void deleteLayerFromActiveCanvas(int index) {
         activeCanvas.deleteLayer(index);
         Frame.layerPanel.deleteLayer(index);

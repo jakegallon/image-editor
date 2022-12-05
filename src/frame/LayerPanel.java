@@ -1,6 +1,7 @@
 package frame;
 
 import action.LayerDeletionAction;
+import action.LayerMergeAction;
 import action.LayerOrderAction;
 
 import javax.imageio.ImageIO;
@@ -313,10 +314,11 @@ public class LayerPanel extends JPanel {
                 if(targetIndex >= l.size()) return;
 
                 Layer targetLayer = Controller.getActiveCanvas().layers.get(targetIndex);
-                targetLayer.mergeLayerIntoThis(layer);
 
-                deleteLayer(l.indexOf(layer));
-                l.remove(layer);
+                LayerMergeAction thisAction = new LayerMergeAction(layer, targetLayer, targetIndex);
+                Controller.getActiveCanvas().undoManager.addEdit(thisAction);
+
+                Controller.mergeLayerIntoLayer(layer, targetLayer, targetIndex);
             };
         }
 
