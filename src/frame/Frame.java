@@ -19,7 +19,7 @@ public class Frame extends JFrame {
 
     public static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
-    static LayerPanel layerPanel = new LayerPanel();
+    public static LayerPanel layerPanel = new LayerPanel();
     static ColorTabbedPane colorSettings = new ColorTabbedPane();
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
     static TabPanel topPanel = new TabPanel();

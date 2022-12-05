@@ -1,5 +1,7 @@
 package frame;
 
+import action.LayerOrderAction;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -9,7 +11,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -142,10 +143,17 @@ public class LayerPanel extends JPanel {
     }
 
     private void swapLayerWidgetToIndex(LayerWidget layerWidget, int index) {
-        int oldIndex = getIndexOfLayerWidget(layerWidget);
-
         layerWidgets.remove(layerWidget);
         layerWidgets.add(index, layerWidget);
+
+        redrawLayerContainerFromLayerWidgets();
+        reorderCanvasByLayerWidgets();
+    }
+
+    public void moveLayerIndexToIndex(int takenIndex, int placedIndex) {
+        LayerWidget storedWidget = layerWidgets.get(takenIndex);
+        layerWidgets.remove(takenIndex);
+        layerWidgets.add(placedIndex, storedWidget);
 
         redrawLayerContainerFromLayerWidgets();
         reorderCanvasByLayerWidgets();
@@ -404,6 +412,9 @@ public class LayerPanel extends JPanel {
             if(isMouseOverWidget && index == initialIndex) {
                 setLayerAsActive();
             }
+
+            LayerOrderAction thisAction = new LayerOrderAction(initialIndex, index);
+            Controller.getActiveCanvas().undoManager.addEdit(thisAction);
 
             unfloatWidget();
             isMousePressed = false;
