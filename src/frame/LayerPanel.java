@@ -40,7 +40,7 @@ public class LayerPanel extends JPanel {
             throw new RuntimeException(e);
         }
 
-        layerPanelHandler = new LayerPanelHandler(this);
+        layerPanelHandler = new LayerPanelHandler();
         add(layerPanelHandler, BorderLayout.PAGE_START);
 
         layerContainer = new JPanel();

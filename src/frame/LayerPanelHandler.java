@@ -1,39 +1,34 @@
 package frame;
 
+import action.LayerCreationAction;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LayerPanelHandler extends JPanel {
 
-    public Canvas activeCanvas;
+    private static Canvas activeCanvas;
 
-    public LayerPanelHandler(LayerPanel layerPanel) {
+    public LayerPanelHandler() {
         setPreferredSize(new Dimension(0, 32));
 
         JButton addButton = new JButton("add");
         addButton.addActionListener(e -> {
-            //todo remove
-            setActiveCanvas(Controller.getActiveCanvas());
-
             //todo lock buttons when no active canvas
             int index = activeCanvas.getActiveLayerIndex();
             index = index == -1 ? 0 : index;
 
-            Layer newLayer = newLayer();
+            Controller.addNewLayerToActiveCanvas(index);
 
-            activeCanvas.addLayer(newLayer, index);
-            layerPanel.addLayer(newLayer, index);
+            LayerCreationAction thisAction = new LayerCreationAction(index);
+            activeCanvas.undoManager.addEdit(thisAction);
         });
 
         JButton delButton = new JButton("del");
         delButton.addActionListener(e -> {
-            //todo remove
-            setActiveCanvas(Controller.getActiveCanvas());
-
             int index = activeCanvas.getActiveLayerIndex();
-            activeCanvas.deleteLayer(index);
-            layerPanel.deleteLayer(index);
 
+            Controller.deleteLayerFromActiveCanvas(index);
         });
 
         // lock/unlock, opacity, merge below
@@ -42,13 +37,7 @@ public class LayerPanelHandler extends JPanel {
         add(delButton);
     }
 
-    public void setActiveCanvas(Canvas activeCanvas) {
-        this.activeCanvas = activeCanvas;
-    }
-
-    private Layer newLayer() {
-        Layer newLayer = new Layer(activeCanvas);
-        newLayer.setName("Layer " + activeCanvas.nextNameNumber());
-        return newLayer;
+    public static void setActiveCanvas(Canvas canvas) {
+        activeCanvas = canvas;
     }
 }

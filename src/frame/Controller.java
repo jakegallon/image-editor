@@ -35,12 +35,25 @@ public class Controller {
         setActiveCanvas(canvas);
     }
 
+    public static void addNewLayerToActiveCanvas(int index) {
+        Layer newLayer = new Layer(activeCanvas);
+        newLayer.setName("Layer " + activeCanvas.nextNameNumber());
+        activeCanvas.addLayer(newLayer, index);
+        Frame.layerPanel.addLayer(newLayer, index);
+    }
+
+    public static void deleteLayerFromActiveCanvas(int index) {
+        activeCanvas.deleteLayer(index);
+        Frame.layerPanel.deleteLayer(index);
+    }
+
     public static void setActiveCanvas(Canvas canvas) {
         activeCanvas = canvas;
         Frame.canvasPanel.setCanvas(canvas);
         Frame.layerPanel.onCanvasSwitch();
         Frame.magnificationPanel.setCanvas(canvas);
         Frame.topPanel.setActiveWidgetByCanvas(canvas);
+        LayerPanelHandler.setActiveCanvas(canvas);
         BaseTool.canvas = canvas;
         AnimationPanel.setCanvas(canvas);
     }
