@@ -42,6 +42,11 @@ public class Controller {
         Frame.layerPanel.addLayer(newLayer, index);
     }
 
+    public static void restoreLayerToActiveCanvas(Layer layer, int index) {
+        activeCanvas.addLayer(layer, index);
+        Frame.layerPanel.addLayer(layer, index);
+    }
+
     public static void deleteLayerFromActiveCanvas(int index) {
         activeCanvas.deleteLayer(index);
         Frame.layerPanel.deleteLayer(index);

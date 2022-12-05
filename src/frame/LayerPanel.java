@@ -1,5 +1,6 @@
 package frame;
 
+import action.LayerDeletionAction;
 import action.LayerOrderAction;
 
 import javax.imageio.ImageIO;
@@ -281,6 +282,9 @@ public class LayerPanel extends JPanel {
                 ArrayList<Layer> l = Controller.getActiveCanvas().layers;
                 deleteLayer(l.indexOf(layer));
                 l.remove(layer);
+
+                LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
+                Controller.getActiveCanvas().undoManager.addEdit(thisAction);
             };
         }
 

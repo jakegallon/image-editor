@@ -1,6 +1,7 @@
 package frame;
 
 import action.LayerCreationAction;
+import action.LayerDeletionAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +28,12 @@ public class LayerPanelHandler extends JPanel {
         JButton delButton = new JButton("del");
         delButton.addActionListener(e -> {
             int index = activeCanvas.getActiveLayerIndex();
+            Layer layer = activeCanvas.getActiveLayer();
 
             Controller.deleteLayerFromActiveCanvas(index);
+
+            LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
+            activeCanvas.undoManager.addEdit(thisAction);
         });
 
         // lock/unlock, opacity, merge below
