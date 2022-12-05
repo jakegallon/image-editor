@@ -30,6 +30,14 @@ public class LayerPanel extends JPanel {
     private static BufferedImage gradient;
     private static BufferedImage gradient_alt;
 
+    private static ImageIcon lockedIcon;
+    private static ImageIcon unlockedIcon;
+    private static ImageIcon mergeIcon;
+    private static ImageIcon renameIcon;
+    private static ImageIcon deleteIcon;
+    private static ImageIcon visibleIcon;
+    private static ImageIcon notVisibleIcon;
+
     public LayerPanel() {
         setMinimumSize(new Dimension(0, 250));
         setPreferredSize(new Dimension(0, 400));
@@ -38,6 +46,13 @@ public class LayerPanel extends JPanel {
         try {
             gradient = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/gradient.png")));
             gradient_alt = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/gradient_alt.png")));
+            lockedIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/locked.png"))));
+            unlockedIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/unlocked.png"))));
+            mergeIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/merge.png"))));
+            renameIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/rename.png"))));
+            deleteIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/delete.png"))));
+            visibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/visible.png"))));
+            notVisibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/notvisible.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -196,7 +211,7 @@ public class LayerPanel extends JPanel {
         private JPanel layerImage;
         private JSlider layerOpacity;
         private JButton deleteButton;
-        private JButton lockButton;
+        private JToggleButton lockButton;
         private JButton renameButton;
         private JButton mergeDownButton;
         private JToggleButton visibleButton;
@@ -249,37 +264,58 @@ public class LayerPanel extends JPanel {
 
             layerOpacity.addChangeListener(e -> layer.setOpacity(layerOpacity.getValue()));
 
-            deleteButton = new JButton("X");
-            deleteButton.setBackground(Color.RED);
+            deleteButton = new JButton();
+            deleteButton.setIcon(deleteIcon);
+            deleteButton.setBorderPainted(false);
+            deleteButton.setBackground(new Color(0, 0, 0, 0));
             deleteButton.setPreferredSize(new Dimension(16, 16));
             add(deleteButton);
 
             deleteButton.addActionListener(deleteListener());
 
-            lockButton = new JButton("L");
-            lockButton.setBackground(Color.YELLOW);
+            lockButton = new JToggleButton();
+            if(layer.isLocked()) {
+                lockButton.setIcon(lockedIcon);
+                lockButton.setSelected(true);
+            } else {
+                lockButton.setIcon(unlockedIcon);
+                lockButton.setSelected(false);
+            }
+            lockButton.setBorderPainted(false);
+            lockButton.setBackground(new Color(0, 0, 0, 0));
             lockButton.setPreferredSize(new Dimension(16, 16));
             add(lockButton);
 
             lockButton.addActionListener(lockListener());
 
-            renameButton = new JButton("R");
-            renameButton.setBackground(Color.GREEN);
+            renameButton = new JButton();
+            renameButton.setIcon(renameIcon);
+            renameButton.setBorderPainted(false);
+            renameButton.setBackground(new Color(0, 0, 0, 0));
             renameButton.setPreferredSize(new Dimension(16, 16));
             add(renameButton);
 
             renameButton.addActionListener(renameListener());
 
-            visibleButton = new JToggleButton("V");
-            visibleButton.setBackground(Color.GRAY);
+            visibleButton = new JToggleButton();
+            if(layer.isVisible()) {
+                visibleButton.setIcon(visibleIcon);
+                visibleButton.setSelected(true);
+            } else {
+                visibleButton.setIcon(notVisibleIcon);
+                visibleButton.setSelected(false);
+            }
+            visibleButton.setBorderPainted(false);
+            visibleButton.setBackground(new Color(0, 0, 0, 0));
             visibleButton.setPreferredSize(new Dimension(16, 16));
             add(visibleButton);
-            visibleButton.setSelected(true);
 
-            visibleButton.addChangeListener(visibleListener());
+            visibleButton.addActionListener(visibleListener());
 
-            mergeDownButton = new JButton("D");
-            mergeDownButton.setBackground(Color.GRAY);
+            mergeDownButton = new JButton();
+            mergeDownButton.setIcon(mergeIcon);
+            mergeDownButton.setBorderPainted(false);
+            mergeDownButton.setBackground(new Color(0, 0, 0, 0));
             mergeDownButton.setPreferredSize(new Dimension(16, 16));
             add(mergeDownButton);
 
@@ -297,9 +333,18 @@ public class LayerPanel extends JPanel {
             };
         }
 
-        //todo
         private ActionListener lockListener() {
-            return null;
+            return e -> {
+                layer.toggleLayerLock();
+
+                if(layer.isLocked()) {
+                    lockButton.setIcon(lockedIcon);
+                    lockButton.setSelected(true);
+                } else {
+                    lockButton.setIcon(unlockedIcon);
+                    lockButton.setSelected(false);
+                }
+            };
         }
 
         //todo
@@ -322,8 +367,18 @@ public class LayerPanel extends JPanel {
             };
         }
 
-        private ChangeListener visibleListener() {
-            return e -> layer.setVisible(visibleButton.isSelected());
+        private ActionListener visibleListener() {
+            return e -> {
+                layer.setVisible(visibleButton.isSelected());
+
+                if(layer.isVisible()) {
+                    visibleButton.setIcon(visibleIcon);
+                    visibleButton.setSelected(true);
+                } else {
+                    visibleButton.setIcon(notVisibleIcon);
+                    visibleButton.setSelected(false);
+                }
+            };
         }
 
         private void alignBase() {

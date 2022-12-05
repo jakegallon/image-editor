@@ -26,6 +26,10 @@ public class Layer implements Serializable {
         isLocked = !isLocked;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
