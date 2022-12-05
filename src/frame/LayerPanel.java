@@ -143,7 +143,10 @@ public class LayerPanel extends JPanel {
 
     private void swapLayerWidgetToIndex(LayerWidget layerWidget, int index) {
         int oldIndex = getIndexOfLayerWidget(layerWidget);
-        Collections.swap(layerWidgets, oldIndex, index);
+
+        layerWidgets.remove(layerWidget);
+        layerWidgets.add(index, layerWidget);
+
         redrawLayerContainerFromLayerWidgets();
         reorderCanvasByLayerWidgets();
     }
@@ -381,6 +384,12 @@ public class LayerPanel extends JPanel {
 
         }
 
+        private void resetIndexingVariables() {
+            currentIndexOffset = 0;
+            index = getIndexOfLayerWidget(this);
+            trueIndex = index;
+        }
+
         @Override
         public void mousePressed(MouseEvent e) {
             isMousePressed = true;
@@ -421,7 +430,7 @@ public class LayerPanel extends JPanel {
                 if(isValidLayerWidgetsIndex(index + currentIndexOffset)){
                     trueIndex = index + currentIndexOffset;
                     swapLayerWidgetToIndex(this, trueIndex);
-                    index = getIndexOfLayerWidget(this);
+                    resetIndexingVariables();
                 }
             }
         }
