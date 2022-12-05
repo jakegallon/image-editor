@@ -441,8 +441,10 @@ public class LayerPanel extends JPanel {
                 setLayerAsActive();
             }
 
-            LayerOrderAction thisAction = new LayerOrderAction(initialIndex, index);
-            Controller.getActiveCanvas().undoManager.addEdit(thisAction);
+            if(index != initialIndex) {
+                LayerOrderAction thisAction = new LayerOrderAction(initialIndex, index);
+                Controller.getActiveCanvas().undoManager.addEdit(thisAction);
+            }
 
             unfloatWidget();
             isMousePressed = false;
