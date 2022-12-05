@@ -80,7 +80,7 @@ public abstract class EditTool extends BaseTool {
 
             ArrayList<PixelChange> pixelChanges = activeLayer.getImageDifferences(originalImage);
 
-            EditAction thisAction = new EditAction(activeLayer, pixelChanges);
+            EditAction thisAction = new EditAction(canvas.getActiveLayerIndex(), pixelChanges);
             canvas.undoManager.addEdit(thisAction);
         }
         else if (SwingUtilities.isRightMouseButton(e)) {

@@ -1,5 +1,6 @@
 package action;
 
+import frame.Controller;
 import frame.Layer;
 
 import javax.swing.undo.AbstractUndoableEdit;
@@ -9,17 +10,18 @@ import java.util.ArrayList;
 
 public class EditAction extends AbstractUndoableEdit {
 
-    Layer layer;
+    int layerIndex;
     ArrayList<PixelChange> pixelChanges;
 
-    public EditAction(Layer layer, ArrayList<PixelChange> pixelChanges) {
-        this.layer = layer;
+    public EditAction(int layerIndex, ArrayList<PixelChange> pixelChanges) {
+        this.layerIndex = layerIndex;
         this.pixelChanges = pixelChanges;
     }
 
     @Override
     public void undo() throws CannotUndoException {
         super.undo();
+        Layer layer = Controller.getActiveCanvas().layers.get(layerIndex);
         for(PixelChange pixelChange : pixelChanges) {
             layer.paint(pixelChange.x(), pixelChange.y(), pixelChange.oldColor());
         }
@@ -28,6 +30,7 @@ public class EditAction extends AbstractUndoableEdit {
     @Override
     public void redo() throws CannotRedoException {
         super.redo();
+        Layer layer = Controller.getActiveCanvas().layers.get(layerIndex);
         for(PixelChange pixelChange : pixelChanges) {
             layer.paint(pixelChange.x(), pixelChange.y(), pixelChange.newColor());
         }
