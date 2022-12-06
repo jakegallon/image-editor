@@ -41,6 +41,49 @@ public class Canvas extends JPanel implements Serializable {
         }
     }
 
+    public Rectangle selectedArea;
+
+    private float currentDashPhase = 0f;
+    private final Timer timer = new Timer(500, e -> currentDashPhase = currentDashPhase == 0f ? 0.5f : 0f);
+
+    private void drawSelectedArea(Graphics g) {
+        if(selectedArea == null) {
+            timer.stop();
+            return;
+        } else if(selectedArea.width == 0 || selectedArea.height ==0) {
+            return;
+        }
+
+        if(!timer.isRunning()) timer.start();
+
+        Graphics2D g2d = (Graphics2D) g;
+        drawDashingRectangle(g2d);
+    }
+
+    private void drawDashingRectangle(Graphics2D g2d) {
+        int x = selectedArea.x;
+        int y = selectedArea.y;
+        int x2 = selectedArea.x + selectedArea.width;
+        int y2 = selectedArea.y + selectedArea.height;
+
+        g2d.setStroke(new BasicStroke(0.1f));
+        g2d.setColor(Color.white);
+
+        g2d.drawLine(x, y, x, y2);
+        g2d.drawLine(x, y, x2, y);
+        g2d.drawLine(x, y2, x2, y2);
+        g2d.drawLine(x2, y, x2, y2);
+
+        Stroke dashingStroke = new BasicStroke(0.1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{0.5f}, currentDashPhase);
+        g2d.setStroke(dashingStroke);
+        g2d.setColor(Color.black);
+
+        g2d.drawLine(x, y, x, y2);
+        g2d.drawLine(x, y, x2, y);
+        g2d.drawLine(x, y2, x2, y2);
+        g2d.drawLine(x2, y, x2, y2);
+    }
+
     public void setGridX(int gridX) {
         int curY = gridInformation.gridY();
         GridStyle curStyle = gridInformation.gridStyle();
@@ -81,6 +124,7 @@ public class Canvas extends JPanel implements Serializable {
         updateImage();
         g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
         drawGrid(g);
+        drawSelectedArea(g);
     }
 
     private void updateImage() {
