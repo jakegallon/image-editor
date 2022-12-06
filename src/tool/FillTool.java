@@ -27,7 +27,7 @@ public class FillTool extends EditTool {
 
     @Override
     protected void onLeftMousePressed() {
-        activeLayer.fillAll(color);
+        activeLayer.initiateFill(initPressPoint, color);
     }
 
     @Override

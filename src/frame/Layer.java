@@ -131,6 +131,37 @@ public class Layer implements Serializable {
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
 
+    public void initiateFill(Point pixel, Color color) {
+        int targetColor = image.getRGB(pixel.x, pixel.y);
+
+        ArrayList<Point> pixelsToCheck = new ArrayList<>();
+        pixelsToCheck.add(new Point(pixel.x, pixel.y));
+
+        while(!pixelsToCheck.isEmpty()) {
+            Point thisPixel = pixelsToCheck.get(0);
+            if(image.getRGB(thisPixel.x, thisPixel.y) == targetColor) {
+                image.setRGB(thisPixel.x, thisPixel.y, color.getRGB());
+                pixelsToCheck.addAll(getSurroundingPixels(thisPixel));
+            }
+            pixelsToCheck.remove(0);
+        }
+    }
+
+    public ArrayList<Point> getSurroundingPixels(Point pixel) {
+        ArrayList<Point> points = new ArrayList<>();
+
+        Point north = new Point(pixel.x, pixel.y - 1);
+        if(north.y >= 0) points.add(north);
+        Point south = new Point(pixel.x, pixel.y + 1);
+        if(south.y < image.getHeight()) points.add(south);
+        Point east = new Point(pixel.x + 1, pixel.y);
+        if(east.x < image.getWidth()) points.add(east);
+        Point west = new Point(pixel.x - 1, pixel.y);
+        if(west.x >= 0) points.add(west);
+
+        return points;
+    }
+
     public boolean isVisible() {
         return isVisible;
     }
