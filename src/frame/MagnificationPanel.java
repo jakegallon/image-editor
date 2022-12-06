@@ -1,18 +1,21 @@
 package frame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 public class MagnificationPanel extends JLayeredPane {
 
     private static boolean isZoomedIn;
     private final SpringLayout springLayout = new SpringLayout();
     private final JSlider targetZoomSlider = new JSlider(0, 90, 1);
-    private static final JToggleButton automaticModeButton = new JToggleButton("a");
-    private final JToggleButton crosshairButton = new JToggleButton("c");
+    private static final JToggleButton automaticModeButton = new JToggleButton();
+    private final JToggleButton crosshairButton = new JToggleButton();
     private static final MagnifiedPanelRenderer magnifiedPanelRenderer = new MagnifiedPanelRenderer();
 
     private static Canvas canvas;
@@ -30,6 +33,11 @@ public class MagnificationPanel extends JLayeredPane {
     public static Dimension viewportDimension = new Dimension();
 
     private static double canvasWidthHeightRatio = 1.0;
+
+    private static ImageIcon autoOnIcon;
+    private static ImageIcon autoOffIcon;
+    private static ImageIcon crosshairOnIcon;
+    private static ImageIcon crosshairOffIcon;
 
     public MagnificationPanel() {
         init();
@@ -95,19 +103,49 @@ public class MagnificationPanel extends JLayeredPane {
         setMinimumSize(new Dimension(0, 250));
         setLayout(springLayout);
 
+        try {
+            autoOnIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/auto_on.png"))));
+            autoOffIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/auto_off.png"))));
+            crosshairOnIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/crosshair_on.png"))));
+            crosshairOffIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/crosshair_off.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        automaticModeButton.setPreferredSize(new Dimension(24, 24));
+        crosshairButton.setPreferredSize(new Dimension(24, 24));
+
         add(automaticModeButton, 2, 0);
+        automaticModeButton.setIcon(autoOnIcon);
+        automaticModeButton.setBorderPainted(false);
+        automaticModeButton.setBackground(new Color(0, 0, 0, 0));
         automaticModeButton.setSelected(true);
         add(targetZoomSlider, 2, 0);
         add(crosshairButton, 2, 0);
         crosshairButton.setSelected(true);
+        crosshairButton.setIcon(crosshairOnIcon);
+        crosshairButton.setBorderPainted(false);
+        crosshairButton.setBackground(new Color(0, 0, 0, 0));
         add(magnifiedPanelRenderer, 1, 0);
         putConstraints();
 
-        automaticModeButton.addChangeListener(e -> isAutomaticMode = automaticModeButton.isSelected());
+        automaticModeButton.addChangeListener(e -> {
+            isAutomaticMode = automaticModeButton.isSelected();
+            if(automaticModeButton.isSelected()){
+                automaticModeButton.setIcon(autoOnIcon);
+            } else {
+                automaticModeButton.setIcon(autoOffIcon);
+            }
+        });
         targetZoomSlider.addChangeListener(e -> setTargetZoom((targetZoomSlider.getValue()) / 10f + 1));
         crosshairButton.addChangeListener(e -> {
             isCrosshairEnabled = crosshairButton.isSelected();
             magnifiedPanelRenderer.repaint();
+            if(crosshairButton.isSelected()){
+                crosshairButton.setIcon(crosshairOnIcon);
+            } else {
+                crosshairButton.setIcon(crosshairOffIcon);
+            }
         });
 
     }
@@ -127,7 +165,7 @@ public class MagnificationPanel extends JLayeredPane {
 
         springLayout.putConstraint(SpringLayout.WEST, targetZoomSlider, 0, SpringLayout.EAST, automaticModeButton);
         springLayout.putConstraint(SpringLayout.EAST, targetZoomSlider, 100, SpringLayout.WEST, targetZoomSlider);
-        springLayout.putConstraint(SpringLayout.BASELINE, targetZoomSlider, 0, SpringLayout.BASELINE, automaticModeButton);
+        springLayout.putConstraint(SpringLayout.BASELINE, targetZoomSlider, -8, SpringLayout.SOUTH, automaticModeButton);
 
         springLayout.putConstraint(SpringLayout.EAST, crosshairButton, -5, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.SOUTH, crosshairButton, -5, SpringLayout.SOUTH, this);
