@@ -83,16 +83,16 @@ public class Controller {
     public static void undo() {
         try {
             activeCanvas.undoManager.undo();
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            NotificationPanel.playNotification("There are no more edits left to undo...");
         }
     }
 
     public static void redo() {
         try {
             activeCanvas.undoManager.redo();
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            NotificationPanel.playNotification("There are no more edits left to redo...");
         }
     }
 

@@ -23,6 +23,7 @@ public class Frame extends JFrame {
     static ColorTabbedPane colorSettings = new ColorTabbedPane();
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
     static TabPanel topPanel = new TabPanel();
+    static NotificationPanel notificationPanel = new NotificationPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -51,9 +52,25 @@ public class Frame extends JFrame {
         JPanel middlePanel = new JPanel(new BorderLayout());
         middlePanel.setMinimumSize(new Dimension(250, 0));
 
+        SpringLayout springLayout = new SpringLayout();
+        JLayeredPane canvasPanelContainer = new JLayeredPane();
+        canvasPanelContainer.setLayout(springLayout);
+
+        canvasPanelContainer.add(canvasPanel, 1, 0);
+        springLayout.putConstraint(SpringLayout.NORTH, canvasPanel, 0, SpringLayout.NORTH, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.EAST, canvasPanel, 0, SpringLayout.EAST, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.SOUTH, canvasPanel, 0, SpringLayout.SOUTH, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.WEST, canvasPanel, 0, SpringLayout.WEST, canvasPanelContainer);
+
+        canvasPanelContainer.add(notificationPanel, 2, 0);
+        springLayout.putConstraint(SpringLayout.NORTH, notificationPanel, 0, SpringLayout.NORTH, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.EAST, notificationPanel, 0, SpringLayout.EAST, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.SOUTH, notificationPanel, 25, SpringLayout.NORTH, canvasPanelContainer);
+        springLayout.putConstraint(SpringLayout.WEST, notificationPanel, 0, SpringLayout.WEST, canvasPanelContainer);
+
         middlePanel.add(topPanel, BorderLayout.PAGE_START);
         middlePanel.add(infoPanel, BorderLayout.PAGE_END);
-        middlePanel.add(canvasPanel, BorderLayout.CENTER);
+        middlePanel.add(canvasPanelContainer, BorderLayout.CENTER);
 
         leftPanel = new JPanel(new BorderLayout());
         leftPanel.setMinimumSize(new Dimension(310, 0));
