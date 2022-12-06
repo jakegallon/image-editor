@@ -1,7 +1,7 @@
 package frame;
 
 import tool.BaseTool;
-import tool.MoveTool;
+import tool.MoveCameraTool;
 import tool.PenTool;
 
 import javax.swing.*;
@@ -251,7 +251,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     private boolean shouldScroll(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e)) return true;
-        return SwingUtilities.isLeftMouseButton(e) && activeTool instanceof MoveTool;
+        return SwingUtilities.isLeftMouseButton(e) && activeTool instanceof MoveCameraTool;
     }
 
     @Override

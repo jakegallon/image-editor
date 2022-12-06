@@ -14,7 +14,7 @@ public class ToolSelectPanel extends JPanel {
         init();
     }
 
-    private static final MoveTool moveTool = new MoveTool();
+    private static final MoveCameraTool MOVE_CAMERA_TOOL = new MoveCameraTool();
     private static final PenTool penTool = new PenTool();
     private static final EraseTool eraseTool = new EraseTool();
     private static final FillTool fillTool = new FillTool();
@@ -29,7 +29,7 @@ public class ToolSelectPanel extends JPanel {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
 
-        BaseTool[] tools = {moveTool, penTool, eraseTool, fillTool, eyeTool, selectTool};
+        BaseTool[] tools = {MOVE_CAMERA_TOOL, penTool, eraseTool, fillTool, eyeTool, selectTool};
         int buttonSize = getPreferredSize().width - 2;
         int offset = 0;
         for(BaseTool tool : tools) {

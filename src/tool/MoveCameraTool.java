@@ -6,9 +6,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MoveTool extends BaseTool {
+public class MoveCameraTool extends BaseTool {
 
-    public MoveTool() {
+    public MoveCameraTool() {
         try {
             icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/move.png"))));
         } catch (IOException e) {
