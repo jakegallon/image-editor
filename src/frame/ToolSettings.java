@@ -51,11 +51,6 @@ public class ToolSettings extends JPanel {
 
         for(BaseTool tool : tools) {
             if(tool.category == category) {
-                if(!hasMatchedToolToCategory) {
-                    hasMatchedToolToCategory = true;
-                    Controller.setActiveTool(tool);
-                }
-
                 JButton subToolButton = new JButton();
                 if(takenNames.contains(tool.displayName)) {
                     int count = 1;
@@ -109,6 +104,14 @@ public class ToolSettings extends JPanel {
                         }
                     }
                 });
+
+                if(!hasMatchedToolToCategory) {
+                    hasMatchedToolToCategory = true;
+                    Controller.setActiveTool(tool);
+
+                    selectedSubToolButton = subToolButton;
+                    subToolButton.setBackground(new Color(70, 106, 146));
+                }
 
                 subToolButton.addActionListener(e -> Controller.setActiveTool(tool));
             }
