@@ -102,7 +102,10 @@ public class Layer implements Serializable {
         g.clearRect(rect.x, rect.y, rect.width, rect.height);
     }
 
-    public void drawLine(Point p1, Point p2, int width, Color color) {
+    public void drawLine(Point p1, Point p2, int width, Color color, boolean isAntiAliasing) {
+        Object hintValue = isAntiAliasing ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF;
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, hintValue);
+
         g.setColor(color);
         g.setStroke(new BasicStroke(width));
 
