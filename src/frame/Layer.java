@@ -116,12 +116,10 @@ public class Layer implements Serializable {
         }
     }
 
-    public void eraseLine(Point p1, Point p2, int width) {
+    public void eraseLine(Point p1, Point p2, int width, int opacity, boolean isAntiAliasing) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
 
-        g.setColor(new Color(0, 0, 0, 0.5f));
-        g.setStroke(new BasicStroke(width));
-        g.drawLine(p1.x, p1.y, p2.x, p2.y);
+        drawLine(p1, p2, width, new Color(0, 0, 0, 255-opacity), isAntiAliasing);
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
     }
