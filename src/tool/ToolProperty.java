@@ -23,8 +23,8 @@ public enum ToolProperty {
         widthComponent.setLayout(springLayout);
 
         JLabel widthLabel = new JLabel("Brush Size");
-        JSlider widthSlider = new JSlider(1, 100, 1);
-        JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+        JSlider widthSlider = new JSlider(1, 100, tool.width);
+        JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(tool.width, 1, 100, 1));
         widthComponent.add(widthLabel);
         widthComponent.add(widthSlider);
         widthComponent.add(widthSpinner);
@@ -70,8 +70,8 @@ public enum ToolProperty {
         opacityComponent.setLayout(springLayout);
 
         JLabel opacityLabel = new JLabel("Opacity");
-        JSlider opacitySlider = new JSlider(0, 255, 255);
-        JSpinner opacitySpinner = new JSpinner(new SpinnerNumberModel(255, 0, 255, 1));
+        JSlider opacitySlider = new JSlider(0, 255, tool.opacity);
+        JSpinner opacitySpinner = new JSpinner(new SpinnerNumberModel(tool.opacity, 0, 255, 1));
         opacityComponent.add(opacityLabel);
         opacityComponent.add(opacitySlider);
         opacityComponent.add(opacitySpinner);
