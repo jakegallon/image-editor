@@ -20,6 +20,7 @@ public class Layer implements Serializable {
     public Layer(Canvas canvas) {
         image = new BufferedImage(canvas.getBounds().width, canvas.getBounds().height, BufferedImage.TYPE_INT_ARGB);
         g = (Graphics2D) image.getGraphics();
+        g.setBackground(new Color(0, 0, 0, 0));
     }
 
     public void toggleLayerLock() {
@@ -93,7 +94,6 @@ public class Layer implements Serializable {
         BufferedImage duplicateImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         duplicateImage.getGraphics().drawImage(image, 0, 0, null);
 
-        g.setBackground(new Color(0, 0, 0, 0));
         g.clearRect(0, 0, image.getWidth(), image.getHeight());
         g.drawImage(duplicateImage, dx, dy, null);
     }
@@ -195,5 +195,6 @@ public class Layer implements Serializable {
         in.defaultReadObject();
         image = ImageIO.read(in);
         g = (Graphics2D) image.getGraphics();
+        g.setBackground(new Color(0, 0, 0, 0));
     }
 }
