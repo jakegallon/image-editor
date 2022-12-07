@@ -199,4 +199,8 @@ public class ToolSettings extends JPanel {
     public static void addComponentToToolSettings(JPanel component) {
         toolSettings.add(component);
     }
+
+    public static int getCurrentWidth() {
+        return toolSettings.getWidth();
+    }
 }

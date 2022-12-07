@@ -20,9 +20,6 @@ public abstract class BaseTool {
 
     protected Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
-    int width = 1;
-    int opacity = 255;
-
     public abstract void attachProperties(JPanel panel);
 
     protected abstract void onLeftMouseClicked();

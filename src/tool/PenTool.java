@@ -1,9 +1,17 @@
 package tool;
 
+import frame.ToolSettings;
+import tool.properties.PropertySliderWidget;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PenTool extends EditTool {
+
+
+    AtomicInteger width = new AtomicInteger(1);
+    AtomicInteger opacity = new AtomicInteger(255);
 
     public PenTool() {
         category = ToolCategory.PEN;
@@ -12,8 +20,8 @@ public class PenTool extends EditTool {
 
     @Override
     public void attachProperties(JPanel panel) {
-        ToolProperty.WIDTH.attachToPanelAndTool(panel, this);
-        ToolProperty.OPACITY.attachToPanelAndTool(panel, this);
+        ToolSettings.addComponentToToolSettings(new PropertySliderWidget(width, "Brush Size", 1, 100));
+        ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
     }
 
     @Override
@@ -28,11 +36,11 @@ public class PenTool extends EditTool {
 
     @Override
     protected void onLeftMouseDragged() {
-        if(opacity == 255) {
-            activeLayer.drawLine(lastDragPoint, thisDragPoint, width, color);
+        if(opacity.get() == 255) {
+            activeLayer.drawLine(lastDragPoint, thisDragPoint, width.get(), color);
         } else {
-            Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
-            activeLayer.drawLine(lastDragPoint, thisDragPoint, width, alphaColor);
+            Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity.get());
+            activeLayer.drawLine(lastDragPoint, thisDragPoint, width.get(), alphaColor);
         }
     }
 
