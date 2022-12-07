@@ -14,13 +14,6 @@ public class ToolSelectPanel extends JPanel {
         init();
     }
 
-    private static final MoveCameraTool MOVE_CAMERA_TOOL = new MoveCameraTool();
-    private static final PenTool penTool = new PenTool();
-    private static final EraseTool eraseTool = new EraseTool();
-    private static final FillTool fillTool = new FillTool();
-    private static final EyeTool eyeTool = new EyeTool();
-    private static final SelectTool selectTool = new SelectTool();
-
     private static JButton selectedButton;
 
     private void init() {
@@ -29,51 +22,53 @@ public class ToolSelectPanel extends JPanel {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
 
-        BaseTool[] tools = {MOVE_CAMERA_TOOL, penTool, eraseTool, fillTool, eyeTool, selectTool};
         int buttonSize = getPreferredSize().width - 2;
         int offset = 0;
-        for(BaseTool tool : tools) {
-            JButton toolButton = new JButton();
-            toolButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
 
-            toolButton.setIcon(tool.icon);
-            toolButton.setBorderPainted(false);
-            toolButton.setBackground(new Color(0, 0, 0, 0));
+        for (ToolCategory category : ToolCategory.values()) {
+            if(category == ToolCategory.NONE) continue;
 
-            add(toolButton);
+            JButton categoryButton = new JButton();
+            categoryButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
 
-            toolButton.addMouseListener(new MouseAdapter() {
+            categoryButton.setIcon(category.getIcon());
+            categoryButton.setBorderPainted(false);
+            categoryButton.setBackground(new Color(0, 0, 0, 0));
+
+            add(categoryButton);
+
+            categoryButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    if(selectedButton == toolButton) return;
-                    if(selectedButton != null) {
+                    if (selectedButton == categoryButton) return;
+                    if (selectedButton != null) {
                         selectedButton.setBackground(new Color(0, 0, 0, 0));
                     }
-                    selectedButton = toolButton;
-                    toolButton.setBackground(new Color(70, 106, 146));
+                    selectedButton = categoryButton;
+                    categoryButton.setBackground(new Color(70, 106, 146));
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     super.mouseEntered(e);
-                    if(selectedButton != toolButton) {
-                        toolButton.setBackground(new Color(78, 80, 82));
+                    if (selectedButton != categoryButton) {
+                        categoryButton.setBackground(new Color(78, 80, 82));
                     }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     super.mouseExited(e);
-                    if(selectedButton != toolButton) {
-                        toolButton.setBackground(new Color(0, 0, 0, 0));
+                    if (selectedButton != categoryButton) {
+                        categoryButton.setBackground(new Color(0, 0, 0, 0));
                     }
                 }
             });
 
-            springLayout.putConstraint(SpringLayout.NORTH, toolButton, offset, SpringLayout.NORTH, this);
+            springLayout.putConstraint(SpringLayout.NORTH, categoryButton, offset, SpringLayout.NORTH, this);
             offset += getPreferredSize().width;
-            toolButton.addActionListener(e -> Controller.setActiveTool(tool));
+            categoryButton.addActionListener(e -> ToolSettings.onNewCategory(category));
         }
     }
 }

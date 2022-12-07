@@ -1,19 +1,13 @@
 package tool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
 
 public class MoveCameraTool extends BaseTool {
 
     public MoveCameraTool() {
-        try {
-            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/move.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        category = ToolCategory.MOVE;
+        displayName = "Move Camera";
         toolCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
 

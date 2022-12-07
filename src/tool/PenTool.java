@@ -1,19 +1,13 @@
 package tool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
 
 public class PenTool extends EditTool {
 
     public PenTool() {
-        try {
-            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/pen.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        category = ToolCategory.PEN;
+        displayName = "Pen";
     }
 
     @Override

@@ -1,36 +1,120 @@
 package frame;
 
-import tool.BaseTool;
+import tool.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class ToolSettings extends JPanel {
 
     private static final JPanel toolPresets = new JPanel();
+    private static JButton selectedSubToolButton;
     private static final JPanel toolSettings = new JPanel();
     private static final JPanel globalSettings = new JPanel();
 
     private static final JScrollPane toolSettingsPane = new JScrollPane(toolSettings);
+
+    private static final MoveCameraTool MOVE_CAMERA_TOOL = new MoveCameraTool();
+    private static final PenTool PEN_TOOL_1 = new PenTool();
+    private static final PenTool PEN_TOOL_2 = new PenTool();
+    private static final PenTool PEN_TOOL_3 = new PenTool();
+    private static final EraseTool ERASE_TOOL = new EraseTool();
+    private static final FillTool FILL_TOOL = new FillTool();
+    private static final EyeTool EYE_TOOL = new EyeTool();
+    private static final SelectTool SELECT_TOOL = new SelectTool();
+
+    private static final BaseTool[] tools = {MOVE_CAMERA_TOOL, PEN_TOOL_1, PEN_TOOL_2, PEN_TOOL_3, ERASE_TOOL, FILL_TOOL, EYE_TOOL, SELECT_TOOL};
 
     public ToolSettings() {
         init();
     }
 
     public static void onNewTool(BaseTool tool) {
-        setToolPresetsFromTool(tool);
         setToolSettingsFromTool(tool);
     }
 
-    private static void setToolPresetsFromTool(BaseTool tool) {
-        toolSettings.removeAll();
+    public static void onNewCategory(ToolCategory category) {
+        setSubToolsFromCategory(category);
+    }
 
-        //todo
+    private static void setSubToolsFromCategory(ToolCategory category) {
+        toolPresets.removeAll();
 
-        toolSettings.revalidate();
-        toolSettings.repaint();
+        boolean hasMatchedToolToCategory = false;
+        ArrayList<String> takenNames = new ArrayList<>();
+
+        for(BaseTool tool : tools) {
+            if(tool.category == category) {
+                if(!hasMatchedToolToCategory) {
+                    hasMatchedToolToCategory = true;
+                    Controller.setActiveTool(tool);
+                }
+
+                JButton subToolButton = new JButton();
+                if(takenNames.contains(tool.displayName)) {
+                    int count = 1;
+                    String targetName = tool.displayName + " " + count;
+                    while(takenNames.contains(targetName)) {
+                        count ++;
+                        targetName = tool.displayName + " " + count;
+                    }
+                    takenNames.add(targetName);
+                    subToolButton.setText(targetName);
+                } else {
+                    takenNames.add(tool.displayName);
+                    subToolButton.setText(tool.displayName);
+                }
+
+                subToolButton.setBorderPainted(false);
+                subToolButton.setBackground(new Color(0, 0, 0, 0));
+
+                subToolButton.setMinimumSize(new Dimension(toolPresets.getWidth(), 40));
+                subToolButton.setPreferredSize(new Dimension(toolPresets.getWidth(), 40));
+                subToolButton.setMaximumSize(new Dimension(toolPresets.getWidth(), 40));
+                subToolButton.setBounds(0, 0, toolPresets.getWidth(), 40);
+
+                toolPresets.add(subToolButton);
+
+                subToolButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        super.mousePressed(e);
+                        if (selectedSubToolButton == subToolButton) return;
+                        if (selectedSubToolButton != null) {
+                            selectedSubToolButton.setBackground(new Color(0, 0, 0, 0));
+                        }
+                        selectedSubToolButton = subToolButton;
+                        subToolButton.setBackground(new Color(70, 106, 146));
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        super.mouseEntered(e);
+                        if (selectedSubToolButton != subToolButton) {
+                            subToolButton.setBackground(new Color(78, 80, 82));
+                        }
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        super.mouseExited(e);
+                        if (selectedSubToolButton != subToolButton) {
+                            subToolButton.setBackground(new Color(0, 0, 0, 0));
+                        }
+                    }
+                });
+
+                subToolButton.addActionListener(e -> Controller.setActiveTool(tool));
+            }
+        }
+
+        toolPresets.revalidate();
+        toolPresets.repaint();
     }
 
     private static void setToolSettingsFromTool(BaseTool tool) {
@@ -54,7 +138,6 @@ public class ToolSettings extends JPanel {
         toolSettings.setLayout(new BoxLayout(toolSettings, BoxLayout.PAGE_AXIS));
         globalSettings.setLayout(new BoxLayout(globalSettings, BoxLayout.PAGE_AXIS));
 
-        toolSettings.setAlignmentX(Component.LEFT_ALIGNMENT);
         addHoldingPanes();
     }
 

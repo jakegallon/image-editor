@@ -10,7 +10,8 @@ import java.awt.event.MouseEvent;
 
 public abstract class BaseTool {
 
-    public ImageIcon icon;
+    public ToolCategory category;
+    public String displayName;
 
     protected CanvasPanel activeCanvasPanel;
     public static Canvas canvas;

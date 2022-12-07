@@ -1,19 +1,13 @@
 package tool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
 
 public class EyeTool extends BaseTool {
 
     public EyeTool() {
-        try {
-            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/eye.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        category = ToolCategory.EYE;
+        displayName = "Colour Picker";
         toolCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     }
 

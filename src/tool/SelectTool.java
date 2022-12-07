@@ -2,21 +2,15 @@ package tool;
 
 import frame.Controller;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.Objects;
 
 public class SelectTool extends BaseTool {
 
     public SelectTool() {
-        try {
-            icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/select.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        category = ToolCategory.SELECT;
+        displayName = "Select";
     }
 
     @Override
