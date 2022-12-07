@@ -89,6 +89,15 @@ public class Layer implements Serializable {
         image.setRGB(x, y, color);
     }
 
+    public void moveLayer(int dx, int dy) {
+        BufferedImage duplicateImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        duplicateImage.getGraphics().drawImage(image, 0, 0, null);
+
+        g.setBackground(new Color(0, 0, 0, 0));
+        g.clearRect(0, 0, image.getWidth(), image.getHeight());
+        g.drawImage(duplicateImage, dx, dy, null);
+    }
+
     public void drawLine(Point p1, Point p2, int width, Color color) {
         g.setColor(color);
         g.setStroke(new BasicStroke(width));

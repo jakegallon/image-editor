@@ -20,6 +20,7 @@ public class ToolSettings extends JPanel {
     private static final JScrollPane toolSettingsPane = new JScrollPane(toolSettings);
 
     private static final MoveCameraTool MOVE_CAMERA_TOOL = new MoveCameraTool();
+    private static final MoveLayerTool MOVE_LAYER_TOOL = new MoveLayerTool();
     private static final PenTool PEN_TOOL_1 = new PenTool();
     private static final PenTool PEN_TOOL_2 = new PenTool();
     private static final PenTool PEN_TOOL_3 = new PenTool();
@@ -28,7 +29,7 @@ public class ToolSettings extends JPanel {
     private static final EyeTool EYE_TOOL = new EyeTool();
     private static final SelectTool SELECT_TOOL = new SelectTool();
 
-    private static final BaseTool[] tools = {MOVE_CAMERA_TOOL, PEN_TOOL_1, PEN_TOOL_2, PEN_TOOL_3, ERASE_TOOL, FILL_TOOL, EYE_TOOL, SELECT_TOOL};
+    private static final BaseTool[] tools = {MOVE_CAMERA_TOOL, MOVE_LAYER_TOOL, PEN_TOOL_1, PEN_TOOL_2, PEN_TOOL_3, ERASE_TOOL, FILL_TOOL, EYE_TOOL, SELECT_TOOL};
 
     public ToolSettings() {
         init();
