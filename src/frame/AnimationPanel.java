@@ -401,7 +401,10 @@ public class AnimationPanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if(Controller.getActiveCanvas() == null) return;
+            if(Controller.getActiveCanvas() == null) {
+                NotificationPanel.playNotification(NotificationMessage.TOOL_REQUIRES_CANVAS);
+                return;
+            }
             setActiveSpritePanel(this);
 
             onNewAnimation();

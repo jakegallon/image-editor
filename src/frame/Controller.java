@@ -84,7 +84,7 @@ public class Controller {
         try {
             activeCanvas.undoManager.undo();
         } catch (Exception e) {
-            NotificationPanel.playNotification("There are no more edits left to undo...");
+            NotificationPanel.playNotification(NotificationMessage.NO_MORE_UNDO);
         }
     }
 
@@ -92,7 +92,7 @@ public class Controller {
         try {
             activeCanvas.undoManager.redo();
         } catch (Exception e) {
-            NotificationPanel.playNotification("There are no more edits left to redo...");
+            NotificationPanel.playNotification(NotificationMessage.NO_MORE_REDO);
         }
     }
 

@@ -22,8 +22,8 @@ public class NotificationPanel extends JPanel {
         add(message);
     }
 
-    public static void playNotification(String messageText) {
-        message.setText(messageText);
+    public static void playNotification(NotificationMessage notificationMessage) {
+        message.setText(notificationMessage.getMessage());
         timer.start();
     }
 
