@@ -16,7 +16,7 @@ public class FillTool extends EditTool {
     }
 
     @Override
-    public void attachProperties(JPanel panel) {
+    public void attachProperties() {
         ToolSettings.addComponentToToolSettings(new PropertyBooleanWidget(spillDiagonally, "Spill over diagonals"));
     }
 

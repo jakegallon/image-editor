@@ -12,7 +12,7 @@ public class MoveLayerTool extends EditTool {
     }
 
     @Override
-    public void attachProperties(JPanel panel) {
+    public void attachProperties() {
 
     }
 

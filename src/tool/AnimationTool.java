@@ -1,6 +1,7 @@
 package tool;
 
 import frame.AnimationPanel;
+import frame.ToolSettings;
 
 import javax.swing.*;
 
@@ -13,16 +14,34 @@ public class AnimationTool extends BaseTool {
     }
 
     @Override
-    public void attachProperties(JPanel panel) {
+    public void attachProperties() {
+        JPanel animationGuide = new JPanel();
+
+        SpringLayout springLayout = new SpringLayout();
+        animationGuide.setLayout(springLayout);
+
         JLabel title = new JLabel("Animation Tool");
         title.setFont(title.getFont().deriveFont(16f));
-        panel.add(title);
+        animationGuide.add(title);
 
-        JLabel description = new JLabel("<html>This tool is used alongside the grid to create the<br>illusion of animation where each grid cell is a<br>frame in the animation.</html>");
-        panel.add(description);
+        springLayout.putConstraint(SpringLayout.NORTH, title, 2, SpringLayout.NORTH, animationGuide);
+        springLayout.putConstraint(SpringLayout.WEST, title, 2, SpringLayout.WEST, animationGuide);
 
-        JLabel usage = new JLabel("<html><br>To use this tool, click inside the grid's cells in the<br>desired order to make an animation appear in the<br>animation tab on the right.</html>");
-        panel.add(usage);
+        JLabel description = new JLabel("<html>This tool is used alongside the grid to create the illusion of animation where each grid cell is a frame in the animation.</html>");
+        animationGuide.add(description);
+
+        springLayout.putConstraint(SpringLayout.NORTH, description, 5, SpringLayout.SOUTH, title);
+        springLayout.putConstraint(SpringLayout.WEST, description, 0, SpringLayout.WEST, title);
+        springLayout.putConstraint(SpringLayout.EAST, description, -2, SpringLayout.EAST, animationGuide);
+
+        JLabel usage = new JLabel("<html>To use this tool, click inside the grid's cells in the desired order to make an animation appear in the animation tab on the right.</html>");
+        animationGuide.add(usage);
+
+        springLayout.putConstraint(SpringLayout.NORTH, usage, 5, SpringLayout.SOUTH, description);
+        springLayout.putConstraint(SpringLayout.WEST, usage, 0, SpringLayout.WEST, title);
+        springLayout.putConstraint(SpringLayout.EAST, usage, 0, SpringLayout.EAST, description);
+
+        ToolSettings.addComponentToToolSettings(animationGuide);
     }
 
     @Override

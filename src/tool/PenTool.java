@@ -22,7 +22,7 @@ public class PenTool extends EditTool {
     }
 
     @Override
-    public void attachProperties(JPanel panel) {
+    public void attachProperties() {
         ToolSettings.addComponentToToolSettings(new PropertySliderWidget(width, "Brush Size", 1, 100));
         ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
 

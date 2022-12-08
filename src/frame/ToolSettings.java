@@ -125,7 +125,7 @@ public class ToolSettings extends JPanel {
     private static void setToolSettingsFromTool(BaseTool tool) {
         toolSettings.removeAll();
 
-        tool.populateSettingsPanel(toolSettings);
+        tool.populateSettingsPanel();
 
         toolSettings.revalidate();
         toolSettings.repaint();

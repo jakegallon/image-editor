@@ -14,7 +14,7 @@ public class SelectTool extends BaseTool {
     }
 
     @Override
-    public void attachProperties(JPanel panel) {
+    public void attachProperties() {
 
     }
 
