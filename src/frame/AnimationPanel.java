@@ -106,13 +106,18 @@ public class AnimationPanel extends JPanel {
         propertyChangeSupport.firePropertyChange(GRID_EVENT, old, g);
     }
 
+    private static ImageIcon layout1Icon;
+    private static ImageIcon layout2Icon;
+    private static ImageIcon layout3Icon;
+    private static ImageIcon layout4Icon;
+
     private void init() {
         setLayout(springLayout);
 
-        ImageIcon layout1Icon;
-        ImageIcon layout2Icon;
-        ImageIcon layout3Icon;
-        ImageIcon layout4Icon;
+        ImageIcon layout1IconSelected;
+        ImageIcon layout2IconSelected;
+        ImageIcon layout3IconSelected;
+        ImageIcon layout4IconSelected;
         ImageIcon helpIcon;
 
         try {
@@ -120,6 +125,10 @@ public class AnimationPanel extends JPanel {
             layout2Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_2.png"))));
             layout3Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_3.png"))));
             layout4Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_4.png"))));
+            layout1IconSelected = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_1_selected.png"))));
+            layout2IconSelected = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_2_selected.png"))));
+            layout3IconSelected = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_3_selected.png"))));
+            layout4IconSelected = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_4_selected.png"))));
             helpIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/help.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -127,12 +136,16 @@ public class AnimationPanel extends JPanel {
 
 
         add(normalLayoutButton);
-        normalLayoutButton.setIcon(layout1Icon);
+        normalLayoutButton.setIcon(layout1IconSelected);
         normalLayoutButton.setBorderPainted(false);
         normalLayoutButton.setBackground(new Color(0, 0, 0, 0));
         normalLayoutButton.setPreferredSize(new Dimension(21, 21));
         normalLayoutButton.addActionListener(e -> {
-            if(layoutState != LayoutState.NORMAL) constraintAsNormal();
+            if(layoutState != LayoutState.NORMAL) {
+                deselectCurrentButton();
+                constraintAsNormal();
+                normalLayoutButton.setIcon(layout1IconSelected);
+            }
         });
         add(focusedLayoutButton);
         focusedLayoutButton.setIcon(layout2Icon);
@@ -140,7 +153,11 @@ public class AnimationPanel extends JPanel {
         focusedLayoutButton.setBackground(new Color(0, 0, 0, 0));
         focusedLayoutButton.setPreferredSize(new Dimension(21, 21));
         focusedLayoutButton.addActionListener(e -> {
-            if(layoutState != LayoutState.FOCUSED) constraintAsFocused();
+            if(layoutState != LayoutState.FOCUSED) {
+                deselectCurrentButton();
+                constraintAsFocused();
+                focusedLayoutButton.setIcon(layout2IconSelected);
+            }
         });
         add(crossLayoutButton);
         crossLayoutButton.setIcon(layout3Icon);
@@ -148,7 +165,11 @@ public class AnimationPanel extends JPanel {
         crossLayoutButton.setBackground(new Color(0, 0, 0, 0));
         crossLayoutButton.setPreferredSize(new Dimension(21, 21));
         crossLayoutButton.addActionListener(e -> {
-            if(layoutState != LayoutState.CROSS) constraintAsCross();
+            if(layoutState != LayoutState.CROSS) {
+                deselectCurrentButton();
+                constraintAsCross();
+                crossLayoutButton.setIcon(layout3IconSelected);
+            }
         });
         add(landscapeLayoutButton);
         landscapeLayoutButton.setIcon(layout4Icon);
@@ -156,7 +177,11 @@ public class AnimationPanel extends JPanel {
         landscapeLayoutButton.setBackground(new Color(0, 0, 0, 0));
         landscapeLayoutButton.setPreferredSize(new Dimension(21, 21));
         landscapeLayoutButton.addActionListener(e -> {
-            if(layoutState != LayoutState.LANDSCAPE) constraintAsLandscape();
+            if(layoutState != LayoutState.LANDSCAPE) {
+                deselectCurrentButton();
+                constraintAsLandscape();
+                landscapeLayoutButton.setIcon(layout4IconSelected);
+            }
         });
 
         JLabel fpsLabel = new JLabel("fps");
@@ -208,6 +233,15 @@ public class AnimationPanel extends JPanel {
         add(spritePanel4);
 
         constraintAsNormal();
+    }
+
+    private void deselectCurrentButton() {
+        switch(layoutState) {
+            case NORMAL    -> normalLayoutButton.setIcon(layout1Icon);
+            case FOCUSED   -> focusedLayoutButton.setIcon(layout2Icon);
+            case CROSS     -> crossLayoutButton.setIcon(layout3Icon);
+            case LANDSCAPE -> landscapeLayoutButton.setIcon(layout4Icon);
+        }
     }
 
     private void constraintAsNormal() {
