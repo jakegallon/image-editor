@@ -145,7 +145,7 @@ public class Layer implements Serializable {
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
     }
 
-    public void initiateFill(Point pixel, Color color) {
+    public void initiateFill(Point pixel, Color color, boolean isSpillDiagonally) {
         int targetColor = image.getRGB(pixel.x, pixel.y);
 
         ArrayList<Point> pixelsToCheck = new ArrayList<>();
@@ -155,13 +155,14 @@ public class Layer implements Serializable {
             Point thisPixel = pixelsToCheck.get(0);
             if(image.getRGB(thisPixel.x, thisPixel.y) == targetColor) {
                 image.setRGB(thisPixel.x, thisPixel.y, color.getRGB());
-                pixelsToCheck.addAll(getSurroundingPixels(thisPixel));
+                pixelsToCheck.addAll(getCardinalSurroundingPixels(thisPixel));
+                if(isSpillDiagonally) pixelsToCheck.addAll(getOrdinalSurroundingPixels(thisPixel));
             }
             pixelsToCheck.remove(0);
         }
     }
 
-    public ArrayList<Point> getSurroundingPixels(Point pixel) {
+    public ArrayList<Point> getCardinalSurroundingPixels(Point pixel) {
         ArrayList<Point> points = new ArrayList<>();
 
         Point north = new Point(pixel.x, pixel.y - 1);
@@ -172,6 +173,24 @@ public class Layer implements Serializable {
         if(east.x < image.getWidth()) points.add(east);
         Point west = new Point(pixel.x - 1, pixel.y);
         if(west.x >= 0) points.add(west);
+
+        return points;
+    }
+
+    public ArrayList<Point> getOrdinalSurroundingPixels(Point pixel) {
+        ArrayList<Point> points = new ArrayList<>();
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        Point ne = new Point(pixel.x + 1, pixel.y - 1);
+        if(ne.y >= 0 && ne.x < width) points.add(ne);
+        Point se = new Point(pixel.x + 1, pixel.y + 1);
+        if(se.y < height && se.x < width) points.add(se);
+        Point sw = new Point(pixel.x - 1, pixel.y + 1);
+        if(sw.y < height && sw.x >= 0) points.add(sw);
+        Point nw = new Point(pixel.x - 1, pixel.y - 1);
+        if(nw.y >= 0 && nw.x >= 0) points.add(nw);
 
         return points;
     }
