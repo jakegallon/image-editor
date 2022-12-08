@@ -1,6 +1,8 @@
 package tool;
 
 import frame.AnimationPanel;
+import frame.NotificationMessage;
+import frame.NotificationPanel;
 import frame.ToolSettings;
 
 import javax.swing.*;
@@ -51,7 +53,11 @@ public class AnimationTool extends BaseTool {
 
     @Override
     protected void onLeftMousePressed() {
-        spritePanel.addFrame(canvas.getGridCellAtPoint(initPressPoint));
+        if(canvas.getBounds().contains(initPressPoint)){
+            spritePanel.addFrame(canvas.getGridCellAtPoint(initPressPoint));
+        } else {
+            NotificationPanel.playNotification(NotificationMessage.TOOL_PRESS_OOB);
+        }
     }
 
     @Override
