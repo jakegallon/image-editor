@@ -13,6 +13,9 @@ public class LayerPanelHandler extends JPanel {
 
     private static Canvas activeCanvas;
 
+    private static JButton addButton;
+    private static JButton delButton;
+
     public LayerPanelHandler() {
         setPreferredSize(new Dimension(0, 32));
 
@@ -31,7 +34,7 @@ public class LayerPanelHandler extends JPanel {
             throw new RuntimeException(e);
         }
 
-        JButton addButton = new JButton();
+        addButton = new JButton();
         addButton.setIcon(addIcon);
         addButton.setBorderPainted(false);
         addButton.setBackground(new Color(0, 0, 0, 0));
@@ -46,8 +49,9 @@ public class LayerPanelHandler extends JPanel {
             LayerCreationAction thisAction = new LayerCreationAction(index);
             activeCanvas.undoManager.addEdit(thisAction);
         });
+        addButton.setEnabled(false);
 
-        JButton delButton = new JButton();
+        delButton = new JButton();
         delButton.setIcon(subIcon);
         delButton.setBorderPainted(false);
         delButton.setBackground(new Color(0, 0, 0, 0));
@@ -61,6 +65,7 @@ public class LayerPanelHandler extends JPanel {
             LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
             activeCanvas.undoManager.addEdit(thisAction);
         });
+        delButton.setEnabled(false);
 
         JButton helpButton = new JButton();
         helpButton.setIcon(helpIcon);
@@ -80,5 +85,10 @@ public class LayerPanelHandler extends JPanel {
 
     public static void setActiveCanvas(Canvas canvas) {
         activeCanvas = canvas;
+
+        boolean doesCanvasExist = canvas != null;
+
+        addButton.setEnabled(doesCanvasExist);
+        delButton.setEnabled(doesCanvasExist);
     }
 }
