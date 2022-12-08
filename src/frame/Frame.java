@@ -23,7 +23,7 @@ public class Frame extends JFrame {
     static ColorTabbedPane colorSettings = new ColorTabbedPane();
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
     static TabPanel topPanel = new TabPanel();
-    static NotificationPanel notificationPanel = new NotificationPanel();
+    public static NotificationPanel notificationPanel = new NotificationPanel();
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 

@@ -3,6 +3,7 @@ package tool;
 import action.EditAction;
 import action.PixelChange;
 import frame.*;
+import frame.Frame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,10 +108,13 @@ public abstract class EditTool extends BaseTool {
         canvasPanel = panel;
         if(isCanvasOrLayerNull()) {
             canvasPanel.setCursor(blockedCursor);
+            Frame.notificationPanel.setCursor(blockedCursor);
         } else if(canvas.getActiveLayer().isLocked()) {
             canvasPanel.setCursor(blockedCursor);
+            Frame.notificationPanel.setCursor(blockedCursor);
         } else {
             canvasPanel.setCursor(toolCursor);
+            Frame.notificationPanel.setCursor(toolCursor);
         }
     }
 

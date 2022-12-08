@@ -3,6 +3,7 @@ package tool;
 import frame.Canvas;
 import frame.CanvasPanel;
 import frame.Controller;
+import frame.Frame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -78,8 +79,10 @@ public abstract class BaseTool {
         canvasPanel = panel;
         if(canvas == null) {
             canvasPanel.setCursor(blockedCursor);
+            Frame.notificationPanel.setCursor(blockedCursor);
         } else {
             canvasPanel.setCursor(toolCursor);
+            Frame.notificationPanel.setCursor(toolCursor);
         }
     }
 
