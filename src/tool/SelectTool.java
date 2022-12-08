@@ -34,13 +34,13 @@ public class SelectTool extends BaseTool {
     public void onMouseDragged(MouseEvent e) {
         if(canvas == null || canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
-            Point mousePos = activeCanvasPanel.getMousePos();
+            Point mousePos = canvasPanel.getMousePos();
 
             canvas.selectedArea.width = mousePos.x - initPressPoint.x;
             canvas.selectedArea.height = mousePos.y - initPressPoint.y;
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
+            Color color = canvasPanel.getColorAtMousePos();
             Controller.setSelectedColor(color);
         }
     }

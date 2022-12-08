@@ -2,10 +2,7 @@ package tool;
 
 import action.EditAction;
 import action.PixelChange;
-import frame.Controller;
-import frame.Layer;
-import frame.NotificationMessage;
-import frame.NotificationPanel;
+import frame.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +40,7 @@ public abstract class EditTool extends BaseTool {
             originalImage = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
             originalImage.getGraphics().drawImage(i, 0, 0, null);
 
-            initPressPoint = activeCanvasPanel.getMousePos();
+            initPressPoint = canvasPanel.getMousePos();
             lastDragPoint = initPressPoint;
             thisDragPoint = lastDragPoint;
 
@@ -51,7 +48,7 @@ public abstract class EditTool extends BaseTool {
             onLeftMousePressed();
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
+            Color color = canvasPanel.getColorAtMousePos();
             Controller.setSelectedColor(color);
         }
     }
@@ -66,14 +63,14 @@ public abstract class EditTool extends BaseTool {
             }
 
             lastDragPoint = thisDragPoint;
-            thisDragPoint = activeCanvasPanel.getMousePos();
+            thisDragPoint = canvasPanel.getMousePos();
 
             if(!lastDragPoint.equals(thisDragPoint)) {
                 onLeftMouseDragged();
             }
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
+            Color color = canvasPanel.getColorAtMousePos();
             Controller.setSelectedColor(color);
         }
     }
@@ -100,8 +97,20 @@ public abstract class EditTool extends BaseTool {
             canvas.undoManager.addEdit(thisAction);
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
-            Color color = activeCanvasPanel.getColorAtMousePos();
+            Color color = canvasPanel.getColorAtMousePos();
             Controller.setSelectedColor(color);
+        }
+    }
+
+    @Override
+    public void onMouseEntered(CanvasPanel panel) {
+        canvasPanel = panel;
+        if(isCanvasOrLayerNull()) {
+            canvasPanel.setCursor(blockedCursor);
+        } else if(canvas.getActiveLayer().isLocked()) {
+            canvasPanel.setCursor(blockedCursor);
+        } else {
+            canvasPanel.setCursor(toolCursor);
         }
     }
 

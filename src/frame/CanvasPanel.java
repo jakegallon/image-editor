@@ -28,7 +28,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     private static final String ZOOM_EVENT = "canvas zoomed";
     private static final String OFFSET_EVENT = "canvas offset altered";
 
-    public BaseTool activeTool = new PenTool();
+    public BaseTool activeTool = new MoveCameraTool();
 
     public CanvasPanel() {
         init();
@@ -250,6 +250,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     }
 
     private boolean shouldScroll(MouseEvent e) {
+        if(canvas == null) return false;
         if(SwingUtilities.isMiddleMouseButton(e)) return true;
         return SwingUtilities.isLeftMouseButton(e) && activeTool instanceof MoveCameraTool;
     }

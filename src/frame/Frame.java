@@ -120,6 +120,7 @@ public class Frame extends JFrame {
 
     public static void onCanvasSwap(Canvas canvas) {
         canvasPanel.setCanvas(canvas);
+        canvasPanel.setCursor(canvasPanel.activeTool.toolCursor);
         layerPanel.onCanvasSwitch();
         magnificationPanel.setCanvas(canvas);
         topPanel.setActiveWidgetByCanvas(canvas);

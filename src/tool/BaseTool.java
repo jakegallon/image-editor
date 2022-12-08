@@ -4,21 +4,25 @@ import frame.Canvas;
 import frame.CanvasPanel;
 import frame.Controller;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class BaseTool {
 
     public ToolCategory category;
     public String displayName;
 
-    protected CanvasPanel activeCanvasPanel;
+    protected static CanvasPanel canvasPanel;
     public static Canvas canvas;
 
     protected Point initPressPoint;
 
-    protected Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    public Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+    protected Cursor blockedCursor = getCursor(CustomCursor.BLOCKED);
 
     public abstract void attachProperties();
 
@@ -41,7 +45,7 @@ public abstract class BaseTool {
 
     public void onMousePressed(MouseEvent e) {
         if(SwingUtilities.isLeftMouseButton(e)) {
-            initPressPoint = activeCanvasPanel.getMousePos();
+            initPressPoint = canvasPanel.getMousePos();
 
             onLeftMousePressed();
         }
@@ -70,15 +74,37 @@ public abstract class BaseTool {
         }
     }
 
-    public void onMouseEntered(CanvasPanel canvasPanel) {
-        activeCanvasPanel = canvasPanel;
-        activeCanvasPanel.setCursor(toolCursor);
+    public void onMouseEntered(CanvasPanel panel) {
+        canvasPanel = panel;
+        if(canvas == null) {
+            canvasPanel.setCursor(blockedCursor);
+        } else {
+            canvasPanel.setCursor(toolCursor);
+        }
     }
 
     protected void setSelectedColorToMousePosColor() {
-        if(!activeCanvasPanel.isMouseOverCanvas()) return;
+        if(!canvasPanel.isMouseOverCanvas()) return;
 
-        Color color = activeCanvasPanel.getColorAtMousePos();
+        Color color = canvasPanel.getColorAtMousePos();
         Controller.setSelectedColor(color);
+    }
+
+    protected enum CustomCursor {
+        BLOCKED
+    }
+
+    protected Cursor getCursor(CustomCursor customCursor) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+        String name = customCursor.toString().toLowerCase();
+
+        File target = new File("./src/res/" + name  + ".png");
+        try {
+            Image cursorIcon = ImageIO.read(target);
+            return toolkit.createCustomCursor(cursorIcon, new Point(0, 0), name);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
