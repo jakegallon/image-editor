@@ -4,6 +4,8 @@ import action.EditAction;
 import action.PixelChange;
 import frame.Controller;
 import frame.Layer;
+import frame.NotificationMessage;
+import frame.NotificationPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +33,11 @@ public abstract class EditTool extends BaseTool {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             activeLayer = canvas.getActiveLayer();
+            if(activeLayer.isLocked()) {
+                notifyLayerLocked();
+                return;
+            }
+
             BufferedImage i = activeLayer.getImage();
 
             originalImage = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -53,6 +60,11 @@ public abstract class EditTool extends BaseTool {
     public void onMouseDragged(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
+            if(activeLayer.isLocked()) {
+                notifyLayerLocked();
+                return;
+            }
+
             lastDragPoint = thisDragPoint;
             thisDragPoint = activeCanvasPanel.getMousePos();
 
@@ -70,6 +82,10 @@ public abstract class EditTool extends BaseTool {
     public void onMouseReleased(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
+            if(activeLayer.isLocked()) {
+                notifyLayerLocked();
+                return;
+            }
             onLeftMouseReleased();
 
             initPressPoint = null;
@@ -91,5 +107,9 @@ public abstract class EditTool extends BaseTool {
 
     private boolean isCanvasOrLayerNull() {
         return canvas == null || canvas.getActiveLayer() == null;
+    }
+
+    private void notifyLayerLocked() {
+        NotificationPanel.playNotification(NotificationMessage.TOOL_LAYER_LOCKED);
     }
 }
