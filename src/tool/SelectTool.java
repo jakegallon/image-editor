@@ -24,6 +24,7 @@ public class SelectTool extends BaseTool {
 
     @Override
     protected void onLeftMousePressed() {
+        if(canvas == null || canvas.getActiveLayer() == null) return;
         canvas.selectedArea = new Rectangle(0, 0, 0, 0);
         canvas.selectedArea.x = initPressPoint.x;
         canvas.selectedArea.y = initPressPoint.y;
@@ -31,6 +32,7 @@ public class SelectTool extends BaseTool {
 
     @Override
     public void onMouseDragged(MouseEvent e) {
+        if(canvas == null || canvas.getActiveLayer() == null) return;
         if(SwingUtilities.isLeftMouseButton(e)) {
             Point mousePos = activeCanvasPanel.getMousePos();
 
