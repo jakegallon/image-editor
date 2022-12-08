@@ -118,6 +118,13 @@ public class Frame extends JFrame {
                 evt -> rightPanelWidth = pane.getWidth() - (int)evt.getNewValue());
     }
 
+    public static void onCanvasSwap(Canvas canvas) {
+        canvasPanel.setCanvas(canvas);
+        layerPanel.onCanvasSwitch();
+        magnificationPanel.setCanvas(canvas);
+        topPanel.setActiveWidgetByCanvas(canvas);
+    }
+
     private void fileMenuNewAction() {
         NewDialog newDialog = new NewDialog(this);
         newDialog.setVisible(true);

@@ -67,13 +67,11 @@ public class Controller {
 
     public static void setActiveCanvas(Canvas canvas) {
         activeCanvas = canvas;
-        Frame.canvasPanel.setCanvas(canvas);
-        Frame.layerPanel.onCanvasSwitch();
-        Frame.magnificationPanel.setCanvas(canvas);
-        Frame.topPanel.setActiveWidgetByCanvas(canvas);
+        Frame.onCanvasSwap(canvas);
+
         LayerPanelHandler.setActiveCanvas(canvas);
-        BaseTool.canvas = canvas;
         AnimationPanel.setCanvas(canvas);
+        BaseTool.canvas = canvas;
     }
 
     public static Canvas getActiveCanvas() {
