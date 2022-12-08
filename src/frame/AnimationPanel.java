@@ -2,23 +2,26 @@ package frame;
 
 import tool.AnimationTool;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AnimationPanel extends JPanel {
 
     private final SpringLayout springLayout = new SpringLayout();
 
-    private final JButton normalLayoutButton = new JButton("1");
-    private final JButton focusedLayoutButton = new JButton("2");
-    private final JButton crossLayoutButton = new JButton("3");
-    private final JButton landscapeLayoutButton = new JButton("4");
-    private final JButton helpButton = new JButton("?");
+    private final JButton normalLayoutButton = new JButton();
+    private final JButton focusedLayoutButton = new JButton();
+    private final JButton crossLayoutButton = new JButton();
+    private final JButton landscapeLayoutButton = new JButton();
+    private final JButton helpButton = new JButton();
 
     private final SpritePanel spritePanel1 = new SpritePanel();
     private final SpritePanel spritePanel2 = new SpritePanel();
@@ -106,19 +109,52 @@ public class AnimationPanel extends JPanel {
     private void init() {
         setLayout(springLayout);
 
+        ImageIcon layout1Icon;
+        ImageIcon layout2Icon;
+        ImageIcon layout3Icon;
+        ImageIcon layout4Icon;
+        ImageIcon helpIcon;
+
+        try {
+            layout1Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_1.png"))));
+            layout2Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_2.png"))));
+            layout3Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_3.png"))));
+            layout4Icon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_4.png"))));
+            helpIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/help.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         add(normalLayoutButton);
+        normalLayoutButton.setIcon(layout1Icon);
+        normalLayoutButton.setBorderPainted(false);
+        normalLayoutButton.setBackground(new Color(0, 0, 0, 0));
+        normalLayoutButton.setPreferredSize(new Dimension(21, 21));
         normalLayoutButton.addActionListener(e -> {
             if(layoutState != LayoutState.NORMAL) constraintAsNormal();
         });
         add(focusedLayoutButton);
+        focusedLayoutButton.setIcon(layout2Icon);
+        focusedLayoutButton.setBorderPainted(false);
+        focusedLayoutButton.setBackground(new Color(0, 0, 0, 0));
+        focusedLayoutButton.setPreferredSize(new Dimension(21, 21));
         focusedLayoutButton.addActionListener(e -> {
             if(layoutState != LayoutState.FOCUSED) constraintAsFocused();
         });
         add(crossLayoutButton);
+        crossLayoutButton.setIcon(layout3Icon);
+        crossLayoutButton.setBorderPainted(false);
+        crossLayoutButton.setBackground(new Color(0, 0, 0, 0));
+        crossLayoutButton.setPreferredSize(new Dimension(21, 21));
         crossLayoutButton.addActionListener(e -> {
             if(layoutState != LayoutState.CROSS) constraintAsCross();
         });
         add(landscapeLayoutButton);
+        landscapeLayoutButton.setIcon(layout4Icon);
+        landscapeLayoutButton.setBorderPainted(false);
+        landscapeLayoutButton.setBackground(new Color(0, 0, 0, 0));
+        landscapeLayoutButton.setPreferredSize(new Dimension(21, 21));
         landscapeLayoutButton.addActionListener(e -> {
             if(layoutState != LayoutState.LANDSCAPE) constraintAsLandscape();
         });
@@ -132,6 +168,10 @@ public class AnimationPanel extends JPanel {
         });
 
         add(helpButton);
+        helpButton.setIcon(helpIcon);
+        helpButton.setBorderPainted(false);
+        helpButton.setBackground(new Color(0, 0, 0, 0));
+        helpButton.setPreferredSize(new Dimension(21, 21));
         //TODO display help panel
 
         springLayout.putConstraint(SpringLayout.NORTH, normalLayoutButton, 6, SpringLayout.NORTH, this);
