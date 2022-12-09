@@ -123,8 +123,33 @@ public class Canvas extends JPanel implements Serializable {
 
         updateImage();
         g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
+        drawGhost(g);
         drawGrid(g);
         drawSelectedArea(g);
+    }
+
+    public boolean isDrawingGhost = false;
+    public boolean isWrappingGhost = false;
+    public int ghostOpacity = 20;
+
+    private void drawGhost(Graphics g) {
+        if(!isDrawingGhost) return;
+
+        Image ghost = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        ghost.getGraphics().drawImage(
+                image.getSubimage(0, 0, image.getWidth() - gridInformation.gridX(), image.getHeight()),
+                gridInformation.gridX(), 0, null);
+
+        if(isWrappingGhost) ghost.getGraphics().drawImage(
+                image.getSubimage(image.getWidth() - gridInformation.gridX(),
+                        0, gridInformation.gridX(), image.getHeight() - gridInformation.gridY()),
+                0, gridInformation.gridY(), null);
+
+        Composite savedComposite = ((Graphics2D) g).getComposite();
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ghostOpacity/255f));
+        g.drawImage(ghost, 0, 0, null);
+        ((Graphics2D) g).setComposite(savedComposite);
     }
 
     private void updateImage() {
