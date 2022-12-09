@@ -11,6 +11,7 @@ public class SelectTool extends BaseTool {
     public SelectTool() {
         category = ToolCategory.SELECT;
         displayName = "Select";
+        toolCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     }
 
     @Override
@@ -36,8 +37,13 @@ public class SelectTool extends BaseTool {
         if(SwingUtilities.isLeftMouseButton(e)) {
             Point mousePos = canvasPanel.getMousePos();
 
-            canvas.selectedArea.width = mousePos.x - initPressPoint.x;
-            canvas.selectedArea.height = mousePos.y - initPressPoint.y;
+            int width = mousePos.x - initPressPoint.x;
+            int height = mousePos.y - initPressPoint.y;
+
+            canvas.selectedArea.x = width >= 0 ? initPressPoint.x : initPressPoint.x + 1;
+            canvas.selectedArea.y = height >= 0 ? initPressPoint.y : initPressPoint.y + 1;
+            canvas.selectedArea.width = width >= 0 ? width + 1 : width - 1;
+            canvas.selectedArea.height = height >= 0 ? height + 1 : height - 1;
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
             Color color = canvasPanel.getColorAtMousePos();

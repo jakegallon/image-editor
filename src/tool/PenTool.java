@@ -4,7 +4,6 @@ import frame.ToolSettings;
 import tool.properties.PropertyBooleanWidget;
 import tool.properties.PropertySliderWidget;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,6 +18,7 @@ public class PenTool extends EditTool {
     public PenTool() {
         category = ToolCategory.PEN;
         displayName = "Pen";
+        toolCursor = getCursor(CustomCursor.GENERIC_TOOL, CursorOffset.CENTERED);
     }
 
     @Override

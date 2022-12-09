@@ -94,7 +94,11 @@ public abstract class BaseTool {
     }
 
     protected enum CustomCursor {
-        BLOCKED
+        BLANK,
+        GENERIC_TOOL,
+        BLOCKED,
+        EYE_TOOL,
+        FILL_TOOL
     }
 
     protected enum CursorOffset {

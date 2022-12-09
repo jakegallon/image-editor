@@ -17,6 +17,7 @@ public class EraseTool extends EditTool {
     public EraseTool() {
         category = ToolCategory.ERASE;
         displayName = "Eraser";
+        toolCursor = getCursor(CustomCursor.GENERIC_TOOL, CursorOffset.CENTERED);
     }
 
     @Override

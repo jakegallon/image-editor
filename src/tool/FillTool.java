@@ -16,6 +16,7 @@ public class FillTool extends EditTool {
     public FillTool() {
         category = ToolCategory.FILL;
         displayName = "Fill";
+        toolCursor = getCursor(CustomCursor.FILL_TOOL, CursorOffset.TOP_LEFT);
     }
 
     @Override
