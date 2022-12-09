@@ -1,5 +1,7 @@
 package frame;
 
+import tool.AnimationTool;
+
 import javax.swing.*;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
@@ -126,7 +128,15 @@ public class Canvas extends JPanel implements Serializable {
         drawGhost(g);
         drawGrid(g);
         drawSelectedArea(g);
+
+        if(Controller.getActiveTool() instanceof AnimationTool) {
+            g.setColor(Color.blue);
+            ((Graphics2D) g).setStroke(new BasicStroke(0.2f));
+            g.drawRect(highlightRect.x, highlightRect.y, highlightRect.width, highlightRect.height);
+        }
     }
+
+    public Rectangle highlightRect = new Rectangle();
 
     public boolean isDrawingGhost = false;
     public boolean isWrappingGhost = false;

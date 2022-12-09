@@ -1,8 +1,8 @@
 package frame;
 
+import tool.AnimationTool;
 import tool.BaseTool;
 import tool.MoveCameraTool;
-import tool.PenTool;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -293,6 +293,17 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
     @Override
     public void mouseMoved(MouseEvent e) {
         setMousePos(mouseEventPosToAbsolutePos(e.getPoint()).toIntPoint());
+
+        if(activeTool instanceof AnimationTool) {
+            updateCanvasGridCell();
+        }
+    }
+
+    private void updateCanvasGridCell() {
+        int curGridX = (mousePos.x / canvas.gridInformation.gridX()) * canvas.gridInformation.gridX();
+        int curGridY = (mousePos.y / canvas.gridInformation.gridY()) * canvas.gridInformation.gridY();
+
+        canvas.highlightRect = new Rectangle(curGridX, curGridY, canvas.gridInformation.gridX(), canvas.gridInformation.gridY());
     }
 
     private void setMousePos(Point p) {
