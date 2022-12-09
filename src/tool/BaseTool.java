@@ -23,7 +23,7 @@ public abstract class BaseTool {
     protected Point initPressPoint;
 
     public Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    protected Cursor blockedCursor = getCursor(CustomCursor.BLOCKED);
+    protected Cursor blockedCursor = getCursor(CustomCursor.BLOCKED, CursorOffset.CENTERED);
 
     public abstract void attachProperties();
 
@@ -97,7 +97,15 @@ public abstract class BaseTool {
         BLOCKED
     }
 
-    protected Cursor getCursor(CustomCursor customCursor) {
+    protected enum CursorOffset {
+        CENTERED,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    }
+
+    protected Cursor getCursor(CustomCursor customCursor, CursorOffset cursorOffset) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
 
         String name = customCursor.toString().toLowerCase();
@@ -105,9 +113,27 @@ public abstract class BaseTool {
         File target = new File("./src/res/" + name  + ".png");
         try {
             Image cursorIcon = ImageIO.read(target);
-            return toolkit.createCustomCursor(cursorIcon, new Point(0, 0), name);
+            Dimension d = toolkit.getBestCursorSize(cursorIcon.getWidth(null), cursorIcon.getHeight(null));
+            switch (cursorOffset) {
+                case CENTERED -> {
+                    return toolkit.createCustomCursor(cursorIcon, new Point(d.width/2, d.height/2), name);
+                }
+                case TOP_LEFT -> {
+                    return toolkit.createCustomCursor(cursorIcon, new Point(d.width - 1, d.height - 1), name);
+                }
+                case TOP_RIGHT -> {
+                    return toolkit.createCustomCursor(cursorIcon, new Point(0, d.height - 1), name);
+                }
+                case BOTTOM_LEFT -> {
+                    return toolkit.createCustomCursor(cursorIcon, new Point(d.width - 1, 0), name);
+                }
+                case BOTTOM_RIGHT -> {
+                    return toolkit.createCustomCursor(cursorIcon, new Point(0, 0), name);
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 }
