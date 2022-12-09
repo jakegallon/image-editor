@@ -2,13 +2,16 @@ package tool;
 
 import frame.ToolSettings;
 import tool.properties.PropertyBooleanWidget;
+import tool.properties.PropertySliderWidget;
 
-import javax.swing.*;
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FillTool extends EditTool {
 
     AtomicBoolean spillDiagonally = new AtomicBoolean(false);
+    AtomicInteger opacity = new AtomicInteger(255);
 
     public FillTool() {
         category = ToolCategory.FILL;
@@ -17,6 +20,7 @@ public class FillTool extends EditTool {
 
     @Override
     public void attachProperties() {
+        ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
         ToolSettings.addComponentToToolSettings(new PropertyBooleanWidget(spillDiagonally, "Spill over diagonals"));
     }
 
@@ -27,7 +31,12 @@ public class FillTool extends EditTool {
 
     @Override
     protected void onLeftMousePressed() {
-        activeLayer.initiateFill(initPressPoint, color, spillDiagonally.get());
+        if(opacity.get() == 255) {
+            activeLayer.initiateFill(initPressPoint, color, spillDiagonally.get());
+        } else {
+            Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity.get());
+            activeLayer.initiateFill(initPressPoint, alphaColor, spillDiagonally.get());
+        }
     }
 
     @Override

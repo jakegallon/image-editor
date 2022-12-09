@@ -151,14 +151,30 @@ public class Layer implements Serializable {
         ArrayList<Point> pixelsToCheck = new ArrayList<>();
         pixelsToCheck.add(new Point(pixel.x, pixel.y));
 
-        while(!pixelsToCheck.isEmpty()) {
-            Point thisPixel = pixelsToCheck.get(0);
-            if(image.getRGB(thisPixel.x, thisPixel.y) == targetColor) {
-                image.setRGB(thisPixel.x, thisPixel.y, color.getRGB());
-                pixelsToCheck.addAll(getCardinalSurroundingPixels(thisPixel));
-                if(isSpillDiagonally) pixelsToCheck.addAll(getOrdinalSurroundingPixels(thisPixel));
+        if(color.getAlpha() == 255) {
+            while(!pixelsToCheck.isEmpty()) {
+                Point thisPixel = pixelsToCheck.get(0);
+                if(image.getRGB(thisPixel.x, thisPixel.y) == targetColor) {
+                    image.setRGB(thisPixel.x, thisPixel.y, color.getRGB());
+                    pixelsToCheck.addAll(getCardinalSurroundingPixels(thisPixel));
+                    if(isSpillDiagonally) pixelsToCheck.addAll(getOrdinalSurroundingPixels(thisPixel));
+                }
+                pixelsToCheck.remove(0);
             }
-            pixelsToCheck.remove(0);
+        } else {
+            Layer proxyLayer = new Layer(Controller.getActiveCanvas());
+
+            while(!pixelsToCheck.isEmpty()) {
+                Point thisPixel = pixelsToCheck.get(0);
+                if(image.getRGB(thisPixel.x, thisPixel.y) == targetColor && proxyLayer.getImage().getRGB(thisPixel.x, thisPixel.y) != color.getRGB()) {
+                    proxyLayer.getImage().setRGB(thisPixel.x, thisPixel.y, color.getRGB());
+                    pixelsToCheck.addAll(getCardinalSurroundingPixels(thisPixel));
+                    if(isSpillDiagonally) pixelsToCheck.addAll(getOrdinalSurroundingPixels(thisPixel));
+                }
+                pixelsToCheck.remove(0);
+            }
+
+            mergeLayerIntoThis(proxyLayer);
         }
     }
 
