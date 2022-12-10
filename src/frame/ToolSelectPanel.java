@@ -42,6 +42,13 @@ public class ToolSelectPanel extends JPanel {
             categoryButton.setBorderPainted(false);
             categoryButton.setBackground(new Color(0, 0, 0, 0));
 
+            if(category == ToolCategory.MOVE) {
+                if (selectedButton != null) {
+                    selectedButton.setBackground(new Color(0, 0, 0, 0));
+                }
+                selectedButton = categoryButton;
+                selectedButton.setBackground(new Color(70, 106, 146));
+            }
             add(categoryButton);
 
             categoryButton.addMouseListener(new MouseAdapter() {

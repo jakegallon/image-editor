@@ -1,6 +1,7 @@
 package frame;
 
 import colorpanel.ColorTabbedPane;
+import tool.ToolCategory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,6 +33,8 @@ public class Frame extends JFrame {
         initializeWindow();
         createLayout();
         setVisible(true);
+
+        ToolSettings.onNewCategory(ToolCategory.MOVE);
 
         getRootPane().registerKeyboardAction(e -> Controller.undo(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
