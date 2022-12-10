@@ -30,7 +30,18 @@ public class ToolSettings extends JPanel {
     private static final EyeTool EYE_TOOL = new EyeTool();
     private static final SelectTool SELECT_TOOL = new SelectTool();
 
-    private static final BaseTool[] tools = {MOVE_CAMERA_TOOL, MOVE_LAYER_TOOL, MOVE_SELECTION_TOOL, PEN_TOOL_1, PEN_TOOL_2, PEN_TOOL_3, ERASE_TOOL, FILL_TOOL, EYE_TOOL, SELECT_TOOL};
+    private static final BaseTool[] tools = {
+            MOVE_CAMERA_TOOL,
+            MOVE_LAYER_TOOL,
+            MOVE_SELECTION_TOOL,
+            PEN_TOOL_1,
+            PEN_TOOL_2,
+            PEN_TOOL_3,
+            ERASE_TOOL,
+            FILL_TOOL,
+            EYE_TOOL,
+            SELECT_TOOL
+    };
 
     public ToolSettings() {
         init();
@@ -38,6 +49,13 @@ public class ToolSettings extends JPanel {
 
     public static void onNewTool(BaseTool tool) {
         setToolSettingsFromTool(tool);
+
+        if(tool instanceof AnimationTool) {
+            if (selectedSubToolButton != null) {
+                ToolSelectPanel.unselectSelectedButton();
+            }
+            setSubToolsFromCategory(ToolCategory.NONE);
+        }
     }
 
     public static void onNewCategory(ToolCategory category) {
@@ -46,6 +64,12 @@ public class ToolSettings extends JPanel {
 
     private static void setSubToolsFromCategory(ToolCategory category) {
         toolPresets.removeAll();
+
+        if(category == ToolCategory.NONE) {
+            toolPresets.revalidate();
+            toolPresets.repaint();
+            return;
+        }
 
         boolean hasMatchedToolToCategory = false;
         ArrayList<String> takenNames = new ArrayList<>();

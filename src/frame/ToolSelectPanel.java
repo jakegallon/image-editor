@@ -16,6 +16,13 @@ public class ToolSelectPanel extends JPanel {
 
     private static JButton selectedButton;
 
+    public static void unselectSelectedButton() {
+        if (selectedButton != null) {
+            selectedButton.setBackground(new Color(0, 0, 0, 0));
+            selectedButton = null;
+        }
+    }
+
     private void init() {
         setBorder(new LineBorder(new Color(49, 49, 49), 1));
         setPreferredSize(new Dimension(40, 0));
