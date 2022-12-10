@@ -7,7 +7,6 @@ import action.LayerOrderAction;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -215,6 +214,7 @@ public class LayerPanel extends JPanel {
         private JButton renameButton;
         private JButton mergeDownButton;
         private JToggleButton visibleButton;
+        private JTextField renameTextField;
 
         private LayerWidget(Layer layer) {
             this.layer = layer;
@@ -242,8 +242,30 @@ public class LayerPanel extends JPanel {
         }
 
         private void addWidgetComponents() {
+            renameTextField = new JTextField(layer.getName());
+            renameTextField.setVisible(false);
+            add(renameTextField);
+
+
             layerName = new JLabel(layer.getName());
             add(layerName);
+
+            layerName.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+
+                    if(e.getClickCount() > 1) {
+                        renameTextField.setVisible(true);
+                        renameTextField.grabFocus();
+
+                        renameTextField.addKeyListener(keyListener);
+                        Toolkit.getDefaultToolkit().addAWTEventListener(awtEventListener, AWTEvent.MOUSE_EVENT_MASK);
+                    }
+                }
+            });
+
+            layerName.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
             layerImage = new JPanel() {
                 @Override
@@ -347,9 +369,43 @@ public class LayerPanel extends JPanel {
             };
         }
 
-        //todo
+        KeyListener keyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                if(keyEvent.getKeyChar() == KeyEvent.VK_ESCAPE) {
+                    onRenameEnd();
+                } else if (keyEvent.getKeyChar() == KeyEvent.VK_ENTER) {
+                    layer.setName(renameTextField.getText());
+                    layerName.setText(layer.getName());
+                    onRenameEnd();
+                }
+            }
+        };
+
+        AWTEventListener awtEventListener = awtEvent -> {
+            MouseEvent mouseEvent = (MouseEvent) awtEvent;
+            if(mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
+                if(mouseEvent.getComponent() != renameTextField) {
+                    onRenameEnd();
+                }
+            }
+        };
+
         private ActionListener renameListener() {
-            return null;
+            return e -> {
+                renameTextField.setVisible(true);
+                renameTextField.grabFocus();
+
+                renameTextField.addKeyListener(keyListener);
+                Toolkit.getDefaultToolkit().addAWTEventListener(awtEventListener, AWTEvent.MOUSE_EVENT_MASK);
+            };
+        }
+
+        private void onRenameEnd() {
+            renameTextField.removeKeyListener(keyListener);
+            Toolkit.getDefaultToolkit().removeAWTEventListener(awtEventListener);
+            renameTextField.setVisible(false);
+            renameTextField.removeActionListener(renameListener());
         }
 
         private ActionListener mergeDownListener() {
@@ -387,7 +443,7 @@ public class LayerPanel extends JPanel {
             springLayout.putConstraint(SpringLayout.NORTH, visibleButton, 0, SpringLayout.NORTH, layerImage);
             springLayout.putConstraint(SpringLayout.WEST, visibleButton, 4, SpringLayout.EAST, layerImage);
             springLayout.putConstraint(SpringLayout.NORTH, layerName, 0, SpringLayout.NORTH, visibleButton);
-            springLayout.putConstraint(SpringLayout.WEST, layerName, 4, SpringLayout.EAST, visibleButton);
+            springLayout.putConstraint(SpringLayout.WEST, layerName, 9, SpringLayout.EAST, visibleButton);
             springLayout.putConstraint(SpringLayout.WEST, layerOpacity, -SLIDER_THUMB_SIZE.width, SpringLayout.WEST, visibleButton);
             springLayout.putConstraint(SpringLayout.SOUTH, layerOpacity, 0, SpringLayout.SOUTH, layerImage);
             springLayout.putConstraint(SpringLayout.EAST, layerOpacity, 100, SpringLayout.WEST, layerOpacity);
@@ -399,6 +455,9 @@ public class LayerPanel extends JPanel {
             springLayout.putConstraint(SpringLayout.EAST, mergeDownButton, -4, SpringLayout.WEST, deleteButton);
             springLayout.putConstraint(SpringLayout.NORTH, renameButton, 0, SpringLayout.NORTH, mergeDownButton);
             springLayout.putConstraint(SpringLayout.EAST, renameButton, -4, SpringLayout.WEST, mergeDownButton);
+            springLayout.putConstraint(SpringLayout.BASELINE, renameTextField, 0, SpringLayout.BASELINE, layerName);
+            springLayout.putConstraint(SpringLayout.WEST, renameTextField, -7, SpringLayout.WEST, layerName);
+            springLayout.putConstraint(SpringLayout.EAST, renameTextField, -5, SpringLayout.WEST, renameButton);
         }
 
         JPanel floatGradient;
