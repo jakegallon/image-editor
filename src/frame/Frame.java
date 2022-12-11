@@ -1,6 +1,6 @@
 package frame;
 
-import colorpanel.ColorTabbedPane;
+import colorpanel.ColorSplitPane;
 import tool.ToolCategory;
 
 import javax.imageio.ImageIO;
@@ -21,7 +21,7 @@ public class Frame extends JFrame {
     public static CanvasPanel canvasPanel = new CanvasPanel();
     static InfoPanel infoPanel = new InfoPanel();
     public static LayerPanel layerPanel = new LayerPanel();
-    static ColorTabbedPane colorSettings = new ColorTabbedPane();
+    static ColorSplitPane colorSettings = new ColorSplitPane();
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
     static TabPanel topPanel = new TabPanel();
     public static NotificationPanel notificationPanel = new NotificationPanel();
@@ -86,7 +86,7 @@ public class Frame extends JFrame {
         ToolSettings toolSettings = new ToolSettings();
         toolPanel.add(toolSettings, BorderLayout.CENTER);
         JSplitPane brushColor = new JSplitPane(JSplitPane.VERTICAL_SPLIT, toolPanel, colorSettings);
-        brushColor.setResizeWeight(1.0);
+        brushColor.setResizeWeight(0.5);
         leftPanel.add(brushColor);
 
         rightPanel=new JPanel(new BorderLayout());

@@ -5,18 +5,24 @@ import frame.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class ColorTabbedPane extends JTabbedPane {
+public class ColorSplitPane extends JPanel {
 
     private final PalettePanel palettePanel;
     private final ColorPanel colorPanel;
 
-    public ColorTabbedPane() {
-        setMinimumSize(new Dimension(250, 273));
+    public ColorSplitPane() {
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         palettePanel = new PalettePanel(this);
         colorPanel = new ColorPanel(this);
 
-        addTab("Color", colorPanel);
-        addTab("Palette", palettePanel);
+        palettePanel.setMinimumSize(new Dimension(250, 100));
+        colorPanel.setMinimumSize(new Dimension(250, 273));
+
+        JSplitPane colorPalette = new JSplitPane(JSplitPane.VERTICAL_SPLIT, colorPanel, palettePanel);
+        colorPalette.setResizeWeight(0.5);
+
+        add(colorPalette);
     }
 
     public Color getPrimaryColor() {

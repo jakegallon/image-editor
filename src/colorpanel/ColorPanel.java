@@ -17,10 +17,10 @@ public class ColorPanel extends JPanel {
     private final ColorPanelInfo colorPanelInfo;
     private final ColorPanelHandler colorPanelHandler;
 
-    private final ColorTabbedPane colorTabbedPane;
+    private final ColorSplitPane colorSplitPane;
 
-    public ColorPanel(ColorTabbedPane colorTabbedPane) {
-        this.colorTabbedPane = colorTabbedPane;
+    public ColorPanel(ColorSplitPane colorSplitPane) {
+        this.colorSplitPane = colorSplitPane;
         setLayout(new BorderLayout());
 
         colorPanelSelector = new ColorPanelSelector(this);
@@ -55,7 +55,7 @@ public class ColorPanel extends JPanel {
     }
 
     protected void onSelectedColorChange(Color color, boolean isPrimary) {
-        colorTabbedPane.onSelectedColorChange(color, isPrimary);
+        colorSplitPane.onSelectedColorChange(color, isPrimary);
     }
 
     protected int getRed() {

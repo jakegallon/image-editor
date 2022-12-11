@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 
 public class PalettePanel extends JPanel {
 
-    private final ColorTabbedPane colorTabbedPane;
+    private final ColorSplitPane colorSplitPane;
 
     int count = 0;
 
@@ -25,8 +25,8 @@ public class PalettePanel extends JPanel {
     private ColorAdder colorAdder;
     private final ColorHolderPopupMenu colorHolderPopupMenu;
 
-    public PalettePanel(ColorTabbedPane colorTabbedPane) {
-        this.colorTabbedPane = colorTabbedPane;
+    public PalettePanel(ColorSplitPane colorSplitPane) {
+        this.colorSplitPane = colorSplitPane;
         setLayout(new BorderLayout());
 
         InitializeComponents();
@@ -137,7 +137,7 @@ public class PalettePanel extends JPanel {
             if(SwingUtilities.isLeftMouseButton(e)){
                 if(isHoveringOver) {
                     if(selectedHolder != this) {
-                        colorTabbedPane.setSelectedColor(currentColor);
+                        colorSplitPane.setSelectedColor(currentColor);
                         if(selectedHolder != null) {
                             selectedHolder.setBorder(defaultBorder);
                         }
@@ -184,7 +184,7 @@ public class PalettePanel extends JPanel {
 
         private void overwriteMenuAction() {
             ColorHolder colorHolder = (ColorHolder) getInvoker();
-            colorHolder.setColor(colorTabbedPane.getSelectedColor());
+            colorHolder.setColor(colorSplitPane.getSelectedColor());
         }
 
         @Override
@@ -234,7 +234,7 @@ public class PalettePanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
                 if(isHoveringOver) {
-                    createNewColorHolder(colorTabbedPane.getSelectedColor());
+                    createNewColorHolder(colorSplitPane.getSelectedColor());
                     setBorder(adderBorder);
                 }
             }
