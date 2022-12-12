@@ -88,6 +88,17 @@ public class Canvas extends JPanel implements Serializable {
         selectedArea = null;
     }
 
+    public void checkSelectedArea() {
+        if(selectedArea.x + selectedArea.width < selectedArea.x) {
+            selectedArea.x = selectedArea.x + selectedArea.width;
+            selectedArea.width = Math.abs(selectedArea.width);
+        }
+        if(selectedArea.y + selectedArea.height < selectedArea.y) {
+            selectedArea.y = selectedArea.y + selectedArea.height;
+            selectedArea.height = Math.abs(selectedArea.height);
+        }
+    }
+
     private void drawDashingRectangle(Graphics2D g2d) {
         int x = selectedArea.x;
         int y = selectedArea.y;

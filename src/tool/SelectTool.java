@@ -98,7 +98,9 @@ public class SelectTool extends BaseTool {
         if(initPressPoint == null) return;
         if(initPressPoint == canvasPanel.getMousePos()) {
             canvas.nullifySelectedArea();
+            return;
         }
+        canvas.checkSelectedArea();
     }
 
     @Override
