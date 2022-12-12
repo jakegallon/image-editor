@@ -178,6 +178,12 @@ public class MagnificationPanel extends JLayeredPane {
 
     private static class MagnifiedPanelRenderer extends JPanel{
 
+        int xOffset;
+        int yOffset;
+        int scaledX;
+        int scaledY;
+        double baseScale;
+
         int drawOffsetX;
         int drawOffsetY;
         int drawWidth;
@@ -228,7 +234,7 @@ public class MagnificationPanel extends JLayeredPane {
 
         private void drawFullImage(Graphics g) {
             BufferedImage image = canvas.getImage();
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(image, xOffset, yOffset, scaledX, scaledY, null);
         }
 
         private void updateZoomedImageBoundsPosition(){
@@ -240,23 +246,21 @@ public class MagnificationPanel extends JLayeredPane {
         }
 
         private Point convertPosToLocal(Point p) {
-            double centeringOffset = -(getWidth()/2.0) + (0.5 * targetZoom);
+            double x = -p.x * baseScale * targetZoom;
+            double y = -p.y * baseScale * targetZoom;
 
-            double x = p.x * targetZoom;
-            double y = p.y * targetZoom;
+            x += scaledX / 2.0;
+            y += scaledY / 2.0;
 
-            x *= viewportDimensionRatioWidth;
-            y *= viewportDimensionRatioHeight;
+            x += xOffset;
+            y += yOffset;
 
-            x += centeringOffset;
-            y += centeringOffset;
-
-            return new Point((int) -x, (int) -y);
+            return new Point((int) x, (int) y);
         }
 
         private void updateZoomedImageBoundsSize(){
-            zoomedImageBounds.width = (int) (getWidth() * targetZoom);
-            zoomedImageBounds.height = (int) (getHeight() * targetZoom);
+            zoomedImageBounds.width = (int) (scaledX * targetZoom);
+            zoomedImageBounds.height = (int) (scaledY * targetZoom);
             repaint();
         }
 
@@ -297,6 +301,18 @@ public class MagnificationPanel extends JLayeredPane {
             }
             drawOffsetX = (getWidth() - drawWidth) / 2;
             drawOffsetY = (getHeight() - drawHeight) / 2;
+
+            //todo move
+            if(canvas == null) return;
+
+            double imageWidthPercent = (double) getWidth() / canvas.getWidth();
+            double imageHeightPercent = (double) getHeight() / canvas.getHeight();
+
+            baseScale = Math.min(imageWidthPercent, imageHeightPercent);
+            scaledX = (int) (canvas.getWidth() * baseScale);
+            scaledY = (int) (canvas.getHeight() * baseScale);
+            xOffset = (getWidth() - scaledX) / 2;
+            yOffset = (getHeight() - scaledY) / 2;
         }
 
         private void updateRatioVariables() {
