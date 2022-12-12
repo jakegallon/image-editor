@@ -37,15 +37,40 @@ public class Frame extends JFrame {
         ToolSettings.onNewCategory(ToolCategory.MOVE);
 
         getRootPane().registerKeyboardAction(e -> Controller.undo(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+                KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> Controller.redo(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> Controller.copy(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_C,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+                KeyStroke.getKeyStroke(KeyEvent.VK_C,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> Controller.cut(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_X,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+                KeyStroke.getKeyStroke(KeyEvent.VK_X,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> Controller.paste(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_V,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+                KeyStroke.getKeyStroke(KeyEvent.VK_V,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
+                KeyStroke.getKeyStroke('W'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
+                KeyStroke.getKeyStroke('w'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.ERASE),
+                KeyStroke.getKeyStroke('E'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.ERASE),
+                KeyStroke.getKeyStroke('e'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.FILL),
+                KeyStroke.getKeyStroke('F'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.FILL),
+                KeyStroke.getKeyStroke('f'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.SELECT),
+                KeyStroke.getKeyStroke('S'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.SELECT),
+                KeyStroke.getKeyStroke('s'),JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
+
+    private void onSelectTool(ToolCategory category) {
+        ToolSelectPanel.highlightButtonByCategory(category);
+        ToolSettings.onNewCategory(category);
+
+        if(Controller.getActiveCanvas() == null) return;
+        canvasPanel.setCursor(Controller.getActiveTool().toolCursor);
     }
 
     private void initializeWindow() {
