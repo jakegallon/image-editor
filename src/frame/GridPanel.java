@@ -185,9 +185,20 @@ public class GridPanel extends JPanel {
     public static void onCanvasAdded() {
         setAllEnabled(true);
 
-        GridInformation gridInformation = Controller.getActiveCanvas().getGridInformation();
+        Canvas activeCanvas = Controller.getActiveCanvas();
+
+        GridInformation gridInformation = activeCanvas.getGridInformation();
         gridStyleBox.getModel().setSelectedItem(gridInformation.gridStyle());
         gridXSpinner.setValue(gridInformation.gridX());
         gridYSpinner.setValue(gridInformation.gridY());
+
+        cellGhostCheckbox.setSelected(activeCanvas.isDrawingGhost);
+        cellGhostWrapCheckbox.setSelected(activeCanvas.isWrappingGhost);
+        cellGhostOpacitySlider.setValue(activeCanvas.ghostOpacity);
+
+        cellGhostWrapLabel.setEnabled(cellGhostCheckbox.isSelected());
+        cellGhostWrapCheckbox.setEnabled(cellGhostCheckbox.isSelected());
+        cellGhostOpacityLabel.setEnabled(cellGhostCheckbox.isSelected());
+        cellGhostOpacitySlider.setEnabled(cellGhostCheckbox.isSelected());
     }
 }
