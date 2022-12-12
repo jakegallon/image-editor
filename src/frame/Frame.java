@@ -312,12 +312,15 @@ public class Frame extends JFrame {
     }
 
     private void editMenuCutAction() {
+        Controller.cut();
     }
 
     private void editMenuCopyAction() {
+        Controller.copy();
     }
 
     private void editMenuPasteAction() {
+        Controller.paste();
     }
 
     private void editMenuDeleteAction() {
@@ -327,9 +330,6 @@ public class Frame extends JFrame {
     }
 
     private void editMenuFlipVerticalAction() {
-    }
-
-    private void editMenuCanvasSizeAction() {
     }
 
     private void helpMenuHelpAction() {
@@ -422,9 +422,6 @@ public class Frame extends JFrame {
         JMenuItem editMenuFlipVertical = new JMenuItem();
         editMenuFlipVertical.setText("Flip Vertical");
         editMenuFlipVertical.addActionListener(e -> editMenuFlipVerticalAction());
-        JMenuItem editMenuCanvasSize = new JMenuItem();
-        editMenuCanvasSize.setText("Canvas Size");
-        editMenuCanvasSize.addActionListener(e -> editMenuCanvasSizeAction());
 
         editMenu.add(editMenuUndo);
         editMenu.add(editMenuRedo);
@@ -436,8 +433,6 @@ public class Frame extends JFrame {
         editMenu.addSeparator();
         editMenu.add(editMenuFlipHorizontal);
         editMenu.add(editMenuFlipVertical);
-        editMenu.addSeparator();
-        editMenu.add(editMenuCanvasSize);
 
         menuBar.add(editMenu);
 
