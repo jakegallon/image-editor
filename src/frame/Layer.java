@@ -109,6 +109,11 @@ public class Layer implements Serializable {
         g.setColor(color);
         g.setStroke(new BasicStroke(width));
 
+        if(width == 1) {
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+            return;
+        }
+
         Point[] points = getPointsOnLine(p1, p2);
         for(Point p : points){
             //noinspection SuspiciousNameCombination
