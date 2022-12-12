@@ -46,6 +46,8 @@ public class Frame extends JFrame {
                 KeyStroke.getKeyStroke(KeyEvent.VK_X,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> Controller.paste(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_V,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> Controller.delete(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
                 KeyStroke.getKeyStroke('W'),JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -324,6 +326,7 @@ public class Frame extends JFrame {
     }
 
     private void editMenuDeleteAction() {
+        Controller.delete();
     }
 
     private void editMenuFlipHorizontalAction() {

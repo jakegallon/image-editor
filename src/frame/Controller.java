@@ -1,5 +1,8 @@
 package frame;
 
+import action.EditAction;
+import action.LayerDeletionAction;
+import action.PixelChange;
 import tool.BaseTool;
 
 import java.awt.*;
@@ -9,6 +12,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -131,7 +135,13 @@ public class Controller {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(transferableImage, null);
 
-            activeCanvas.deleteLayer();
+            int index = activeCanvas.getActiveLayerIndex();
+            Layer layer = activeCanvas.getActiveLayer();
+
+            Controller.deleteLayerFromActiveCanvas(index);
+
+            LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
+            activeCanvas.undoManager.addEdit(thisAction);
         } else {
             Rectangle selectedArea = activeCanvas.getSelectedArea();
             BufferedImage selectedPart = activeCanvas.getActiveLayer().getImage().getSubimage(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
@@ -173,6 +183,35 @@ public class Controller {
             }
         } else {
             NotificationPanel.playNotification(NotificationMessage.CLIPBOARD_NOT_IMAGE);
+        }
+    }
+
+    public static void delete() {
+        if(activeCanvas == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_DELETE);
+            return;
+        }
+
+        if(activeCanvas.getSelectedArea() == null) {
+            int index = activeCanvas.getActiveLayerIndex();
+            Layer layer = activeCanvas.getActiveLayer();
+
+            Controller.deleteLayerFromActiveCanvas(index);
+
+            LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
+            activeCanvas.undoManager.addEdit(thisAction);
+        } else {
+            BufferedImage i = activeCanvas.getActiveLayer().getImage();
+            BufferedImage originalImage = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            originalImage.getGraphics().drawImage(i, 0, 0, null);
+
+            Rectangle selectedArea = activeCanvas.getSelectedArea();
+            activeCanvas.getActiveLayer().clearRect(selectedArea);
+
+            ArrayList<PixelChange> pixelChanges = activeCanvas.getActiveLayer().getImageDifferences(originalImage);
+
+            EditAction thisAction = new EditAction(activeCanvas.getActiveLayerIndex(), pixelChanges);
+            activeCanvas.undoManager.addEdit(thisAction);
         }
     }
 
