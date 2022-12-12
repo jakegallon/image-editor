@@ -19,8 +19,6 @@ public class MagnificationPanel extends JLayeredPane {
     private static final MagnifiedPanelRenderer magnifiedPanelRenderer = new MagnifiedPanelRenderer();
 
     private static Canvas canvas;
-    private static double canvasScaleRatioX;
-    private static double canvasScaleRatioY;
 
     private static Point mousePos;
     private static Point canvasOffset;
@@ -31,8 +29,6 @@ public class MagnificationPanel extends JLayeredPane {
     private static boolean isAutomaticMode = true;
 
     public static Dimension viewportDimension = new Dimension();
-
-    private static double canvasWidthHeightRatio = 1.0;
 
     private static ImageIcon autoOnIcon;
     private static ImageIcon autoOffIcon;
@@ -48,9 +44,7 @@ public class MagnificationPanel extends JLayeredPane {
                 super.componentResized(e);
 
                 if(canvas != null) {
-                    magnifiedPanelRenderer.updateDrawVariables();
-                    magnifiedPanelRenderer.updateZoomVariables();
-                    magnifiedPanelRenderer.updateRatioVariables();
+                    magnifiedPanelRenderer.onSetCanvasOrResize();
                 }
             }
         });
@@ -59,14 +53,13 @@ public class MagnificationPanel extends JLayeredPane {
     public static void setMousePos(Point p) {
         mousePos = p;
         if(canvas != null) {
-            magnifiedPanelRenderer.updateZoomedImageBoundsPosition();
+            magnifiedPanelRenderer.onSetMousePosOrTargetZoom();
         }
     }
 
     public static void setZoomFactor(double f) {
         zoomFactor = f;
-        magnifiedPanelRenderer.updateZoomVariables();
-        magnifiedPanelRenderer.repaint();
+        magnifiedPanelRenderer.onSetZoomFactorOrViewportDimension();
     }
 
     public static void setIsZoomedIn(boolean b) {
@@ -75,28 +68,32 @@ public class MagnificationPanel extends JLayeredPane {
 
     public static void setCanvasOffset(Point p) {
         canvasOffset = p;
+        magnifiedPanelRenderer.repaint();
     }
 
     public void setCanvas(Canvas c) {
         canvas = c;
 
         if(canvas == null) {
-            magnifiedPanelRenderer.onCanvasNull();
+            magnifiedPanelRenderer.repaint();
             return;
         }
 
-        canvasWidthHeightRatio = (double) c.getWidth() / c.getHeight();
-
-        canvasScaleRatioX = (double) getWidth() / canvas.getWidth();
-        canvasScaleRatioY = (double) getHeight() / canvas.getHeight();
-
-        magnifiedPanelRenderer.onSetCanvas();
+        magnifiedPanelRenderer.onSetCanvasOrResize();
     }
 
     public static void setViewportDimension(Dimension d) {
         viewportDimension = d;
-        magnifiedPanelRenderer.updateDrawVariables();
-        magnifiedPanelRenderer.updateZoomVariables();
+        magnifiedPanelRenderer.onSetZoomFactorOrViewportDimension();
+    }
+
+    private void setTargetZoom(float f) {
+        targetZoom = f;
+
+        if(canvas != null) {
+            magnifiedPanelRenderer.onSetTargetZoomOrAfterScaledXY();
+            magnifiedPanelRenderer.onSetMousePosOrTargetZoom();
+        }
     }
 
     private void init() {
@@ -131,6 +128,7 @@ public class MagnificationPanel extends JLayeredPane {
 
         automaticModeButton.addChangeListener(e -> {
             isAutomaticMode = automaticModeButton.isSelected();
+            magnifiedPanelRenderer.repaint();
             if(automaticModeButton.isSelected()){
                 automaticModeButton.setIcon(autoOnIcon);
             } else {
@@ -148,15 +146,6 @@ public class MagnificationPanel extends JLayeredPane {
             }
         });
 
-    }
-
-    private void setTargetZoom(float f) {
-        targetZoom = f;
-
-        if(canvas != null) {
-            magnifiedPanelRenderer.updateZoomedImageBoundsSize();
-            magnifiedPanelRenderer.updateZoomedImageBoundsPosition();
-        }
     }
 
     private void putConstraints() {
@@ -178,23 +167,16 @@ public class MagnificationPanel extends JLayeredPane {
 
     private static class MagnifiedPanelRenderer extends JPanel{
 
-        int xOffset;
-        int yOffset;
-        int scaledX;
-        int scaledY;
-        double baseScale;
+        private double baseScale;
+        private int scaledX;
+        private int scaledY;
+        private int xOffset;
+        private int yOffset;
 
-        int drawOffsetX;
-        int drawOffsetY;
-        int drawWidth;
-        int drawHeight;
+        private double pixelsInWidth;
+        private double pixelsInHeight;
 
-        double pixelsInWidth;
-        double pixelsInHeight;
-
-        Rectangle zoomedImageBounds = new Rectangle(1, 1, 1, 1);
-        double viewportDimensionRatioWidth;
-        double viewportDimensionRatioHeight;
+        private final Rectangle zoomedImageBounds = new Rectangle(1, 1, 1, 1);
 
         private MagnifiedPanelRenderer() {
             setBackground(new Color(43, 43 ,43));
@@ -227,41 +209,9 @@ public class MagnificationPanel extends JLayeredPane {
             g.drawLine(0, getHeight()/2, getWidth(), getHeight()/2);
         }
 
-        private void drawZoomedImage(Graphics g) {
-            BufferedImage image = canvas.getImage();
-            g.drawImage(image, zoomedImageBounds.x, zoomedImageBounds.y, zoomedImageBounds.width, zoomedImageBounds.height, null);
-        }
-
         private void drawFullImage(Graphics g) {
             BufferedImage image = canvas.getImage();
             g.drawImage(image, xOffset, yOffset, scaledX, scaledY, null);
-        }
-
-        private void updateZoomedImageBoundsPosition(){
-            Point convertedMousePos = convertPosToLocal(mousePos);
-
-            zoomedImageBounds.x = convertedMousePos.x;
-            zoomedImageBounds.y = convertedMousePos.y;
-            repaint();
-        }
-
-        private Point convertPosToLocal(Point p) {
-            double x = -p.x * baseScale * targetZoom;
-            double y = -p.y * baseScale * targetZoom;
-
-            x += scaledX / 2.0;
-            y += scaledY / 2.0;
-
-            x += xOffset;
-            y += yOffset;
-
-            return new Point((int) x, (int) y);
-        }
-
-        private void updateZoomedImageBoundsSize(){
-            zoomedImageBounds.width = (int) (scaledX * targetZoom);
-            zoomedImageBounds.height = (int) (scaledY * targetZoom);
-            repaint();
         }
 
         private void drawFullViewArea(Graphics g) {
@@ -273,6 +223,11 @@ public class MagnificationPanel extends JLayeredPane {
             int scaledHeight = (int) ((pixelsInHeight * baseScale));
 
             g.drawRect(localX, localY, scaledWidth, scaledHeight);
+        }
+
+        private void drawZoomedImage(Graphics g) {
+            BufferedImage image = canvas.getImage();
+            g.drawImage(image, zoomedImageBounds.x, zoomedImageBounds.y, zoomedImageBounds.width, zoomedImageBounds.height, null);
         }
 
         private void drawZoomedViewArea(Graphics g) {
@@ -291,19 +246,58 @@ public class MagnificationPanel extends JLayeredPane {
             g.drawRect(localX, localY, scaledWidth, scaledHeight);
         }
 
-        private void updateDrawVariables() {
-            if(getWidth() >= getHeight()){
-                drawWidth = Math.min(getWidth(), getHeight());
-                drawHeight = (int) (getHeight() / canvasWidthHeightRatio);
-            } else {
-                drawHeight = Math.min(getHeight(), getWidth());
-                drawWidth = (int) (getWidth() / canvasWidthHeightRatio);
-            }
-            drawOffsetX = (getWidth() - drawWidth) / 2;
-            drawOffsetY = (getHeight() - drawHeight) / 2;
+        private void onSetMousePosOrTargetZoom(){
+            calculateZoomedImagePosition();
+            repaint();
+        }
 
-            //todo move
-            if(canvas == null) return;
+        private void calculateZoomedImagePosition() {
+            Point convertedMousePos = convertPosToLocal(mousePos);
+
+            zoomedImageBounds.x = convertedMousePos.x;
+            zoomedImageBounds.y = convertedMousePos.y;
+        }
+
+        private Point convertPosToLocal(Point p) {
+            double x = -p.x * baseScale * targetZoom;
+            double y = -p.y * baseScale * targetZoom;
+
+            x += scaledX / 2.0;
+            y += scaledY / 2.0;
+
+            x += xOffset;
+            y += yOffset;
+
+            return new Point((int) x, (int) y);
+        }
+
+        private void onSetTargetZoomOrAfterScaledXY(){
+            calculateZoomedImageSize();
+            repaint();
+        }
+
+        private void calculateZoomedImageSize() {
+            zoomedImageBounds.width = (int) (scaledX * targetZoom);
+            zoomedImageBounds.height = (int) (scaledY * targetZoom);
+        }
+
+        private void onSetZoomFactorOrViewportDimension() {
+            calculateCanvasPanelVariables();
+            repaint();
+        }
+
+        private void calculateCanvasPanelVariables() {
+            pixelsInWidth = viewportDimension.width / zoomFactor;
+            pixelsInHeight = viewportDimension.height / zoomFactor;
+        }
+
+        private void onSetCanvasOrResize() {
+            calculateDrawInformation();
+            onSetTargetZoomOrAfterScaledXY();
+        }
+
+        private void calculateDrawInformation() {
+            if (canvas == null) return;
 
             double imageWidthPercent = (double) getWidth() / canvas.getWidth();
             double imageHeightPercent = (double) getHeight() / canvas.getHeight();
@@ -313,31 +307,6 @@ public class MagnificationPanel extends JLayeredPane {
             scaledY = (int) (canvas.getHeight() * baseScale);
             xOffset = (getWidth() - scaledX) / 2;
             yOffset = (getHeight() - scaledY) / 2;
-        }
-
-        private void updateRatioVariables() {
-            viewportDimensionRatioWidth = (double) getWidth() / canvas.getWidth();
-            viewportDimensionRatioHeight = (double) getHeight() / canvas.getHeight();
-        }
-
-        private void updateZoomVariables() {
-            pixelsInWidth = viewportDimension.width / zoomFactor;
-            pixelsInHeight = viewportDimension.height / zoomFactor;
-        }
-
-        private void onSetCanvas() {
-            updateDrawVariables();
-            updateZoomVariables();
-            updateRatioVariables();
-
-            updateZoomedImageBoundsSize();
-            updateZoomedImageBoundsPosition();
-
-            repaint();
-        }
-
-        private void onCanvasNull() {
-            repaint();
         }
     }
 }
