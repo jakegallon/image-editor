@@ -43,23 +43,43 @@ public class Canvas extends JPanel implements Serializable {
         }
     }
 
-    public Rectangle selectedArea;
+    private Rectangle selectedArea;
 
     private float currentDashPhase = 0f;
     private final Timer timer = new Timer(500, e -> currentDashPhase = currentDashPhase == 0f ? 0.5f : 0f);
 
     private void drawSelectedArea(Graphics g) {
-        if(selectedArea == null) {
-            timer.stop();
-            return;
-        } else if(selectedArea.width == 0 || selectedArea.height ==0) {
-            return;
-        }
-
         if(!timer.isRunning()) timer.start();
 
         Graphics2D g2d = (Graphics2D) g;
         drawDashingRectangle(g2d);
+    }
+
+    public Rectangle getSelectedArea() {
+        return selectedArea;
+    }
+
+    public void initializeSelectedArea(int x, int y) {
+        selectedArea = new Rectangle(x, y, 0, 0);
+    }
+
+    public void setSelectedAreaOffset(int x, int y) {
+        selectedArea.x = x;
+        selectedArea.y = y;
+    }
+
+    public void shiftSelectedArea(int dx, int dy) {
+        selectedArea.x += dx;
+        selectedArea.y += dy;
+    }
+
+    public void setSelectedAreaSize(int width, int height) {
+        selectedArea.width = width;
+        selectedArea.height = height;
+    }
+
+    public void nullifySelectedArea() {
+        selectedArea = null;
     }
 
     private void drawDashingRectangle(Graphics2D g2d) {
@@ -127,7 +147,8 @@ public class Canvas extends JPanel implements Serializable {
         g.drawImage(image, 0, 0, getBounds().width, getBounds().height, null);
         drawGhost(g);
         drawGrid(g);
-        drawSelectedArea(g);
+
+        if(selectedArea != null) drawSelectedArea(g);
 
         if(Controller.getActiveTool() instanceof AnimationTool) {
             g.setColor(Color.blue);

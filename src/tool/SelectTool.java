@@ -26,9 +26,7 @@ public class SelectTool extends BaseTool {
     @Override
     protected void onLeftMousePressed() {
         if(canvas == null || canvas.getActiveLayer() == null) return;
-        canvas.selectedArea = new Rectangle(0, 0, 0, 0);
-        canvas.selectedArea.x = initPressPoint.x;
-        canvas.selectedArea.y = initPressPoint.y;
+        canvas.initializeSelectedArea(initPressPoint.x, initPressPoint.y);
     }
 
     @Override
@@ -40,10 +38,14 @@ public class SelectTool extends BaseTool {
             int width = mousePos.x - initPressPoint.x;
             int height = mousePos.y - initPressPoint.y;
 
-            canvas.selectedArea.x = width >= 0 ? initPressPoint.x : initPressPoint.x + 1;
-            canvas.selectedArea.y = height >= 0 ? initPressPoint.y : initPressPoint.y + 1;
-            canvas.selectedArea.width = width >= 0 ? width + 1 : width - 1;
-            canvas.selectedArea.height = height >= 0 ? height + 1 : height - 1;
+            canvas.setSelectedAreaOffset(
+                    width >= 0 ? initPressPoint.x : initPressPoint.x + 1,
+                    height >= 0 ? initPressPoint.y : initPressPoint.y + 1
+            );
+            canvas.setSelectedAreaSize(
+                    width >= 0 ? width + 1 : width - 1,
+                    height >= 0 ? height + 1 : height - 1
+            );
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
             Color color = canvasPanel.getColorAtMousePos();
@@ -53,6 +55,13 @@ public class SelectTool extends BaseTool {
 
     @Override
     protected void onLeftMouseDragged() {
+    }
+
+    @Override
+    public void onMouseReleased(MouseEvent e) {
+        if(initPressPoint == canvasPanel.getMousePos()) {
+            canvas.nullifySelectedArea();
+        }
     }
 
     @Override

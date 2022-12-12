@@ -30,7 +30,7 @@ public class MoveSelectionTool extends EditTool {
     protected void onLeftMousePressed() {
         proxyLayer = new Layer(canvas);
 
-        Rectangle selectedArea = canvas.selectedArea;
+        Rectangle selectedArea = canvas.getSelectedArea();
 
         if(selectedArea.width < 0) {
             selectedArea.width = Math.abs(selectedArea.width);
@@ -59,8 +59,7 @@ public class MoveSelectionTool extends EditTool {
         int dy = thisDragPoint.y - lastDragPoint.y;
 
         proxyLayer.moveLayer(dx, dy);
-        canvas.selectedArea.x += dx;
-        canvas.selectedArea.y += dy;
+        canvas.shiftSelectedArea(dx, dy);
     }
 
     @Override
