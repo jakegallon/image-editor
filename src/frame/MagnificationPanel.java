@@ -267,10 +267,10 @@ public class MagnificationPanel extends JLayeredPane {
         private void drawFullViewArea(Graphics g) {
             g.setColor(Color.red);
 
-            int localX = (int) (canvasOffset.x * canvasScaleRatioX);
-            int localY = (int) (canvasOffset.y * canvasScaleRatioY);
-            int scaledWidth = (int) ((pixelsInWidth * canvasScaleRatioX));
-            int scaledHeight = (int) ((pixelsInHeight * canvasScaleRatioY));
+            int localX = (int) ((canvasOffset.x + (xOffset / baseScale)) * baseScale);
+            int localY = (int) ((canvasOffset.y + (yOffset / baseScale)) * baseScale);
+            int scaledWidth = (int) ((pixelsInWidth * baseScale));
+            int scaledHeight = (int) ((pixelsInHeight * baseScale));
 
             g.drawRect(localX, localY, scaledWidth, scaledHeight);
         }
@@ -279,14 +279,14 @@ public class MagnificationPanel extends JLayeredPane {
             g.setColor(Color.red);
 
             Point correctedCanvasOffset = new Point(
-                    (int) ((canvasOffset.x * canvasScaleRatioX) * targetZoom),
-                    (int) ((canvasOffset.y * canvasScaleRatioY) * targetZoom)
+                    (int) ((canvasOffset.x * baseScale) * targetZoom),
+                    (int) ((canvasOffset.y * baseScale) * targetZoom)
             );
 
             int localX = zoomedImageBounds.x + correctedCanvasOffset.x;
             int localY = zoomedImageBounds.y + correctedCanvasOffset.y;
-            int scaledWidth = (int) ((pixelsInWidth * canvasScaleRatioX) * targetZoom);
-            int scaledHeight = (int) ((pixelsInHeight * canvasScaleRatioY) * targetZoom);
+            int scaledWidth = (int) ((pixelsInWidth * baseScale) * targetZoom);
+            int scaledHeight = (int) ((pixelsInHeight * baseScale) * targetZoom);
 
             g.drawRect(localX, localY, scaledWidth, scaledHeight);
         }
