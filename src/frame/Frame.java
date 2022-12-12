@@ -5,6 +5,7 @@ import tool.ToolCategory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -25,6 +26,8 @@ public class Frame extends JFrame {
     static MagnificationPanel magnificationPanel = new MagnificationPanel();
     static TabPanel topPanel = new TabPanel();
     public static NotificationPanel notificationPanel = new NotificationPanel();
+
+    public static final Color borderColor = new Color(43, 43 ,43);
 
     int leftPanelWidth = 310, rightPanelWidth = 310;
 
@@ -130,6 +133,7 @@ public class Frame extends JFrame {
         JSplitPane magnificationAnimation = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationPanel, spriteTabbedPane);
         JSplitPane magnificationAnimationLayer = new JSplitPane(JSplitPane.VERTICAL_SPLIT, magnificationAnimation, layerPanel);
         magnificationAnimationLayer.setResizeWeight(1.0);
+        rightPanel.setBorder(new MatteBorder(1, 1, 0, 1, borderColor));
         rightPanel.add(magnificationAnimationLayer);
 
         leftMiddle = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, middlePanel);
@@ -137,6 +141,7 @@ public class Frame extends JFrame {
         leftMiddleRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftMiddle, rightPanel);
         leftMiddleRight.setDividerLocation(pane.getWidth() - rightPanelWidth);
         leftMiddleRight.setResizeWeight(1.0);
+        leftMiddleRight.setBorder(new MatteBorder(1, 0, 1, 0, borderColor));
         pane.add(leftMiddleRight);
 
         leftMiddleRight.addComponentListener(new ComponentAdapter() {

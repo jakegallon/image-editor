@@ -3,7 +3,7 @@ package frame;
 import tool.*;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -38,7 +38,7 @@ public class ToolSelectPanel extends JPanel {
     int buttonSize;
 
     private void init() {
-        setBorder(new LineBorder(new Color(49, 49, 49), 1));
+        setBorder(new MatteBorder(0, 1, 1, 0, Frame.borderColor));
         setPreferredSize(new Dimension(40, 0));
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);

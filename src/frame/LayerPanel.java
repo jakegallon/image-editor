@@ -7,6 +7,7 @@ import action.LayerOrderAction;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -63,6 +64,7 @@ public class LayerPanel extends JPanel {
         layerContainer.setLayout(new BoxLayout(layerContainer, BoxLayout.PAGE_AXIS));
 
         scrollPane = new JScrollPane(layerContainer);
+        scrollPane.setBorder(new MatteBorder(1, 0, 0, 0, new Color(97, 99, 101)));
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         add(scrollPane, BorderLayout.CENTER);
         addComponentListener(new ComponentAdapter() {

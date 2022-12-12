@@ -5,6 +5,7 @@ import action.LayerDeletionAction;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class LayerPanelHandler extends JPanel {
 
     public LayerPanelHandler() {
         setPreferredSize(new Dimension(0, 32));
+        setBorder(new MatteBorder(1, 0, 0, 0, new Color(43, 43, 43)));
 
         BoxLayout layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
         setLayout(layout);

@@ -3,6 +3,7 @@ package colorpanel;
 import frame.Controller;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 public class ColorSplitPane extends JPanel {
@@ -12,6 +13,7 @@ public class ColorSplitPane extends JPanel {
 
     public ColorSplitPane() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setBorder(new MatteBorder(1, 1, 0, 1, new Color(43, 43 ,43)));
 
         palettePanel = new PalettePanel(this);
         colorPanel = new ColorPanel(this);

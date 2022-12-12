@@ -1,6 +1,7 @@
 package colorpanel;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 public class ColorPanel extends JPanel {
@@ -22,6 +23,7 @@ public class ColorPanel extends JPanel {
     public ColorPanel(ColorSplitPane colorSplitPane) {
         this.colorSplitPane = colorSplitPane;
         setLayout(new BorderLayout());
+        setBorder(new MatteBorder(0, 0, 1, 0, new Color(43, 43 ,43)));
 
         colorPanelSelector = new ColorPanelSelector(this);
         add(colorPanelSelector, BorderLayout.CENTER);

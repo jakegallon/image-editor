@@ -33,6 +33,7 @@ public class PalettePanel extends JPanel {
         InitializeColorAdder();
         colorHolderPopupMenu = new ColorHolderPopupMenu();
 
+        scrollPane.setBorder(null);
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

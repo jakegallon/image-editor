@@ -3,6 +3,7 @@ package frame;
 import tool.*;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -170,6 +171,9 @@ public class ToolSettings extends JPanel {
     private void addHoldingPanes() {
         JScrollPane toolPresetsPane = new JScrollPane(toolPresets);
 
+        toolPresetsPane.setBorder(new MatteBorder(0, 0, 1, 0, Frame.borderColor));
+        toolSettingsPane.setBorder(null);
+
         Dimension minimumSize = new Dimension(0, 146);
         toolPresetsPane.setMinimumSize(minimumSize);
         toolSettingsPane.setMinimumSize(minimumSize);
@@ -181,6 +185,8 @@ public class ToolSettings extends JPanel {
 
         tPtS.setResizeWeight(0.5);
         add(tPtS);
+
+        tPtS.setBorder(new MatteBorder(0, 1, 1, 1, Frame.borderColor));
 
         toolSettingsPane.addComponentListener(new ComponentAdapter() {
             @Override
