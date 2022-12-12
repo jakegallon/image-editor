@@ -86,7 +86,7 @@ public class PalettePanel extends JPanel {
         ColorHolder newColorHolder = new ColorHolder(color);
         colorHolderContainer.add(newColorHolder);
         ResetColorAdder();
-        revalidate();
+        colorHolderContainer.revalidate();
     }
 
     protected void deselectSelectedHolder() {
@@ -98,6 +98,10 @@ public class PalettePanel extends JPanel {
     private void ResetColorAdder() {
         colorHolderContainer.remove(colorAdder);
         colorHolderContainer.add(colorAdder);
+
+        if(colorAdder.getX() + colorAdder.getWidth() >= colorHolderContainer.getWidth()) {
+            recalculateSize();
+        }
     }
 
     private ColorHolder selectedHolder;
