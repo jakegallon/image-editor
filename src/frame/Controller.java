@@ -101,6 +101,10 @@ public class Controller {
     }
 
     public static void copy() {
+        if(activeCanvas == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS);
+            return;
+        }
         if(activeCanvas.getSelectedArea() == null) {
             TransferableImage transferableImage = new TransferableImage(activeCanvas.getActiveLayer().getImage());
 
@@ -117,6 +121,10 @@ public class Controller {
     }
 
     public static void cut() {
+        if(activeCanvas == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS);
+            return;
+        }
         if(activeCanvas.getSelectedArea() == null) {
             TransferableImage transferableImage = new TransferableImage(activeCanvas.getActiveLayer().getImage());
 
@@ -137,6 +145,10 @@ public class Controller {
     }
 
     public static void paste() {
+        if(activeCanvas == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS);
+            return;
+        }
         Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
         if(transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             try {

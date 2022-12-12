@@ -1,6 +1,7 @@
 package frame;
 
 public enum NotificationMessage {
+    NO_CANVAS("Cut, Copy, and Paste require a canvas."),
     NO_MORE_UNDO("There are no more edits left to undo..."),
     NO_MORE_REDO("There are no more edits left to redo..."),
     TOOL_REQUIRES_CANVAS("There must be a canvas to use this tool."),
