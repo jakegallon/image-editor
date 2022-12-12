@@ -1,8 +1,9 @@
 package tool;
 
 import frame.Layer;
+import frame.NotificationMessage;
+import frame.NotificationPanel;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -32,6 +33,11 @@ public class MoveSelectionTool extends EditTool {
 
         Rectangle selectedArea = canvas.getSelectedArea();
 
+        if(selectedArea == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_SELECTION_TO_MOVE);
+            return;
+        }
+
         if(selectedArea.width < 0) {
             selectedArea.width = Math.abs(selectedArea.width);
             selectedArea.x -= selectedArea.width;
@@ -55,6 +61,8 @@ public class MoveSelectionTool extends EditTool {
 
     @Override
     protected void onLeftMouseDragged() {
+        if(canvas.getSelectedArea() == null) return;
+
         int dx = thisDragPoint.x - lastDragPoint.x;
         int dy = thisDragPoint.y - lastDragPoint.y;
 
@@ -64,6 +72,8 @@ public class MoveSelectionTool extends EditTool {
 
     @Override
     protected void onLeftMouseReleased() {
+        if(canvas.getSelectedArea() == null) return;
+
         activeLayer.mergeLayerIntoThis(proxyLayer);
         canvas.deleteLayer();
 

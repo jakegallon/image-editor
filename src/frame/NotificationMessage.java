@@ -4,6 +4,7 @@ public enum NotificationMessage {
     NO_CANVAS("Cut, Copy, and Paste require a canvas."),
     NO_MORE_UNDO("There are no more edits left to undo..."),
     NO_MORE_REDO("There are no more edits left to redo..."),
+    NO_SELECTION_TO_MOVE("There is no selection to move. The Select Tool can be used to create one."),
     TOOL_REQUIRES_CANVAS("There must be a canvas to use this tool."),
     TOOL_PRESS_OOB("This tool must be used on the canvas."),
     TOOL_LAYER_LOCKED("This tool can't be used on a locked layer."),
