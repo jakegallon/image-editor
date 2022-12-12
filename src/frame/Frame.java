@@ -40,6 +40,12 @@ public class Frame extends JFrame {
                 KeyStroke.getKeyStroke(KeyEvent.VK_Z,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
         getRootPane().registerKeyboardAction(e -> Controller.redo(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_Y,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> Controller.copy(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_C,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> Controller.cut(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_X,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
+        getRootPane().registerKeyboardAction(e -> Controller.paste(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_V,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW );
     }
 
     private void initializeWindow() {

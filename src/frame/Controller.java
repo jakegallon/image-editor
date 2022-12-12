@@ -3,6 +3,12 @@ package frame;
 import tool.BaseTool;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Controller {
 
@@ -91,6 +97,70 @@ public class Controller {
             activeCanvas.undoManager.redo();
         } catch (Exception e) {
             NotificationPanel.playNotification(NotificationMessage.NO_MORE_REDO);
+        }
+    }
+
+    public static void copy() {
+        if(activeCanvas.getSelectedArea() == null) {
+            TransferableImage transferableImage = new TransferableImage(activeCanvas.getActiveLayer().getImage());
+
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(transferableImage, null);
+        } else {
+            Rectangle selectedArea = activeCanvas.getSelectedArea();
+            BufferedImage selectedPart = activeCanvas.getActiveLayer().getImage().getSubimage(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+            TransferableImage transferableImage = new TransferableImage(selectedPart);
+
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(transferableImage, null);
+        }
+    }
+
+    public static void cut() {
+        if(activeCanvas.getSelectedArea() == null) {
+            TransferableImage transferableImage = new TransferableImage(activeCanvas.getActiveLayer().getImage());
+
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(transferableImage, null);
+
+            activeCanvas.deleteLayer();
+        } else {
+            Rectangle selectedArea = activeCanvas.getSelectedArea();
+            BufferedImage selectedPart = activeCanvas.getActiveLayer().getImage().getSubimage(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+            TransferableImage transferableImage = new TransferableImage(selectedPart);
+
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(transferableImage, null);
+
+            activeCanvas.getActiveLayer().clearRect(selectedArea);
+        }
+    }
+
+    public static void paste() {
+        Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+        if(transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+            try {
+                BufferedImage image = (BufferedImage) transferable.getTransferData(DataFlavor.imageFlavor);
+                if(image.getWidth() > activeCanvas.getWidth()) {
+                    NotificationPanel.playNotification(NotificationMessage.CLIPBOARD_TOO_WIDE);
+                    return;
+                }
+                if(image.getHeight() > activeCanvas.getHeight()) {
+                    NotificationPanel.playNotification(NotificationMessage.CLIPBOARD_TOO_TALL);
+                    return;
+                }
+
+                Layer pasteLayer = new Layer(activeCanvas);
+                pasteLayer.getImage().getGraphics().drawImage(image, 0, 0, null);
+                pasteLayer.setName("Layer " + activeCanvas.nextNameNumber());
+
+                activeCanvas.addLayer(pasteLayer, activeCanvas.getActiveLayerIndex());
+                Frame.layerPanel.addLayer(pasteLayer, activeCanvas.getActiveLayerIndex());
+            } catch (UnsupportedFlavorException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            NotificationPanel.playNotification(NotificationMessage.CLIPBOARD_NOT_IMAGE);
         }
     }
 
