@@ -40,7 +40,6 @@ public class LayerPanelHandler extends JPanel {
         addButton.setBackground(new Color(0, 0, 0, 0));
         addButton.setPreferredSize(new Dimension(22, 22));
         addButton.addActionListener(e -> {
-            //todo lock buttons when no active canvas
             int index = activeCanvas.getActiveLayerIndex();
             index = index == -1 ? 0 : index;
 
@@ -49,6 +48,7 @@ public class LayerPanelHandler extends JPanel {
             LayerCreationAction thisAction = new LayerCreationAction(index);
             activeCanvas.undoManager.addEdit(thisAction);
         });
+        addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addButton.setEnabled(false);
 
         delButton = new JButton();
@@ -65,6 +65,7 @@ public class LayerPanelHandler extends JPanel {
             LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
             activeCanvas.undoManager.addEdit(thisAction);
         });
+        delButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         delButton.setEnabled(false);
 
         JButton helpButton = new JButton();
@@ -75,6 +76,7 @@ public class LayerPanelHandler extends JPanel {
         helpButton.addActionListener(e -> {
             //todo
         });
+        helpButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         add(addButton);
         add(Box.createRigidArea(new Dimension(5, 0)));

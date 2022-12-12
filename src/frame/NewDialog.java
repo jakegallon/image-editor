@@ -25,6 +25,9 @@ public class NewDialog extends JDialog {
         addPaperComponents();
         addConfirmButton();
 
+        hasPaper.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        confirm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         confirm.addActionListener(e -> {
             Canvas canvas = new Canvas();
 
@@ -118,7 +121,7 @@ public class NewDialog extends JDialog {
         setLocationRelativeTo(this);
         setResizable(false);
 
-        setTitle("New");
+        setTitle("New Canvas");
 
         setLayout(springLayout);
     }

@@ -1,6 +1,7 @@
 package frame;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GridPanel extends JPanel {
 
@@ -24,6 +25,11 @@ public class GridPanel extends JPanel {
         addGridSizeWidget();
         addSeparator();
         addCellGhostWidget();
+
+        gridStyleBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        cellGhostCheckbox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        cellGhostWrapCheckbox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        cellGhostOpacitySlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         setAllEnabled(false);
     }

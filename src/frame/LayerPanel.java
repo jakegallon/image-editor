@@ -282,6 +282,7 @@ public class LayerPanel extends JPanel {
             add(layerImage);
 
             layerOpacity = new JSlider(0, 255, 255);
+            layerOpacity.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(layerOpacity);
 
             layerOpacity.addChangeListener(e -> layer.setOpacity(layerOpacity.getValue()));
@@ -291,6 +292,7 @@ public class LayerPanel extends JPanel {
             deleteButton.setBorderPainted(false);
             deleteButton.setBackground(new Color(0, 0, 0, 0));
             deleteButton.setPreferredSize(new Dimension(16, 16));
+            deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(deleteButton);
 
             deleteButton.addActionListener(deleteListener());
@@ -306,6 +308,7 @@ public class LayerPanel extends JPanel {
             lockButton.setBorderPainted(false);
             lockButton.setBackground(new Color(0, 0, 0, 0));
             lockButton.setPreferredSize(new Dimension(16, 16));
+            lockButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(lockButton);
 
             lockButton.addActionListener(lockListener());
@@ -315,6 +318,7 @@ public class LayerPanel extends JPanel {
             renameButton.setBorderPainted(false);
             renameButton.setBackground(new Color(0, 0, 0, 0));
             renameButton.setPreferredSize(new Dimension(16, 16));
+            renameButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(renameButton);
 
             renameButton.addActionListener(renameListener());
@@ -330,6 +334,7 @@ public class LayerPanel extends JPanel {
             visibleButton.setBorderPainted(false);
             visibleButton.setBackground(new Color(0, 0, 0, 0));
             visibleButton.setPreferredSize(new Dimension(16, 16));
+            visibleButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(visibleButton);
 
             visibleButton.addActionListener(visibleListener());
@@ -339,6 +344,7 @@ public class LayerPanel extends JPanel {
             mergeDownButton.setBorderPainted(false);
             mergeDownButton.setBackground(new Color(0, 0, 0, 0));
             mergeDownButton.setPreferredSize(new Dimension(16, 16));
+            mergeDownButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(mergeDownButton);
 
             mergeDownButton.addActionListener(mergeDownListener());
@@ -569,6 +575,7 @@ public class LayerPanel extends JPanel {
         @Override
         public void mouseEntered(MouseEvent e) {
             isMouseOverWidget = true;
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
 
         @Override
@@ -577,6 +584,7 @@ public class LayerPanel extends JPanel {
                 isMouseOverWidget = false;
                 if (isMousePressed) floatWidget();
             }
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         @Override

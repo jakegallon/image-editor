@@ -116,6 +116,7 @@ public class PalettePanel extends JPanel {
         public ColorHolder(Color color) {
             addMouseListener(this);
             currentColor = color;
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             setPreferredSize(COLOR_HOLDER_SIZE);
             setBackground(color);
@@ -208,6 +209,7 @@ public class PalettePanel extends JPanel {
         private ColorAdder() {
             addMouseListener(this);
             setPreferredSize(COLOR_HOLDER_SIZE);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             desiredWeight = (int) (COLOR_HOLDER_SIZE.getWidth()/5);
             p1 = new Point((COLOR_HOLDER_SIZE.width / 2) - (desiredWeight / 2), 0);

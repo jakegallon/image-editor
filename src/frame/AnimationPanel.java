@@ -154,6 +154,7 @@ public class AnimationPanel extends JPanel {
                 normalLayoutButton.setIcon(layout1IconSelected);
             }
         });
+        normalLayoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(focusedLayoutButton);
         focusedLayoutButton.setIcon(layout2Icon);
         focusedLayoutButton.setBorderPainted(false);
@@ -166,6 +167,7 @@ public class AnimationPanel extends JPanel {
                 focusedLayoutButton.setIcon(layout2IconSelected);
             }
         });
+        focusedLayoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(crossLayoutButton);
         crossLayoutButton.setIcon(layout3Icon);
         crossLayoutButton.setBorderPainted(false);
@@ -178,6 +180,7 @@ public class AnimationPanel extends JPanel {
                 crossLayoutButton.setIcon(layout3IconSelected);
             }
         });
+        crossLayoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(landscapeLayoutButton);
         landscapeLayoutButton.setIcon(layout4Icon);
         landscapeLayoutButton.setBorderPainted(false);
@@ -190,7 +193,7 @@ public class AnimationPanel extends JPanel {
                 landscapeLayoutButton.setIcon(layout4IconSelected);
             }
         });
-
+        landscapeLayoutButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JLabel fpsLabel = new JLabel("fps");
         add(fpsLabel);
         add(fpsSpinner);
@@ -204,7 +207,7 @@ public class AnimationPanel extends JPanel {
         helpButton.setBorderPainted(false);
         helpButton.setBackground(new Color(0, 0, 0, 0));
         helpButton.setPreferredSize(new Dimension(21, 21));
-        //TODO display help panel
+        helpButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         springLayout.putConstraint(SpringLayout.NORTH, normalLayoutButton, 6, SpringLayout.NORTH, this);
         springLayout.putConstraint(SpringLayout.SOUTH, normalLayoutButton, 20, SpringLayout.NORTH, normalLayoutButton);
@@ -450,7 +453,6 @@ public class AnimationPanel extends JPanel {
 
             onNewAnimation();
 
-            //todo if grid style is hidden show while selecting and then set back when tool switches - implement onSelected and onUnselected in BaseTool
             AnimationTool animationTool = new AnimationTool(this);
             Controller.setActiveTool(animationTool);
         }
@@ -473,12 +475,14 @@ public class AnimationPanel extends JPanel {
 
         @Override
         public void mouseEntered(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             if(Controller.getActiveCanvas() == null) return;
             setBorder(new LineBorder(HIGHLIGHT_COLOR));
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             if(activeSpritePanel != this) {
                 setBorder(null);
             }

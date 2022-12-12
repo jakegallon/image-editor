@@ -55,11 +55,13 @@ public class TabPanel extends JPanel {
 
         private void init() {
             setPreferredSize(new Dimension(140, 25));
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             SpringLayout springLayout = new SpringLayout();
             setLayout(springLayout);
 
             JButton closeWidgetButton = createCloseWidgetButton();
+            closeWidgetButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             add(closeWidgetButton);
 
             springLayout.putConstraint(SpringLayout.EAST, closeWidgetButton, -2, SpringLayout.EAST, this);

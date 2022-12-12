@@ -69,6 +69,7 @@ public class ToolSelectPanel extends JPanel {
             this.category = category;
 
             setPreferredSize(new Dimension(buttonSize, buttonSize));
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             setIcon(category.getIcon());
             setBorderPainted(false);

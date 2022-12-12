@@ -17,6 +17,7 @@ public class PropertyBooleanWidget extends JPanel {
 
         JLabel propertyName = new JLabel(name);
         propertyCheckBox.setSelected(value.get());
+        propertyCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         add(propertyName);
         add(propertyCheckBox);

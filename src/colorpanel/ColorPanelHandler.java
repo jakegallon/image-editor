@@ -20,8 +20,10 @@ public class ColorPanelHandler extends JPanel {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
 
+        primaryColorHoldingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(primaryColorHoldingPanel);
         primaryColorHoldingPanel.setCurrentColor(Color.white);
+        secondaryColorHoldingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(secondaryColorHoldingPanel);
         secondaryColorHoldingPanel.setCurrentColor(Color.black);
 

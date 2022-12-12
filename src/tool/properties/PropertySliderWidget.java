@@ -16,6 +16,7 @@ public class PropertySliderWidget extends JPanel {
 
         JLabel propertyName = new JLabel(name);
         JSlider propertySlider = new JSlider(minValue, maxValue, value.get());
+        propertySlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JSpinner propertySpinner = new JSpinner(new SpinnerNumberModel(value.get(), minValue, maxValue, 1));
         add(propertyName);
         add(propertySlider);

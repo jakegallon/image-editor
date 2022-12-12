@@ -117,12 +117,14 @@ public class MagnificationPanel extends JLayeredPane {
         automaticModeButton.setBorderPainted(false);
         automaticModeButton.setBackground(new Color(0, 0, 0, 0));
         automaticModeButton.setSelected(true);
+        automaticModeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(targetZoomSlider, 2, 0);
         add(crosshairButton, 2, 0);
         crosshairButton.setSelected(true);
         crosshairButton.setIcon(crosshairOnIcon);
         crosshairButton.setBorderPainted(false);
         crosshairButton.setBackground(new Color(0, 0, 0, 0));
+        crosshairButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(magnifiedPanelRenderer, 1, 0);
         putConstraints();
 
@@ -135,6 +137,7 @@ public class MagnificationPanel extends JLayeredPane {
                 automaticModeButton.setIcon(autoOffIcon);
             }
         });
+        targetZoomSlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         targetZoomSlider.addChangeListener(e -> setTargetZoom((targetZoomSlider.getValue()) / 10f + 1));
         crosshairButton.addChangeListener(e -> {
             isCrosshairEnabled = crosshairButton.isSelected();

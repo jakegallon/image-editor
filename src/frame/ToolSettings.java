@@ -92,6 +92,7 @@ public class ToolSettings extends JPanel {
 
                 subToolButton.setBorderPainted(false);
                 subToolButton.setBackground(new Color(0, 0, 0, 0));
+                subToolButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 subToolButton.setMinimumSize(new Dimension(toolPresets.getWidth(), 40));
                 subToolButton.setPreferredSize(new Dimension(toolPresets.getWidth(), 40));
