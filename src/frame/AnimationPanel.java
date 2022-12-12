@@ -1,6 +1,7 @@
 package frame;
 
 import tool.AnimationTool;
+import tool.ToolCategory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class AnimationPanel extends JPanel {
     private final SpritePanel spritePanel2 = new SpritePanel();
     private final SpritePanel spritePanel3 = new SpritePanel();
     private final SpritePanel spritePanel4 = new SpritePanel();
-    private SpritePanel activeSpritePanel;
+    private static SpritePanel activeSpritePanel;
 
     private int fps = 10;
     private final JSpinner fpsSpinner = new JSpinner(new SpinnerNumberModel(fps, 1, 999, 1));
@@ -95,8 +96,14 @@ public class AnimationPanel extends JPanel {
 
     public static void setCanvas(Canvas c) {
         canvas = c;
-        if(c == null) return;
-
+        if(c == null) {
+            if(Controller.getActiveTool() instanceof AnimationTool) {
+                ToolSelectPanel.highlightButtonByCategory(ToolCategory.MOVE);
+                ToolSettings.onNewCategory(ToolCategory.MOVE);
+                setActiveSpritePanel(null);
+            }
+            return;
+        }
         setGridInformation(c.getGridInformation());
     }
 
@@ -355,7 +362,7 @@ public class AnimationPanel extends JPanel {
         revalidate();
     }
 
-    private void setActiveSpritePanel(SpritePanel spritePanel) {
+    private static void setActiveSpritePanel(SpritePanel spritePanel) {
         if(activeSpritePanel != null) {
             activeSpritePanel.setBorder(null);
         }
