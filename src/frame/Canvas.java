@@ -72,8 +72,15 @@ public class Canvas extends JPanel implements Serializable {
         int targetX = selectedArea.x + dx;
         int targetY = selectedArea.y + dy;
 
-        if(targetX >= 0 && targetX + selectedArea.width <= getWidth()) selectedArea.x = targetX;
-        if(targetY >= 0 && targetY + selectedArea.height <= getHeight()) selectedArea.y = targetY;
+        if(targetX + selectedArea.width > getWidth()) selectedArea.width = getWidth() - targetX;
+        if(targetY + selectedArea.height > getHeight()) selectedArea.height = getHeight() - targetY;
+
+        if(!(targetX < 0)) selectedArea.x = targetX;
+        else selectedArea.width += dx;
+        if(!(targetY < 0)) selectedArea.y = targetY;
+        else selectedArea.height += dy;
+
+        if(selectedArea.width == 0 || selectedArea.height == 0) nullifySelectedArea();
     }
 
     public void setSelectedAreaWidth(int width) {

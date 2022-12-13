@@ -61,7 +61,10 @@ public class MoveSelectionTool extends EditTool {
 
     @Override
     protected void onLeftMouseDragged() {
-        if(canvas.getSelectedArea() == null) return;
+        if(canvas.getSelectedArea() == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_SELECTION_TO_MOVE);
+            return;
+        }
 
         int dx = thisDragPoint.x - lastDragPoint.x;
         int dy = thisDragPoint.y - lastDragPoint.y;
