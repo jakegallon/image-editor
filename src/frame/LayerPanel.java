@@ -141,6 +141,7 @@ public class LayerPanel extends JPanel {
         if(layerWidgets.size() <= 0) return;
         if(index >= layerWidgets.size()) index = layerWidgets.size() - 1;
 
+        if(activeLayerWidget != null) activeLayerWidget.unsetActive();
         LayerWidget layerWidget = layerWidgets.get(index);
         layerWidget.setActive();
         activeLayerWidget = layerWidget;
