@@ -118,7 +118,7 @@ public class NewDialog extends JDialog {
 
     private void init() {
         setSize(new Dimension(350, 200));
-        setLocationRelativeTo(this);
+        setLocationRelativeTo(getParent());
         setResizable(false);
 
         setTitle("New Canvas");
