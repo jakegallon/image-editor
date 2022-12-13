@@ -6,10 +6,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
 
 public class TabPanel extends JPanel {
 
-    TabWidget activeWidget;
+    private final LinkedList<TabWidget> tabWidgets = new LinkedList<>();
+    private TabWidget activeWidget;
 
     public TabPanel() {
         setPreferredSize(new Dimension(0, 25));
@@ -19,6 +21,7 @@ public class TabPanel extends JPanel {
     public void createTabForCanvas(Canvas canvas) {
         TabWidget tabWidget = new TabWidget(canvas);
         add(tabWidget);
+        tabWidgets.add(tabWidget);
     }
 
     public void setActiveWidgetByCanvas(Canvas canvas) {
@@ -41,6 +44,12 @@ public class TabPanel extends JPanel {
         remove(tabWidget);
         revalidate();
         repaint();
+    }
+
+    private void activateWidget(int index) {
+        TabWidget targetWidget = tabWidgets.get(index);
+        setActiveWidget(targetWidget);
+        Controller.setActiveCanvas(targetWidget.canvas);
     }
 
     private class TabWidget extends JPanel implements MouseListener {
@@ -88,6 +97,14 @@ public class TabPanel extends JPanel {
             closeWidgetButton.addActionListener(e -> {
                 Controller.setActiveCanvas(null);
                 removeTabWidget(this);
+
+                int index = tabWidgets.indexOf(this);
+                tabWidgets.remove(this);
+                if(!tabWidgets.isEmpty()) {
+                    int newIndex = index - 1;
+                    if(newIndex < 0) newIndex = 0;
+                    activateWidget(newIndex);
+                }
             });
 
             closeWidgetButton.addMouseListener(new MouseAdapter() {
