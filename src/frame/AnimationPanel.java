@@ -209,6 +209,13 @@ public class AnimationPanel extends JPanel {
         helpButton.setPreferredSize(new Dimension(21, 21));
         helpButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        helpButton.addActionListener(e -> {
+            HelpDialog helpDialog = new HelpDialog(helpPanel());
+            helpDialog.setVisible(true);
+            Point p = getLocationOnScreen();
+            helpDialog.setLocation(new Point(p.x - helpDialog.getWidth() + getWidth(), p.y - helpDialog.getHeight()));
+        });
+
         springLayout.putConstraint(SpringLayout.NORTH, normalLayoutButton, 6, SpringLayout.NORTH, this);
         springLayout.putConstraint(SpringLayout.SOUTH, normalLayoutButton, 20, SpringLayout.NORTH, normalLayoutButton);
         springLayout.putConstraint(SpringLayout.NORTH, focusedLayoutButton, 0, SpringLayout.NORTH, normalLayoutButton);
@@ -243,6 +250,68 @@ public class AnimationPanel extends JPanel {
         add(spritePanel4);
 
         constraintAsNormal();
+    }
+
+    private JPanel helpPanel() {
+        JPanel helpPanel = new JPanel();
+
+        SpringLayout springLayout = new SpringLayout();
+        helpPanel.setLayout(springLayout);
+        helpPanel.setBorder(new LineBorder(Frame.borderColor));
+
+        JLabel layoutLabel = new JLabel("<html>- Swaps between different layouts for the panels which display the animations.</html>");
+        JLabel fpsLabel = new JLabel("<html>- Alters the rate at which animations are played. E.g. 6 fps will run through 6 cells per second.</html>");
+        JLabel usageLabel = new JLabel("<html>The panel below contains four smaller panels. Clicking on one of these smaller panels will change the function of your mouse, allowing you to hover over your canvas and select grid cells. Each grid cell which is clicked is added to the corresponding smaller panel. The smaller panel these grid cells, rotating through which grid cell is shown at a rate set by fps.<br>Note: The same grid cell can be selected multiple times.<br>Note: Selected grid cells do not have to be in order.</html>");
+
+        helpPanel.add(layoutLabel);
+        helpPanel.add(fpsLabel);
+
+        springLayout.putConstraint(SpringLayout.WEST, layoutLabel, 30, SpringLayout.WEST, helpPanel);
+        springLayout.putConstraint(SpringLayout.WEST, fpsLabel, 0, SpringLayout.WEST, layoutLabel);
+
+        springLayout.putConstraint(SpringLayout.NORTH, layoutLabel, 4, SpringLayout.NORTH, helpPanel);
+        springLayout.putConstraint(SpringLayout.NORTH, fpsLabel, 4, SpringLayout.SOUTH, layoutLabel);
+
+        springLayout.putConstraint(SpringLayout.EAST, layoutLabel, -4, SpringLayout.EAST, helpPanel);
+        springLayout.putConstraint(SpringLayout.EAST, fpsLabel, 0, SpringLayout.EAST, layoutLabel);
+
+        JSeparator separator = new JSeparator();
+        helpPanel.add(separator);
+
+        springLayout.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, helpPanel);
+        springLayout.putConstraint(SpringLayout.NORTH, separator, 4, SpringLayout.SOUTH, fpsLabel);
+        springLayout.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, helpPanel);
+
+        helpPanel.add(usageLabel);
+
+        springLayout.putConstraint(SpringLayout.NORTH, usageLabel, 4, SpringLayout.SOUTH, separator);
+        springLayout.putConstraint(SpringLayout.SOUTH, usageLabel, -4, SpringLayout.SOUTH, helpPanel);
+        springLayout.putConstraint(SpringLayout.WEST, usageLabel, 8, SpringLayout.WEST, helpPanel);
+        springLayout.putConstraint(SpringLayout.EAST, usageLabel, -4, SpringLayout.EAST, helpPanel);
+
+        ImageIcon layoutIcon;
+
+        try {
+            layoutIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/anim_layout_1.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        JLabel layoutImageLabel = new JLabel(layoutIcon);
+        JLabel fpsImageLabel = new JLabel("fps");
+
+        helpPanel.add(layoutImageLabel);
+        helpPanel.add(fpsImageLabel);
+
+        springLayout.putConstraint(SpringLayout.NORTH, layoutImageLabel, 0, SpringLayout.NORTH, layoutLabel);
+        springLayout.putConstraint(SpringLayout.NORTH, fpsImageLabel, 0, SpringLayout.NORTH, fpsLabel);
+
+        springLayout.putConstraint(SpringLayout.EAST, layoutImageLabel, -4, SpringLayout.WEST, layoutLabel);
+        springLayout.putConstraint(SpringLayout.EAST, fpsImageLabel, -4, SpringLayout.WEST, fpsLabel);
+
+        helpPanel.setSize(400, 220);
+
+        return helpPanel;
     }
 
     private void deselectCurrentButton() {
