@@ -18,6 +18,7 @@ public class ToolSettings extends JPanel {
     private static final JPanel toolSettings = new JPanel();
 
     private static final JScrollPane toolSettingsPane = new JScrollPane(toolSettings);
+    private static final JScrollPane toolPresetsPane = new JScrollPane(toolPresets);
 
     private static final MoveCameraTool MOVE_CAMERA_TOOL = new MoveCameraTool();
     private static final MoveLayerTool MOVE_LAYER_TOOL = new MoveLayerTool();
@@ -167,9 +168,9 @@ public class ToolSettings extends JPanel {
     }
 
     private boolean isToolSettingsScrollbarVisible = false;
+    private boolean isToolPresetsScrollbarVisible = false;
 
     private void addHoldingPanes() {
-        JScrollPane toolPresetsPane = new JScrollPane(toolPresets);
 
         toolPresetsPane.setBorder(new MatteBorder(0, 0, 1, 0, Frame.borderColor));
         toolSettingsPane.setBorder(null);
@@ -202,6 +203,21 @@ public class ToolSettings extends JPanel {
                 resizeToolSettingsComponents();
             }
         });
+
+        toolPresetsPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                resizeToolPresetsComponents();
+            }
+        });
+
+        toolPresetsPane.getViewport().addChangeListener(e -> {
+            if(isToolPresetsScrollbarVisible != toolPresetsPane.getVerticalScrollBar().isVisible()){
+                isToolPresetsScrollbarVisible = toolPresetsPane.getVerticalScrollBar().isVisible();
+                resizeToolPresetsComponents();
+            }
+        });
     }
 
     private static void resizeToolSettingsComponents() {
@@ -209,6 +225,18 @@ public class ToolSettings extends JPanel {
         width -= toolSettingsPane.getVerticalScrollBar().getWidth();
 
         for (Component c : toolSettings.getComponents()) {
+            c.setBounds(c.getX(), c.getY(), width, c.getHeight());
+            c.setMinimumSize(new Dimension(width, c.getHeight()));
+            c.setPreferredSize(new Dimension(width, c.getHeight()));
+            c.setMaximumSize(new Dimension(width, c.getHeight()));
+        }
+    }
+
+    private static void resizeToolPresetsComponents() {
+        int width = toolPresetsPane.getWidth();
+        width -= toolPresetsPane.getVerticalScrollBar().getWidth();
+
+        for (Component c : toolPresets.getComponents()) {
             c.setBounds(c.getX(), c.getY(), width, c.getHeight());
             c.setMinimumSize(new Dimension(width, c.getHeight()));
             c.setPreferredSize(new Dimension(width, c.getHeight()));
