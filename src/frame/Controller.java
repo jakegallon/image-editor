@@ -143,14 +143,22 @@ public class Controller {
             LayerDeletionAction thisAction = new LayerDeletionAction(layer, index);
             activeCanvas.undoManager.addEdit(thisAction);
         } else {
+            BufferedImage i = activeCanvas.getActiveLayer().getImage();
+            BufferedImage originalImage = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            originalImage.getGraphics().drawImage(i, 0, 0, null);
+
             Rectangle selectedArea = activeCanvas.getSelectedArea();
-            BufferedImage selectedPart = activeCanvas.getActiveLayer().getImage().getSubimage(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
+            BufferedImage selectedPart = i.getSubimage(selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height);
             TransferableImage transferableImage = new TransferableImage(selectedPart);
 
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(transferableImage, null);
 
             activeCanvas.getActiveLayer().clearRect(selectedArea);
+            ArrayList<PixelChange> pixelChanges = activeCanvas.getActiveLayer().getImageDifferences(originalImage);
+
+            EditAction thisAction = new EditAction(activeCanvas.getActiveLayerIndex(), pixelChanges);
+            activeCanvas.undoManager.addEdit(thisAction);
         }
     }
 

@@ -243,9 +243,6 @@ public class Frame extends JFrame {
         };
     }
 
-    private void fileMenuImportLayerAction() {
-    }
-
     private void fileMenuExportAsAction() {
         JFileChooser fileChooser = new JFileChooser();
 
@@ -299,9 +296,6 @@ public class Frame extends JFrame {
         }
     }
 
-    private void fileMenuOptionsAction() {
-    }
-
     private void fileMenuCloseAction() {
         setState(ICONIFIED);
     }
@@ -332,12 +326,6 @@ public class Frame extends JFrame {
 
     private void editMenuDeleteAction() {
         Controller.delete();
-    }
-
-    private void editMenuFlipHorizontalAction() {
-    }
-
-    private void editMenuFlipVerticalAction() {
     }
 
     private void helpMenuHelpAction() {
@@ -373,15 +361,9 @@ public class Frame extends JFrame {
         JMenuItem fileMenuSaveAs = new JMenuItem();
         fileMenuSaveAs.setText("Save As");
         fileMenuSaveAs.addActionListener(e -> fileMenuSaveAsAction());
-        JMenuItem fileMenuImportLayer = new JMenuItem();
-        fileMenuImportLayer.setText("Import Layer");
-        fileMenuImportLayer.addActionListener(e -> fileMenuImportLayerAction());
         JMenuItem fileMenuExportAs = new JMenuItem();
         fileMenuExportAs.setText("Export As");
         fileMenuExportAs.addActionListener(e -> fileMenuExportAsAction());
-        JMenuItem fileMenuOptions = new JMenuItem();
-        fileMenuOptions.setText("Options");
-        fileMenuOptions.addActionListener(e -> fileMenuOptionsAction());
         JMenuItem fileMenuClose = new JMenuItem();
         fileMenuClose.setText("Close");
         fileMenuClose.addActionListener(e -> fileMenuCloseAction());
@@ -394,10 +376,7 @@ public class Frame extends JFrame {
         fileMenu.add(fileMenuSave);
         fileMenu.add(fileMenuSaveAs);
         fileMenu.addSeparator();
-        fileMenu.add(fileMenuImportLayer);
         fileMenu.add(fileMenuExportAs);
-        fileMenu.addSeparator();
-        fileMenu.add(fileMenuOptions);
         fileMenu.addSeparator();
         fileMenu.add(fileMenuClose);
         fileMenu.add(fileMenuExit);
@@ -424,12 +403,6 @@ public class Frame extends JFrame {
         JMenuItem editMenuDelete = new JMenuItem();
         editMenuDelete.setText("Delete");
         editMenuDelete.addActionListener(e -> editMenuDeleteAction());
-        JMenuItem editMenuFlipHorizontal = new JMenuItem();
-        editMenuFlipHorizontal.setText("Flip Horizontal");
-        editMenuFlipHorizontal.addActionListener(e -> editMenuFlipHorizontalAction());
-        JMenuItem editMenuFlipVertical = new JMenuItem();
-        editMenuFlipVertical.setText("Flip Vertical");
-        editMenuFlipVertical.addActionListener(e -> editMenuFlipVerticalAction());
 
         editMenu.add(editMenuUndo);
         editMenu.add(editMenuRedo);
@@ -438,9 +411,6 @@ public class Frame extends JFrame {
         editMenu.add(editMenuCopy);
         editMenu.add(editMenuPaste);
         editMenu.add(editMenuDelete);
-        editMenu.addSeparator();
-        editMenu.add(editMenuFlipHorizontal);
-        editMenu.add(editMenuFlipVertical);
 
         menuBar.add(editMenu);
 
