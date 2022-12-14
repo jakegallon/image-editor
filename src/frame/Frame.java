@@ -328,10 +328,14 @@ public class Frame extends JFrame {
         Controller.delete();
     }
 
-    private void helpMenuHelpAction() {
-    }
-
     private void helpMenuAboutAction() {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/jakegallon/image-editor"));
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void helpMenuGitHubAction() {
@@ -416,9 +420,6 @@ public class Frame extends JFrame {
 
         JMenu helpMenu = new JMenu();
         helpMenu.setText("Help");
-        JMenuItem helpMenuHelp = new JMenuItem();
-        helpMenuHelp.setText("Help");
-        helpMenuHelp.addActionListener(e -> helpMenuHelpAction());
         JMenuItem helpMenuAbout = new JMenuItem();
         helpMenuAbout.setText("About");
         helpMenuAbout.addActionListener(e -> helpMenuAboutAction());
@@ -426,8 +427,6 @@ public class Frame extends JFrame {
         helpMenuGithub.setText("View on GitHub");
         helpMenuGithub.addActionListener(e -> helpMenuGitHubAction());
 
-        helpMenu.add(helpMenuHelp);
-        helpMenu.addSeparator();
         helpMenu.add(helpMenuAbout);
         helpMenu.addSeparator();
         helpMenu.add(helpMenuGithub);
