@@ -2,6 +2,7 @@ package frame;
 
 import action.EditAction;
 import action.LayerDeletionAction;
+import action.PasteAction;
 import action.PixelChange;
 import tool.BaseTool;
 
@@ -73,6 +74,11 @@ public class Controller {
     public static void deleteLayerFromActiveCanvas(int index) {
         activeCanvas.deleteLayer(index);
         Frame.layerPanel.deleteLayer(index);
+    }
+
+    public static void addLayerToActiveCanvas(Layer layer, int index) {
+        activeCanvas.addLayer(layer, index);
+        Frame.layerPanel.addLayer(layer, index);
     }
 
     public static void setActiveCanvas(Canvas canvas) {
@@ -186,6 +192,9 @@ public class Controller {
 
                 activeCanvas.addLayer(pasteLayer, activeCanvas.getActiveLayerIndex());
                 Frame.layerPanel.addLayer(pasteLayer, activeCanvas.getActiveLayerIndex());
+
+                PasteAction pasteAction = new PasteAction(pasteLayer, activeCanvas.layers.indexOf(pasteLayer));
+                activeCanvas.undoManager.addEdit(pasteAction);
             } catch (UnsupportedFlavorException | IOException e) {
                 throw new RuntimeException(e);
             }
