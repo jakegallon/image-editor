@@ -13,7 +13,7 @@ public class HelpDialog extends JDialog {
         add(contents, BorderLayout.CENTER);
     }
 
-    AWTEventListener awtEventListener = awtEvent -> {
+    final AWTEventListener awtEventListener = awtEvent -> {
         MouseEvent mouseEvent = (MouseEvent) awtEvent;
         if(mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
             if(mouseEvent.getComponent() != this) {

@@ -23,11 +23,6 @@ public class MoveSelectionTool extends EditTool {
     }
 
     @Override
-    protected void onLeftMouseClicked() {
-
-    }
-
-    @Override
     protected void onLeftMousePressed() {
         proxyLayer = new Layer(canvas);
 

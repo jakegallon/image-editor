@@ -14,11 +14,6 @@ public class EyeTool extends BaseTool {
     }
 
     @Override
-    protected void onLeftMouseClicked() {
-
-    }
-
-    @Override
     protected void onLeftMousePressed() {
         setSelectedColorToMousePosColor();
     }

@@ -4,16 +4,15 @@ import frame.ToolSettings;
 import tool.properties.PropertyBooleanWidget;
 import tool.properties.PropertySliderWidget;
 
-import javax.swing.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EraseTool extends EditTool {
 
-    AtomicInteger width = new AtomicInteger(1);
-    AtomicInteger opacity = new AtomicInteger(255);
+    final AtomicInteger width = new AtomicInteger(1);
+    final AtomicInteger opacity = new AtomicInteger(255);
 
-    AtomicBoolean antiAliasing = new AtomicBoolean(false);
+    final AtomicBoolean antiAliasing = new AtomicBoolean(false);
     public EraseTool() {
         category = ToolCategory.ERASE;
         displayName = "Eraser";
@@ -26,11 +25,6 @@ public class EraseTool extends EditTool {
         ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
 
         ToolSettings.addComponentToToolSettings(new PropertyBooleanWidget(antiAliasing, "Anti-aliasing"));
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
-
     }
 
     @Override

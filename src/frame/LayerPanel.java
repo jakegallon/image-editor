@@ -52,7 +52,7 @@ public class LayerPanel extends JPanel {
             renameIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/rename.png"))));
             deleteIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/delete.png"))));
             visibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/visible.png"))));
-            notVisibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/notvisible.png"))));
+            notVisibleIcon = new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/not_visible.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -378,7 +378,7 @@ public class LayerPanel extends JPanel {
             };
         }
 
-        KeyListener keyListener = new KeyAdapter() {
+        final KeyListener keyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 if(keyEvent.getKeyChar() == KeyEvent.VK_ESCAPE) {
@@ -391,7 +391,7 @@ public class LayerPanel extends JPanel {
             }
         };
 
-        AWTEventListener awtEventListener = awtEvent -> {
+        final AWTEventListener awtEventListener = awtEvent -> {
             MouseEvent mouseEvent = (MouseEvent) awtEvent;
             if(mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
                 if(mouseEvent.getComponent() != renameTextField) {

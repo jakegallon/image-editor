@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FillTool extends EditTool {
 
-    AtomicBoolean spillDiagonally = new AtomicBoolean(false);
-    AtomicInteger opacity = new AtomicInteger(255);
+    final AtomicBoolean spillDiagonally = new AtomicBoolean(false);
+    final AtomicInteger opacity = new AtomicInteger(255);
 
     public FillTool() {
         category = ToolCategory.FILL;
@@ -23,11 +23,6 @@ public class FillTool extends EditTool {
     public void attachProperties() {
         ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
         ToolSettings.addComponentToToolSettings(new PropertyBooleanWidget(spillDiagonally, "Spill over diagonals"));
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
-
     }
 
     @Override

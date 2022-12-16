@@ -1,6 +1,5 @@
 package tool;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class MoveLayerTool extends EditTool {
@@ -13,11 +12,6 @@ public class MoveLayerTool extends EditTool {
 
     @Override
     public void attachProperties() {
-
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
 
     }
 

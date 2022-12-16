@@ -34,11 +34,6 @@ public class Controller {
         Frame.colorSettings.setSelectedColor(color);
     }
 
-    public static Color notSelectedColor() {
-        if(!isPrimarySelected) return primaryColor;
-        else return secondaryColor;
-    }
-
     private static Canvas activeCanvas;
 
     public static void addNewCanvas(Canvas canvas) {

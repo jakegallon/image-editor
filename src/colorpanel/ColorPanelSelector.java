@@ -9,14 +9,14 @@ import java.awt.image.BufferedImage;
 
 public class ColorPanelSelector extends JPanel implements MouseListener, MouseMotionListener {
     int squareSize = 0;
-    int ovalThickness = 20;
+    final int ovalThickness = 20;
 
     BufferedImage hueImage = new BufferedImage(1 ,1 ,BufferedImage.TYPE_INT_ARGB);
     private Area hueArea;
     double selectedAngle;
 
-    ColorPanel colorPanel;
-    ColorSquare colorSquare = new ColorSquare();
+    final ColorPanel colorPanel;
+    final ColorSquare colorSquare = new ColorSquare();
     private int hueMarkerX;
     private int hueMarkerY;
 

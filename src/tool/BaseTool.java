@@ -23,25 +23,16 @@ public abstract class BaseTool {
     protected Point initPressPoint;
 
     public Cursor toolCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    protected Cursor blockedCursor = getCursor(CustomCursor.BLOCKED, CursorOffset.CENTERED);
+    protected final Cursor blockedCursor = getCursor(CustomCursor.BLOCKED, CursorOffset.CENTERED);
 
     public abstract void attachProperties();
 
-    protected abstract void onLeftMouseClicked();
     protected abstract void onLeftMousePressed();
     protected abstract void onLeftMouseDragged();
     protected abstract void onLeftMouseReleased();
 
     public void populateSettingsPanel() {
         attachProperties();
-    }
-
-    public void onMouseClicked(MouseEvent e) {
-        if(SwingUtilities.isLeftMouseButton(e)) {
-            onLeftMouseClicked();
-        } else if (SwingUtilities.isRightMouseButton(e)) {
-
-        }
     }
 
     public void onMousePressed(MouseEvent e) {
@@ -94,7 +85,6 @@ public abstract class BaseTool {
     }
 
     protected enum CustomCursor {
-        BLANK,
         GENERIC_TOOL,
         BLOCKED,
         EYE_TOOL,

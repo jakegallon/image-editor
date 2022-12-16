@@ -9,8 +9,8 @@ import javax.swing.undo.CannotUndoException;
 
 public class LayerOrderAction extends AbstractUndoableEdit {
 
-    int oldLayerIndex;
-    int newLayerIndex;
+    final int oldLayerIndex;
+    final int newLayerIndex;
 
     public LayerOrderAction(int oldLayerIndex, int newLayerIndex) {
         this.oldLayerIndex = oldLayerIndex;

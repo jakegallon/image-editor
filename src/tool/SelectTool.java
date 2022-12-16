@@ -22,10 +22,6 @@ public class SelectTool extends BaseTool {
     }
 
     @Override
-    protected void onLeftMouseClicked() {
-    }
-
-    @Override
     protected void onLeftMousePressed() {
         if(canvas == null || canvas.getActiveLayer() == null) return;
 

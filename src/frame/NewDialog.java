@@ -5,14 +5,14 @@ import java.awt.*;
 
 public class NewDialog extends JDialog {
 
-    SpringLayout springLayout = new SpringLayout();
+    final SpringLayout springLayout = new SpringLayout();
 
-    JTextField fileNameField = new JTextField();
-    JSpinner width = new JSpinner(new SpinnerNumberModel(320, 1, 16384, 1));
-    JSpinner height = new JSpinner(new SpinnerNumberModel(320, 1, 16384, 1));
-    JCheckBox hasPaper = new JCheckBox();
+    final JTextField fileNameField = new JTextField();
+    final JSpinner width = new JSpinner(new SpinnerNumberModel(320, 1, 16384, 1));
+    final JSpinner height = new JSpinner(new SpinnerNumberModel(320, 1, 16384, 1));
+    final JCheckBox hasPaper = new JCheckBox();
 
-    JButton confirm = new JButton("Confirm");
+    final JButton confirm = new JButton("Confirm");
 
     private static int untitledCount = 0;
 

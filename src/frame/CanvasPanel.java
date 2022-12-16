@@ -109,10 +109,6 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
         return new DoublePoint(-xOffset, -yOffset);
     }
 
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -318,7 +314,7 @@ public class CanvasPanel extends JPanel implements MouseListener, MouseWheelList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        activeTool.onMouseClicked(e);
+
     }
 
     @Override

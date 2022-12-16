@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class EditAction extends AbstractUndoableEdit {
 
-    int layerIndex;
-    ArrayList<PixelChange> pixelChanges;
+    final int layerIndex;
+    final ArrayList<PixelChange> pixelChanges;
 
     public EditAction(int layerIndex, ArrayList<PixelChange> pixelChanges) {
         this.layerIndex = layerIndex;

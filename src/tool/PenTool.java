@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PenTool extends EditTool {
 
-    AtomicInteger width = new AtomicInteger(1);
-    AtomicInteger opacity = new AtomicInteger(255);
+    final AtomicInteger width = new AtomicInteger(1);
+    final AtomicInteger opacity = new AtomicInteger(255);
 
-    AtomicBoolean antiAliasing = new AtomicBoolean(false);
+    final AtomicBoolean antiAliasing = new AtomicBoolean(false);
 
     public PenTool() {
         category = ToolCategory.PEN;
@@ -27,11 +27,6 @@ public class PenTool extends EditTool {
         ToolSettings.addComponentToToolSettings(new PropertySliderWidget(opacity, "Opacity", 0, 255));
 
         ToolSettings.addComponentToToolSettings(new PropertyBooleanWidget(antiAliasing, "Anti-aliasing"));
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
-
     }
 
     @Override

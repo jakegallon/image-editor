@@ -10,11 +10,11 @@ import java.awt.image.BufferedImage;
 
 public class LayerMergeAction extends AbstractUndoableEdit {
 
-    Layer topLayer;
-    Layer bottomLayer;
-    int bottomIndex;
+    final Layer topLayer;
+    final Layer bottomLayer;
+    final int bottomIndex;
 
-    BufferedImage bottomLayerOriginalImage;
+    final BufferedImage bottomLayerOriginalImage;
 
     public LayerMergeAction(Layer topLayer, Layer bottomLayer, int bottomIndex) {
         this.topLayer = topLayer;

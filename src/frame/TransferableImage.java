@@ -4,11 +4,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class TransferableImage implements Transferable {
 
-    BufferedImage image;
+    final BufferedImage image;
 
     public TransferableImage(BufferedImage image) {
         this.image = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);

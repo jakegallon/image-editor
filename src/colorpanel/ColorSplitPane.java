@@ -27,14 +27,6 @@ public class ColorSplitPane extends JPanel {
         add(colorPalette);
     }
 
-    public Color getPrimaryColor() {
-        return colorPanel.getPrimaryColor();
-    }
-
-    public Color getSecondaryColor() {
-        return colorPanel.getSecondaryColor();
-    }
-
     public Color getSelectedColor() {
         return colorPanel.getSelectedColor();
     }

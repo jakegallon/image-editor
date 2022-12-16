@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PropertyBooleanWidget extends JPanel {
 
-    public JCheckBox propertyCheckBox = new JCheckBox();
+    public final JCheckBox propertyCheckBox = new JCheckBox();
 
     public PropertyBooleanWidget(AtomicBoolean value, String name) {
 

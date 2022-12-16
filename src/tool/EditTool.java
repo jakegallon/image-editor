@@ -21,12 +21,6 @@ public abstract class EditTool extends BaseTool {
     protected Color color;
 
     @Override
-    public void onMouseClicked(MouseEvent e) {
-        if(isCanvasOrLayerNull()) return;
-        super.onMouseClicked(e);
-    }
-
-    @Override
     public void onMousePressed(MouseEvent e) {
         if(isCanvasOrLayerNull()) return;
         if(SwingUtilities.isLeftMouseButton(e)) {

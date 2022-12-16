@@ -443,11 +443,11 @@ public class AnimationPanel extends JPanel {
 
     public class SpritePanel extends JPanel implements MouseListener {
 
-        ArrayList<Frame> frames = new ArrayList<>();
+        final ArrayList<Frame> frames = new ArrayList<>();
         int framesIndex = 0;
         boolean isUpdating = false;
 
-        Rectangle drawBounds = new Rectangle();
+        final Rectangle drawBounds = new Rectangle();
 
         public SpritePanel() {
             addMouseListener(this);
@@ -557,7 +557,7 @@ public class AnimationPanel extends JPanel {
             }
         }
 
-        ActionListener timerTask = e -> {
+        final ActionListener timerTask = e -> {
             if(framesIndex >= frames.size() - 1) framesIndex = 0;
             else framesIndex++;
             repaint();
@@ -572,7 +572,7 @@ public class AnimationPanel extends JPanel {
         }
 
         private class Frame {
-            Rectangle target;
+            final Rectangle target;
 
             public Frame(Rectangle target) {
                 this.target = target;

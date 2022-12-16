@@ -82,10 +82,6 @@ public class Layer implements Serializable {
         return pixelChanges;
     }
 
-    public void addImage(BufferedImage image) {
-        g.drawImage(image, 0, 0, null);
-    }
-
     public void paint(int x, int y, int color) {
         image.setRGB(x, y, color);
     }

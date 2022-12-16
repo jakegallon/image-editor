@@ -17,7 +17,7 @@ public class Canvas extends JPanel implements Serializable {
     public ArrayList<Layer> layers = new ArrayList<>();
     private Layer activeLayer;
 
-    public UndoManager undoManager = new UndoManager();
+    public final UndoManager undoManager = new UndoManager();
     public GridInformation gridInformation = new GridInformation(32, 32, GridStyle.NONE);
 
     public Canvas() {
@@ -288,13 +288,6 @@ public class Canvas extends JPanel implements Serializable {
 
     public Layer getActiveLayer() {
         return activeLayer;
-    }
-
-    public void mergeActiveLayerDown() {
-        int activeIndex = getActiveLayerIndex();
-        Layer targetLayer = layers.get(activeIndex + 1);
-        targetLayer.addImage(activeLayer.getImage());
-        deleteLayer(activeIndex);
     }
 
     public String getFileName() {

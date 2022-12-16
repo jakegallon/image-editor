@@ -8,10 +8,10 @@ import java.awt.event.MouseListener;
 
 public class ColorPanelHandler extends JPanel {
 
-    ColorPanel colorPanel;
+    final ColorPanel colorPanel;
 
-    ColorHoldingPanel primaryColorHoldingPanel = new ColorHoldingPanel();
-    ColorHoldingPanel secondaryColorHoldingPanel = new ColorHoldingPanel();
+    final ColorHoldingPanel primaryColorHoldingPanel = new ColorHoldingPanel();
+    final ColorHoldingPanel secondaryColorHoldingPanel = new ColorHoldingPanel();
 
     public ColorPanelHandler(ColorPanel colorPanel) {
         this.colorPanel = colorPanel;
@@ -51,14 +51,6 @@ public class ColorPanelHandler extends JPanel {
 
     public Color getSelectedColor() {
         if(primaryColorHoldingPanel.isSelected) return primaryColorHoldingPanel.getCurrentColor();
-        return secondaryColorHoldingPanel.getCurrentColor();
-    }
-
-    public Color getPrimaryColor() {
-        return primaryColorHoldingPanel.getCurrentColor();
-    }
-
-    public Color getSecondaryColor() {
         return secondaryColorHoldingPanel.getCurrentColor();
     }
 

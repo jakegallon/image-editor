@@ -8,7 +8,7 @@ import javax.swing.undo.CannotUndoException;
 
 public class LayerCreationAction extends AbstractUndoableEdit {
 
-    int index;
+    final int index;
 
     public LayerCreationAction(int index) {
         this.index = index;

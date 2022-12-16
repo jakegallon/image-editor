@@ -1,6 +1,5 @@
 package tool;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class MoveCameraTool extends BaseTool {
@@ -13,11 +12,6 @@ public class MoveCameraTool extends BaseTool {
 
     @Override
     public void attachProperties() {
-
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
 
     }
 

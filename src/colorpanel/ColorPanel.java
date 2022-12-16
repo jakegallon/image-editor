@@ -48,14 +48,6 @@ public class ColorPanel extends JPanel {
         return colorPanelHandler.getSelectedColor();
     }
 
-    protected Color getPrimaryColor() {
-        return colorPanelHandler.getPrimaryColor();
-    }
-
-    protected Color getSecondaryColor() {
-        return colorPanelHandler.getSecondaryColor();
-    }
-
     protected void onSelectedColorChange(Color color, boolean isPrimary) {
         colorSplitPane.onSelectedColorChange(color, isPrimary);
     }

@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class AnimationTool extends BaseTool {
 
-    AnimationPanel.SpritePanel spritePanel;
+    final AnimationPanel.SpritePanel spritePanel;
 
     public AnimationTool(AnimationPanel.SpritePanel spritePanel) {
         this.spritePanel = spritePanel;
@@ -44,11 +44,6 @@ public class AnimationTool extends BaseTool {
         springLayout.putConstraint(SpringLayout.EAST, usage, 0, SpringLayout.EAST, description);
 
         ToolSettings.addComponentToToolSettings(animationGuide);
-    }
-
-    @Override
-    protected void onLeftMouseClicked() {
-
     }
 
     @Override

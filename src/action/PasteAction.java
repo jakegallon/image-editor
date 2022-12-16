@@ -9,8 +9,8 @@ import javax.swing.undo.CannotUndoException;
 
 public class PasteAction extends AbstractUndoableEdit {
 
-    Layer pastedLayer;
-    int pastedLayerIndex;
+    final Layer pastedLayer;
+    final int pastedLayerIndex;
 
     public PasteAction(Layer pastedLayer, int pastedLayerIndex) {
         this.pastedLayer = pastedLayer;

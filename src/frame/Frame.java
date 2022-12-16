@@ -19,13 +19,13 @@ public class Frame extends JFrame {
     JSplitPane leftMiddle, leftMiddleRight;
     JPanel leftPanel, rightPanel;
 
-    public static CanvasPanel canvasPanel = new CanvasPanel();
-    static InfoPanel infoPanel = new InfoPanel();
-    public static LayerPanel layerPanel = new LayerPanel();
-    static ColorSplitPane colorSettings = new ColorSplitPane();
-    static MagnificationPanel magnificationPanel = new MagnificationPanel();
-    static TabPanel topPanel = new TabPanel();
-    public static NotificationPanel notificationPanel = new NotificationPanel();
+    public static final CanvasPanel canvasPanel = new CanvasPanel();
+    static final InfoPanel infoPanel = new InfoPanel();
+    public static final LayerPanel layerPanel = new LayerPanel();
+    static final ColorSplitPane colorSettings = new ColorSplitPane();
+    static final MagnificationPanel magnificationPanel = new MagnificationPanel();
+    static final TabPanel topPanel = new TabPanel();
+    public static final NotificationPanel notificationPanel = new NotificationPanel();
 
     public static final Color borderColor = new Color(43, 43 ,43);
 

@@ -9,8 +9,8 @@ import javax.swing.undo.CannotUndoException;
 
 public class LayerDeletionAction extends AbstractUndoableEdit {
 
-    Layer layer;
-    int index;
+    final Layer layer;
+    final int index;
 
     public LayerDeletionAction(Layer layer, int index) {
         this.layer = layer;
