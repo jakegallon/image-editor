@@ -19,5 +19,7 @@ public class Main {
         UIManager.put("Slider.thumbSize", new Dimension(8, 8));
 
         Window window = new Frame();
+
+        window.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/res/icon.png")));
     }
 }
