@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public abstract class BaseTool {
 
@@ -104,9 +104,15 @@ public abstract class BaseTool {
 
         String name = customCursor.toString().toLowerCase();
 
-        File target = new File("./src/res/" + name  + ".png");
         try {
-            Image cursorIcon = ImageIO.read(target);
+            Image cursorIcon;
+            switch (customCursor) {
+                case GENERIC_TOOL -> cursorIcon = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/generic_tool.png")));
+                case BLOCKED -> cursorIcon = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/blocked.png")));
+                case EYE_TOOL -> cursorIcon = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/eye.png")));
+                case FILL_TOOL -> cursorIcon = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/fill.png")));
+                default -> throw new IllegalStateException("Unexpected value: " + customCursor);
+            }
             Dimension d = toolkit.getBestCursorSize(cursorIcon.getWidth(null), cursorIcon.getHeight(null));
             switch (cursorOffset) {
                 case CENTERED -> {
