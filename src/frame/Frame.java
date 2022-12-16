@@ -52,11 +52,8 @@ public class Frame extends JFrame {
         getRootPane().registerKeyboardAction(e -> Controller.delete(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-        getRootPane().registerKeyboardAction(e -> {
-            if(Controller.getActiveCanvas() == null) {
-                NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_SAVE);
-            } else fileMenuSaveAction();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        getRootPane().registerKeyboardAction(e -> fileMenuSaveAction(),
+        KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
                 KeyStroke.getKeyStroke('W'),JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -199,6 +196,10 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuSaveAction() {
+        if(Controller.getActiveCanvas() == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_SAVE);
+            return;
+        }
         if(Controller.getActiveCanvas().file != null) {
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(Controller.getActiveCanvas().file);
@@ -217,6 +218,10 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuSaveAsAction() {
+        if(Controller.getActiveCanvas() == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_SAVE);
+            return;
+        }
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(genericCustomFilter());
 
@@ -266,6 +271,10 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuExportAsAction() {
+        if(Controller.getActiveCanvas() == null) {
+            NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_EXPORT);
+            return;
+        }
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setFileFilter(new FileFilter() {
