@@ -52,6 +52,12 @@ public class Frame extends JFrame {
         getRootPane().registerKeyboardAction(e -> Controller.delete(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
+        getRootPane().registerKeyboardAction(e -> {
+            if(Controller.getActiveCanvas() == null) {
+                NotificationPanel.playNotification(NotificationMessage.NO_CANVAS_SAVE);
+            } else fileMenuSaveAction();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+
         getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
                 KeyStroke.getKeyStroke('W'),JComponent.WHEN_IN_FOCUSED_WINDOW);
         getRootPane().registerKeyboardAction(e -> onSelectTool(ToolCategory.PEN),
@@ -193,6 +199,21 @@ public class Frame extends JFrame {
     }
 
     private void fileMenuSaveAction() {
+        if(Controller.getActiveCanvas().file != null) {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(Controller.getActiveCanvas().file);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+                objectOutputStream.writeObject(Controller.getActiveCanvas());
+
+                objectOutputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            fileMenuSaveAsAction();
+        }
     }
 
     private void fileMenuSaveAsAction() {
@@ -209,6 +230,7 @@ public class Frame extends JFrame {
             }
 
             File file = new File(targetFile.getParentFile(), fileName);
+            Controller.getActiveCanvas().file = file;
 
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(file);

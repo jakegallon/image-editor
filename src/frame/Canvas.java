@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Canvas extends JPanel implements Serializable {
 
+    public File file;
     private String fileName;
 
     public ArrayList<Layer> layers = new ArrayList<>();

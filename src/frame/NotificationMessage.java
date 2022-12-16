@@ -3,6 +3,7 @@ package frame;
 public enum NotificationMessage {
     NO_CANVAS("Cut, Copy, and Paste require a canvas."),
     NO_CANVAS_DELETE("Deleting something requires a canvas."),
+    NO_CANVAS_SAVE("You must have a canvas in order to save the canvas."),
     NO_MORE_UNDO("There are no more edits left to undo..."),
     NO_MORE_REDO("There are no more edits left to redo..."),
     NO_SELECTION_TO_MOVE("There is no selection to move. The Select Tool can be used to create one."),
