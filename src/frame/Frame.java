@@ -189,6 +189,9 @@ public class Frame extends JFrame {
 
                 Canvas canvas = (Canvas) objectInputStream.readObject();
                 Controller.setActiveCanvas(canvas);
+
+                objectInputStream.close();
+                fileInputStream.close();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
